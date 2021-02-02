@@ -1,9 +1,9 @@
-import Student from "./Student";
-import Teacher from "./Teacher";
+import {Student} from "./Student";
+import {Teacher} from "./Teacher";
 import {User} from "./User";
-import Subject from "./Subject";
-import Lesson from "./Lesson";
-import Promo from "./Promo";
+import {Subject} from "./Subject";
+import {Lesson} from "./Lesson";
+import {Promo} from "./Promo";
 
 
 export default class AdminMember extends User{
