@@ -18,3 +18,7 @@
     text-decoration: none;
     color: var(--primary)
 }
+
+.promoCard{
+    margin-top: 32px;
+}

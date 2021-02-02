@@ -48,7 +48,7 @@ const DashboardTeacher = () => {
               </CardContent>
 
           </Card>
-          <Card elevation={3} className="green">
+          <Card elevation={3} className="green promoCard">
             <CardContent>
               <CardMedia
                 component="img"
