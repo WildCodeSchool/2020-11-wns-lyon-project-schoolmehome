@@ -27,6 +27,10 @@ jobs:
       # Runs a single command using the runners shell
       - name: dossier client
         run: cd client
+      
+      # Install packages
+      - name : install packages
+        run : npm install  
 
       # Runs a set of commands using the runners shell
       - name: test build
