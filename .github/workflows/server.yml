@@ -27,7 +27,7 @@ jobs:
       # Runs a single command using the runners shell
       - name: cd client & build
         run: |
-          cd client/
+          cd server/
           npm install
           npm run build
         env:
