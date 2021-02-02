@@ -1,7 +1,7 @@
 import { CardActionArea, CardContent, CardMedia, createStyles } from '@material-ui/core';
 import { Grid, makeStyles, Card, Theme } from '@material-ui/core'
 import React from 'react'
-import { Link } from 'react-router-dom'
+// import { Link } from 'react-router-dom'
 import './DashboardTeacher.css'
 import dashboardCours from '../../../image/dashboard-cours.png';
 import dashboardPromo from '../../../image/dashboard-promo.png';
