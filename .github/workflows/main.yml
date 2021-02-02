@@ -26,7 +26,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: dossier client
-        run: cd client
+        run: cd client/
       
       # Install packages
       - name : install packages
