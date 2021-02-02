@@ -25,8 +25,8 @@ jobs:
       - uses: actions/checkout@v2
 
       # Runs a single command using the runners shell
-      - name: dossier client et build
+      - name: cd client & build
         run: |
           cd client/
           npm install
-          npm start 
+          npm run build
