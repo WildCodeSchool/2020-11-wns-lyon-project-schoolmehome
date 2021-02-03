@@ -32,7 +32,7 @@ export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) 
     }
 };
 (async () => {
-    await mongoose.connect('mongodb://localhost:27017/', { useNewUrlParser: true, useUnifiedTopology: true, dbName: "home" });
+    await mongoose.connect('mongodb://mongodb:27017/', { useNewUrlParser: true, useUnifiedTopology: true, dbName: "home" });
 
     const schema = await buildSchema({
         resolvers: [UserController],
