@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './SlideCreation.css'
 
-const Slide = ({ slide, index, changeSlide }: any) => {
+const Slide = ({ handleDelete, slide, index, changeSlide }: any) => {
+
   return (
-    <div className={`slide ${slide.isActive ? 'slide-active' : ''}`} dangerouslySetInnerHTML={{ __html: `${slide.content}` }} onClick={() => changeSlide(index)}  />
+    <div className={`slide ${slide.isActive ? 'slide-active' : ''}`} onClick={() => changeSlide(index)}>
+      <button onClick={(e) => handleDelete(e, index)} className="delete-slide-button">X</button>
+      <div dangerouslySetInnerHTML={{ __html: `${slide.content}` }}/>
+    </div>
   )
 }
 

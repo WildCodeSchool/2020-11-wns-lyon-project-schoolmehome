@@ -10,10 +10,6 @@ const SlideCreation = () => {
   const [ActiveContent, setActiveContent] = useState<string>('')
   const [slideList, setSlideList] = useState<SlideInterface[]>([{ content: '', isActive: true }])
 
-  useEffect(() => {
-
-  }, [])
-
   const addSlide = () => {
     const slideListCopy = slideList.slice()
     slideListCopy.filter(slide => slide.isActive)[0].isActive = false;
@@ -27,6 +23,19 @@ const SlideCreation = () => {
     slideListCopy.filter((slide, i) => i === index)[0].isActive = true;
     setSlideList(slideListCopy)
     setActiveContent(slideListCopy.find((slide, i) => i === index)!.content)
+  }
+
+  const handleDelete = (e: any, index: number) => {
+    e.stopPropagation();
+    if (slideList.length > 1) {
+      let slideListCopy = slideList.slice()
+      slideListCopy = slideListCopy.filter((slide, i) => i !== index)
+      if (!slideListCopy.find(slide => slide.isActive)) {
+        slideListCopy[slideListCopy.length - 1].isActive = true
+      }
+      setSlideList(slideListCopy)
+      setActiveContent(slideListCopy[slideListCopy.length - 1]!.content)
+    }
   }
 
   return (
@@ -61,7 +70,7 @@ const SlideCreation = () => {
           <h2>Slide show</h2>
             {slideList.map((slide: SlideInterface, index) => {
               return (
-                <Slide slide={slide} index={index} changeSlide={changeSlide} />
+                <Slide slide={slide} index={index} changeSlide={changeSlide} handleDelete={handleDelete} />
               )
             })}
         </div>
