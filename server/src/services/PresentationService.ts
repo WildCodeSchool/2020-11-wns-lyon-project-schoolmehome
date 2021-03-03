@@ -18,5 +18,11 @@ export class PresentationServiceClass{
         return await model.findOne({_id});
     }
 
+    @Query(() => [Presentation])
+    public async findAll(): Promise<Presentation[]>{
+        const model = getModelForClass(Presentation);
+        return await model.find({})
+    }
+
 }
 export const presentationService = new PresentationServiceClass();

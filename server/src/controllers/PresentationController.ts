@@ -20,6 +20,11 @@ export class PresentationController {
     return await presentationService.findById(_id);
   }
 
+  @Query(() => [Presentation])
+  public async findAllPresentation(): Promise<Presentation[]> {
+    return await presentationService.findAll();
+  }
+
   @Mutation(() => Presentation)
   public async addSlide(@Arg('data') data: Slide, @Arg('_id') _id: string): Promise<Presentation> {
     const model = getModelForClass(Presentation)
