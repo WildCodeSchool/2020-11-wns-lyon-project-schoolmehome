@@ -45,4 +45,9 @@ export class UserController{
     public async fetchAll(){
         return await UserService.fetchAll()
     }
+
+    @Query(() => [User])
+    public async search(@Arg('name') name: string) {
+        return await UserService.search(name)
+    }
 }

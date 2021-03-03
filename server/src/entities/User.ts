@@ -29,7 +29,7 @@ export class User {
    @prop()
    password!: string;
 
-   @Field()
+   @Field({nullable :  true})
    @prop()
    @IsIn(['Admin', 'User'])
    role!: string;
