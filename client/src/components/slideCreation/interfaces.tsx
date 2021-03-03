@@ -1,4 +1,4 @@
 export interface SlideInterface {
-  content: any;
+  content: string[];
   isActive: Boolean;
 }
