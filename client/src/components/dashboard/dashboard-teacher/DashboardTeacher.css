@@ -1,0 +1,24 @@
+.MuiPaper-root.blue{
+    background-color: var(--primary-light);
+}
+
+.MuiPaper-root.green{
+    background-color:var(--alternative-primary-light) ;
+}
+
+.MuiCardMedia-media.cours{
+    width: 50%;
+}
+
+.MuiCardMedia-media.promo{
+    width: 50%;
+}
+
+.link{
+    text-decoration: none;
+    color: var(--primary)
+}
+
+.promoCard{
+    margin-top: 32px;
+}

@@ -56,3 +56,5 @@ export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) 
         console.log(`Server ready at http://localhost:4300${server.graphqlPath}`)
     );
 })();
+
+// commentaire
