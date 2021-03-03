@@ -19,7 +19,7 @@ export class UserController{
     };
 
     @Mutation(() => AuthResult, { nullable: true })
-    public async signin(@Arg('email') email: string, @Arg('password') password: string, @Ctx() ctx): Promise<AuthResult> {
+    public async signIn(@Arg('email') email: string, @Arg('password') password: string, @Ctx() ctx): Promise<AuthResult> {
         return await Auth.signin(email, password, ctx);
     }
     @Mutation(() => User, { nullable: true })
@@ -38,5 +38,16 @@ export class UserController{
     @Mutation(() => User)
     public async verifyToken(@Arg('token') token :string) :Promise<User>{
         return await Auth.verifyToken(token)
+    }
+
+    // @Authorized(['Admin'])
+    @Query(() => [User])
+    public async fetchAll(){
+        return await UserService.fetchAll()
+    }
+
+    @Query(() => [User])
+    public async search(@Arg('name') name: string) {
+        return await UserService.search(name)
     }
 }

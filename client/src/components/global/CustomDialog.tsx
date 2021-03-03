@@ -7,6 +7,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import Slide from "@material-ui/core/Slide";
 import {TransitionProps} from "@material-ui/core/transitions";
+import {TextField} from "@material-ui/core";
 
 interface CustomDialogProps {
     open: boolean,
@@ -18,36 +19,38 @@ interface CustomDialogProps {
     negativeButton: String
     children: ReactChild
 }
+const Transition = React.forwardRef(function Transition(
+    props: TransitionProps & { children?: React.ReactElement<any, any> },
+    ref: React.Ref<unknown>,
+) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
+
 
 
 const CustomDialog = (customDialogProps: CustomDialogProps): ReactElement => {
 
-    const Transition = React.forwardRef(function Transition(
-        props: TransitionProps & { children?: React.ReactElement<any, any> },
-        ref: React.Ref<unknown>,
-    ) {
-        return <Slide direction="up" ref={ref} {...props} />;
-    });
-
+    const close = (event: React.MouseEvent<HTMLAnchorElement> | React.MouseEvent<HTMLButtonElement>, isPositive: boolean) => {
+        event.preventDefault()
+        isPositive ? customDialogProps.handlePositiveAction() : customDialogProps.handleClose()
+    }
     return (
+
         <Dialog open={customDialogProps.open} onClose={customDialogProps.handleClose}
-                aria-labelledby="simple-modal-title"
-                aria-describedby="simple-modal-description"
+                aria-labelledby="form-dialog-title"
                 TransitionComponent={Transition}>
-            <DialogTitle id="alert-dialog-slide-title">{customDialogProps.dialogTitle}</DialogTitle>
+            <DialogTitle id="form-dialog-title">{customDialogProps.dialogTitle}</DialogTitle>
             <DialogContent>
-                <DialogContentText id="alert-dialog-slide-description">
+                <DialogContentText>
                     {customDialogProps.dialogContent}
                 </DialogContentText>
+                {customDialogProps.children}
             </DialogContent>
-
-            {customDialogProps.children}
-
             <DialogActions>
-                <Button onClick={customDialogProps.handlePositiveAction} color="primary">
+                <Button onClick={event => {close(event, false)}} color="primary">
                     {customDialogProps.negativeButton}
                 </Button>
-                <Button onClick={customDialogProps.handleClose} color="primary">
+                <Button onClick={event => {close(event, true)}} color="primary">
                     {customDialogProps.positiveButton}
                 </Button>
             </DialogActions>
