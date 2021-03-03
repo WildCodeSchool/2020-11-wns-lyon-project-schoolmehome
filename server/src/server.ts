@@ -7,6 +7,8 @@ import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { UserController } from './controllers/UserController';
+import { SlideController } from './controllers/SlideController';
+import { PresentationController } from './controllers/PresentationController';
 import {Auth}  from './services/AuthService'
 
 export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) => {
@@ -32,10 +34,10 @@ export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) 
     }
 };
 (async () => {
-    await mongoose.connect('mongodb://localhost:27017/', { useNewUrlParser: true, useUnifiedTopology: true, dbName: "home" });
+    await mongoose.connect('mongodb://mongodb:27017/', { useNewUrlParser: true, useUnifiedTopology: true, dbName: "home" });
 
     const schema = await buildSchema({
-        resolvers: [UserController],
+        resolvers: [UserController, SlideController, PresentationController],
         authChecker: passwordAuthChecker 
 
     });
@@ -56,5 +58,3 @@ export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) 
         console.log(`Server ready at http://localhost:4300${server.graphqlPath}`)
     );
 })();
-
-// commentaire
