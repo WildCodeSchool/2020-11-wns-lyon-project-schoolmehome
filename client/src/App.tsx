@@ -7,7 +7,8 @@ import PrivateRoute from './components/privateRoute/PrivateRoute'
 import './App.css';
 import './index.css'
 import { Navbar } from './components/navbar/navbar';
-import { AuthProvider } from './context/authContext';
+import { AuthProvider } from './context/authContext'
+import {DashboardAdmin} from "./components/dashboard/dashboard-admin/DashboardAdmin";
 import { DashboardRouting } from './components/dashboard/DashboardRouting';
 
 function App() {
@@ -17,6 +18,8 @@ function App() {
       path: "/dashboard",
       exact: true,
       main: () => <DashboardRouting/>
+      // main: () => <h2>Home Dashboard</h2>
+      // main: () => <DashboardAdmin />
     },
     {
       path: "/profil",
