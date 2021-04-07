@@ -26,7 +26,7 @@ export class UserController{
     public async lost(@Arg('email') email: string){
         return await UserService.lostPassword(email);
     }
-    @Authorized(['Admin'])
+    //@Authorized(['Admin'])
     @Query(() => User)
     public async getOne(@Arg('email') email: string){
         return await UserService.findByEmail(email);
