@@ -1,5 +1,5 @@
 import {  mongoose, prop } from "@typegoose/typegoose";
-import { IsEmail, IsIn, Length } from "class-validator";
+import { IsDate, IsEmail, IsIn, IsPhoneNumber, Length } from "class-validator";
 import { Field, InputType, ObjectType } from "type-graphql";
 
 @ObjectType('UserType')
@@ -29,9 +29,33 @@ export class User {
    @prop()
    password!: string;
 
+   @Field({nullable : true})
+   @IsPhoneNumber("FR")
+   @Length(3, 100)
+   @prop()
+   phone! : string;
+
+   @Field({nullable : true})
+   @IsDate()
+   @prop()
+   birthdate! : Date;
+
+   @Field({nullable : true})
+   @prop()
+   street! : string
+
+   @Field({nullable : true})
+   @prop()
+   zipcode! : string
+
+   @Field({nullable : true})
+   @prop()
+   city! : string
+
    @Field({nullable :  true})
    @prop()
    @IsIn(['Admin', 'User'])
    role!: string;
 }
 mongoose.set('useFindAndModify', false);
+
