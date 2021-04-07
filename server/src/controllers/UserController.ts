@@ -19,7 +19,7 @@ export class UserController{
     };
 
     @Mutation(() => AuthResult, { nullable: true })
-    public async signIn(@Arg('email') email: string, @Arg('password') password: string, @Ctx() ctx): Promise<AuthResult> {
+    public async signin(@Arg('email') email: string, @Arg('password') password: string, @Ctx() ctx): Promise<AuthResult> {
         return await Auth.signin(email, password, ctx);
     }
     @Mutation(() => User, { nullable: true })

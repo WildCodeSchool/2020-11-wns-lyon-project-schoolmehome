@@ -26,6 +26,11 @@ export class PresentationController {
   }
 
   @Mutation(() => Presentation)
+  public async deletePresentation(@Arg('_id') _id: string): Promise<Presentation> {
+    return presentationService.delete(_id)
+  }
+
+  @Mutation(() => Presentation)
   public async addSlide(@Arg('data') data: Slide, @Arg('_id') _id: string): Promise<Presentation> {
     const model = getModelForClass(Presentation)
     const presentation = await model.findById(_id);
@@ -37,4 +42,4 @@ export class PresentationController {
       { new: true })
     return newPresentation;
   }
-}
+} 

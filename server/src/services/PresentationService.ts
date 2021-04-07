@@ -24,5 +24,13 @@ export class PresentationServiceClass{
         return await model.find({})
     }
 
+    @Mutation(() => Presentation)
+    public async delete(_id: string): Promise<Presentation> {
+      const model = getModelForClass(Presentation);
+      const deletedPresentation = this.findById(_id)
+      await model.deleteOne({ _id });
+      return deletedPresentation;
+    }
+
 }
 export const presentationService = new PresentationServiceClass();
