@@ -26,8 +26,8 @@ export class UserServiceClass {
     public async updateOne(@Arg('data') data: User) {
         const model = getModelForClass(User);
         const user = await model.findByIdAndUpdate(
-            {id: data._id},
-            {user: data},
+            {_id: data._id},
+            {$set: data},
             {new: true})
         console.log(user)
         console.log("USER")
