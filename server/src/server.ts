@@ -9,6 +9,7 @@ import cookieParser from 'cookie-parser';
 import { UserController } from './controllers/UserController';
 import { SlideController } from './controllers/SlideController';
 import { PresentationController } from './controllers/PresentationController';
+import { LessonController } from './controllers/LessonController';
 import {Auth}  from './services/AuthService'
 
 export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) => {
@@ -37,7 +38,7 @@ export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) 
     await mongoose.connect('mongodb://mongodb:27017/', { useNewUrlParser: true, useUnifiedTopology: true, dbName: "home" });
 
     const schema = await buildSchema({
-        resolvers: [UserController, SlideController, PresentationController],
+        resolvers: [UserController, SlideController, PresentationController, LessonController],
         authChecker: passwordAuthChecker 
 
     });
