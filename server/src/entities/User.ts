@@ -9,12 +9,10 @@ export class User {
    _id!: string;
 
    @Field({nullable :  true})
-   @Length(2, 20)
    @prop()
    firstName!: string;
 
    @Field({nullable : true})
-   @Length(3, 20)
    @prop()
    lastName!: string;
 
@@ -30,8 +28,6 @@ export class User {
    password!: string;
 
    @Field({nullable : true})
-   @IsPhoneNumber("FR")
-   @Length(3, 100)
    @prop()
    phone! : string;
 
