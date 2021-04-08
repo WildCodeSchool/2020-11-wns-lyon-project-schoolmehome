@@ -1,14 +1,14 @@
 import React, {ReactElement, useEffect, useState} from "react";
-import {List, ListItem, Paper} from "@material-ui/core";
+// import {List, ListItem, Paper} from "@material-ui/core";
 import {empty, gql, useMutation, useQuery} from "@apollo/client";
-import CustomUserItem from "../../global/viewholder/CustomUserItem";
+// import CustomUserItem from "../../global/viewholder/CustomUserItem";
 import "./ListAllUser.css"
-import IconButton from "@material-ui/core/IconButton";
-import InputBase from "@material-ui/core/InputBase";
-import SearchIcon from "@material-ui/icons/Search";
+// import IconButton from "@material-ui/core/IconButton";
+// import InputBase from "@material-ui/core/InputBase";
+// import SearchIcon from "@material-ui/icons/Search";
 import {User} from "./ModalAddNewUser/ModalAddNewUser";
-import {ToggleButton, ToggleButtonGroup} from "@material-ui/lab";
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+// import {ToggleButton, ToggleButtonGroup} from "@material-ui/lab";
+// import  ArrowDownwardIcon  from '@material-ui/icons/ArrowDownward';
 import {stringify} from "querystring";
 
 const ListAllUser = (): ReactElement => {
@@ -87,7 +87,7 @@ const ListAllUser = (): ReactElement => {
 
     return (
         <div>
-            <Paper component="form">
+            {/* <Paper component="form">
                 <InputBase
                     onChange={e => {
                         loadDynamicQuery(e.target.value)
@@ -100,7 +100,7 @@ const ListAllUser = (): ReactElement => {
                 </IconButton>
                 <ToggleButtonGroup value={formats} onChange={handleFormat} aria-label="text formatting">
                     <ToggleButton value="asc" aria-label="asc">
-                        <ArrowDownwardIcon/>
+                        <ArrowDownwardIcon/> 
                     </ToggleButton>
                     <ToggleButton value="student" aria-label="student">Etudiant</ToggleButton>
                     <ToggleButton value="teacher" aria-label="teacher">Professeur</ToggleButton>
@@ -113,7 +113,7 @@ const ListAllUser = (): ReactElement => {
                         return <Paper key={index} className="margin-list-item"><CustomUserItem user={user}/></Paper>
                     }) : ""
                 }
-            </List>
+            </List> */}
         </div>
     )
 
