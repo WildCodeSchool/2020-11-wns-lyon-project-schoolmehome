@@ -36,9 +36,8 @@ export class User {
    phone! : string;
 
    @Field({nullable : true})
-   @IsDate()
    @prop()
-   birthdate! : Date;
+   birthdate! : string;
 
    @Field({nullable : true})
    @prop()
