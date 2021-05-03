@@ -49,7 +49,7 @@ export class User {
 
    @Field({nullable :  true})
    @prop()
-   @IsIn(['Admin', 'User'])
+   @IsIn(['Admin', 'User', 'Teacher'])
    role!: string;
 }
 mongoose.set('useFindAndModify', false);
