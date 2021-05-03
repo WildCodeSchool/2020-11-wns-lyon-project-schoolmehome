@@ -1,10 +1,11 @@
-import React, { FormEvent, useEffect, useState } from 'react'
+import React, { FormEvent, useState } from 'react'
 import { Editor } from '@tinymce/tinymce-react';
 import Slide from './Slide';
-import { SlideInterface } from './interfaces';
+import { Presentation, SlideInterface } from './interfaces';
 import './SlideCreation.css'
 import Button from '../global/button/Button'
 import Input from '../global/input/Input';
+import { gql, useMutation } from '@apollo/client';
 
 const SlideCreation = () => {
 
@@ -40,9 +41,34 @@ const SlideCreation = () => {
     }
   }
 
+  const NEW_PRES = gql`
+        mutation createPresentation ($pres: PresentationInput!) {
+          createPresentation(data: $pres){
+                _id
+            }
+        }
+    `;
+    const [createPresentation] = useMutation<any>(NEW_PRES)
+
   const save = () => {
-    console.log(slideList);
-    console.log(titlePres);
+    const pres : Presentation = {
+      title : titlePres,
+      slides : [],
+    }
+    Object.keys(slideList).map( k => {
+        return pres.slides.push({
+          order : +k,
+          htmlContent : slideList[+k].content
+        })
+    })
+    console.log(pres);
+    createPresentation({ variables: { pres: pres} })
+            .then((data) => {
+                console.log(data)
+            }).catch((e) => {
+                console.log(e)
+        })
+    
   }
 
   return (

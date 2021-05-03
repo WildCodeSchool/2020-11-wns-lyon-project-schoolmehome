@@ -11,6 +11,7 @@ import { AuthProvider } from './context/authContext'
 import {DashboardAdmin} from "./components/dashboard/dashboard-admin/DashboardAdmin";
 import { DashboardRouting } from './components/dashboard/DashboardRouting';
 import { Profil } from './components/Profil/profil';
+import { SlidesHome } from './components/Slides/SlidesHome';
 
 function App() {
 
@@ -33,9 +34,14 @@ function App() {
       main: () => <h2>Mes cours</h2>
     },
     {
-      path: "/creation",
+      path: "/slides/creation",
       exact: true,
       main: () => <SlideCreation />
+    },
+    {
+      path: "/slides",
+      exact: true,
+      main: () => <SlidesHome />
     }
   ];
   return (
