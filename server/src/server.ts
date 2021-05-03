@@ -37,7 +37,7 @@ export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) 
     await mongoose.connect('mongodb://mongodb:27017/', { useNewUrlParser: true, useUnifiedTopology: true, dbName: "home" });
 
     const schema = await buildSchema({
-        resolvers: [UserResolver, SlideController, PresentationController, LessonController],
+        resolvers: [UserResolver, SlideController, PresentationController, LessonResolver],
         authChecker: passwordAuthChecker 
 
     });

@@ -41,13 +41,13 @@ export class UserResolver{
     public async getOne(@Arg('email') email: string): Promise<User>{
         return await UserService.findByEmail(email);
     }
-    @Query(()=> User)
-    public async getOneById(@Arg('id') id: string):Promise<User>{
-        return await UserService.findById(id);
-    }
+    // @Query(()=> User)
+    // public async getOneById(@Arg('id') id: string):Promise<User>{
+    //     return await UserService.findById(id);
+    // }
     @Mutation(() => User, {nullable : true})
-    public async update(@Arg('id') id: string, @Arg('data') data: UserUpdate): Promise<Document>{
-        return await UserService.updateOne(id, data );
+    public async update(@Arg('data') data: User){
+        return await UserService.updateOne(data)
     }
     @Mutation(() => User)
     public async verifyToken(@Arg('token') token :string) :Promise<User>{

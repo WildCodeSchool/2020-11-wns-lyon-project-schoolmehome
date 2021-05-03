@@ -18,12 +18,12 @@ export class LessonResolver {
         return Lessons
     }
     // A modifier normalement la méthode appel un findById
-    public async patch (@Arg('data') data: Lesson): Promise<Lesson> {
-        const model = getModelForClass(Lesson)
-        const lesson = await model.find({"name": data.name})
-        Object.assign(lesson, data)
-        return await model.create()
-    }
+    // public async patch (@Arg('data') data: Lesson): Promise<Lesson> {
+    //     const model = getModelForClass(Lesson)
+    //     const lesson = await model.find({"name": data.name})
+    //     Object.assign(lesson, data)
+    //     return await model.create()
+    // }
     /*
 import { Request, Response } from 'express';
 import { Arg, Resolver, Mutation, Query } from "type-graphql";
