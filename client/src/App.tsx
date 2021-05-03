@@ -1,13 +1,15 @@
 import React from 'react';
 import Login from './components/login/Login';
 import SlideCreation from './components/slideCreation/SlideCreation';
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import { AuthContext, useAuth } from './context/authContext'
 import PrivateRoute from './components/privateRoute/PrivateRoute'
 import './App.css';
 import './index.css'
 import { Navbar } from './components/navbar/navbar';
-import { AuthProvider } from './context/authContext';
+import { AuthProvider } from './context/authContext'
+import {DashboardAdmin} from "./components/dashboard/dashboard-admin/DashboardAdmin";
+import { DashboardRouting } from './components/dashboard/DashboardRouting';
 
 function App() {
 
@@ -15,7 +17,9 @@ function App() {
     {
       path: "/dashboard",
       exact: true,
-      main: () => <h2>Home Dashboard</h2>
+      main: () => <DashboardRouting/>
+      // main: () => <h2>Home Dashboard</h2>
+      // main: () => <DashboardAdmin />
     },
     {
       path: "/profil",
@@ -42,6 +46,7 @@ function App() {
               <Login />
             </Route>
             <PrivateRoute path="/">
+              <Redirect to="/dashboard" />
               <Navbar />
               <main>
                 <Switch>

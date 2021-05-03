@@ -1,5 +1,5 @@
 import {  mongoose, prop } from "@typegoose/typegoose";
-import { IsEmail, IsIn, Length } from "class-validator";
+import { IsDate, IsEmail, IsIn, IsPhoneNumber, Length } from "class-validator";
 import { Field, InputType, ObjectType } from "type-graphql";
 
 @ObjectType('UserType')
@@ -9,12 +9,10 @@ export class User {
    _id!: string;
 
    @Field({nullable :  true})
-   @Length(2, 20)
    @prop()
    firstName!: string;
 
    @Field({nullable : true})
-   @Length(3, 20)
    @prop()
    lastName!: string;
 
@@ -30,6 +28,26 @@ export class User {
    password!: string;
 
    @Field({nullable : true})
+   @prop()
+   phone! : string;
+
+   @Field({nullable : true})
+   @prop()
+   birthdate! : string;
+
+   @Field({nullable : true})
+   @prop()
+   street! : string
+
+   @Field({nullable : true})
+   @prop()
+   zipcode! : string
+
+   @Field({nullable : true})
+   @prop()
+   city! : string
+
+   @Field({nullable :  true})
    @prop()
    role!: string;
 
@@ -54,3 +72,4 @@ export class UserUpdate{
 }
 
 mongoose.set('useFindAndModify', false);
+

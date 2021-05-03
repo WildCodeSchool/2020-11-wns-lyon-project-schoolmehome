@@ -1,21 +1,36 @@
-import React, { createContext, useState, FormEvent, useContext } from 'react'
-import { gql, useMutation } from '@apollo/client'
+import React, { createContext, useState, FormEvent, useContext } from 'react';
+import { gql, useMutation } from '@apollo/client';
+
 
 export const AuthContext = createContext<any>({});
 
 export function AuthProvider({ children }: { children: JSX.Element }) {
+  let userStorage = {email : '',
+    lastName: '',
+    firstName: '',
+    role: ''};
+  if(localStorage.getItem('user')){
+    userStorage = JSON.parse(localStorage.getItem('user')!);
+  }
   const [token, setToken] = useState<any>(localStorage.getItem('authToken'))
-  const [email, setEmail] = useState<string>('')
+  const [user, setUser] = useState<user>(userStorage)
   const [password, setPassword] = useState<string>('')
-  const [firstName, setFirstName] = useState<string>('')
-  const [lastName, setLastName] = useState<string>('')
   const [alert, setAlert] = useState<boolean>(false)
-  return <AuthContext.Provider value={{ token, setToken, email, setEmail, password, setPassword, firstName, setFirstName, lastName, setLastName, alert, setAlert }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ user, setUser, token, setToken, password, setPassword, alert, setAlert }}>{children}</AuthContext.Provider>;
 }
+
+export type user = {
+  email : string,
+  lastName: string,
+  firstName: string,
+  role: string
+}
+
+
 
 export const useAuth = () => {
 
-  const { token, setToken, email, setEmail, password, setPassword, firstName, setFirstName, lastName, setLastName, alert, setAlert } = useContext(AuthContext)
+  const { user, setUser, token, setToken, password, setPassword, alert, setAlert } = useContext(AuthContext)
 
   const SIGNIN = gql`
   mutation Signin (
@@ -38,29 +53,28 @@ export const useAuth = () => {
   const formSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    signin({ variables: { email: email, password: password } })
-      .then((data) => {
+    signin({ variables: { email: user.email, password: password } })
+      .then((data: any) => {
         const result = data.data.signin
         if (result) {
           setToken(result.token)
-          setFirstName(result.user.firsName)
-          setLastName(result.user.lastName)
+          setUser({firstName: result.user.firsName, lastName: result.user.lastName, role: 'Teacher'})
           setPassword(null)
           localStorage.setItem('authToken', result.token)
+          localStorage.setItem('user', JSON.stringify({firstName: result.user.firsName, lastName: result.user.lastName, role: 'Teacher'}))
         } else {
           setAlert(true)
         }
       })
-      .catch(err => console.error(err))
+      .catch((err: any) => console.error(err))
 
   }
 
   const disconnect = () => {
     setToken(null)
-    setFirstName(null)
-    setLastName(null)
-    setEmail(null)
+    setUser({})
     localStorage.setItem('authToken', '')
+    localStorage.setItem('user', '')
   }
 
   const handleCloseMui = (event: any, reason: any) => {
@@ -72,8 +86,8 @@ export const useAuth = () => {
 
   return {
     inputEmail: {
-      value: email,
-      onChange: (e: FormEvent<HTMLInputElement>) => setEmail(e.currentTarget.value),
+      value: user.email,
+      onChange: (e: FormEvent<HTMLInputElement>) => setUser({...user, email: e.currentTarget.value}),
     },
     inputPassword: {
       value: password,
@@ -82,8 +96,7 @@ export const useAuth = () => {
     token,
     setToken,
     formSubmit,
-    firstName,
-    lastName,
+    user,
     disconnect,
     alert,
     handleCloseMui

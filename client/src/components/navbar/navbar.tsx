@@ -3,12 +3,12 @@ import "./navbar.css";
 import { FaUser, FaSignOutAlt, FaBook } from "react-icons/fa";
 import { MdDashboard } from "react-icons/md";
 import avatar from '../../image/unnamed.gif';
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useAuth } from "../../context/authContext";
 
 
 export function Navbar() {
-  const { lastName, firstName, disconnect } = useAuth()
+  const { user, disconnect } = useAuth()
     return (
       <nav className="navbar">
         <ul className="navbar-nav">
@@ -16,7 +16,7 @@ export function Navbar() {
             <div className='avatar-div'>
               <img src={avatar} alt="avatar" className="avatarImg"/>
               <div className="avatarName">
-                <h1>{firstName}&nbsp;{lastName}</h1>
+                <h1>{user.firstName}&nbsp;{user.lastName}</h1>
                 <div className="avatarStudy">
                   <p>Master&nbsp;1</p>
                 <p>Développement&nbsp;web</p>

@@ -15,6 +15,12 @@ export class UserResolver{
     public async create(@Arg('data') data:User ) : Promise<AuthResult>{
         return await Auth.create(data);
     }
+    
+    @Authorized()
+    public async authenticatedUser(@Ctx() ctx): Promise<User> {
+        //console.log(ctx.user);
+        return ctx.user;
+    }
 
     @Mutation(() => User)
     public async signup(@Arg('data', () => User) data: User): Promise<User> {
@@ -30,7 +36,7 @@ export class UserResolver{
     public async lost(@Arg('email') email: string){
         return await UserService.lostPassword(email);
     }
-    @Authorized(['Admin'])
+    //@Authorized(['Admin'])
     @Query(() => User)
     public async getOne(@Arg('email') email: string): Promise<User>{
         return await UserService.findByEmail(email);
@@ -46,5 +52,16 @@ export class UserResolver{
     @Mutation(() => User)
     public async verifyToken(@Arg('token') token :string) :Promise<User>{
         return await Auth.verifyToken(token)
+    }
+
+    // @Authorized(['Admin'])
+    @Query(() => [User])
+    public async fetchAll(){
+        return await UserService.fetchAll()
+    }
+
+    @Query(() => [User])
+    public async search(@Arg('name') name: string) {
+        return await UserService.search(name)
     }
 }
