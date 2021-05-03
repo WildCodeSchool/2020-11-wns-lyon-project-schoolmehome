@@ -1,25 +1,4 @@
 import * as argon from 'argon2'
-<<<<<<< HEAD
-import { User, UserUpdate } from '../entities/User';
-import { Arg, Mutation, Query, Resolver } from 'type-graphql';
-import { getModelForClass } from '@typegoose/typegoose';
-import { Auth } from './AuthService';
-
-
-
-export class UserServiceClass{    
-    @Query(() => User)
-    public async findByEmail(email: string){
-        const model = getModelForClass(User);
-        return await model.findOne({email});
-    }
-    @Query(()=> User)
-    public async findById(id: string){
-        const model = getModelForClass(User);
-        return await model.findById(id);
-    }
-    
-=======
 import {User} from '../entities/User';
 import {Arg, Mutation, Query, Resolver} from 'type-graphql';
 import {getModelForClass} from '@typegoose/typegoose';
@@ -29,25 +8,10 @@ import {userInfo} from 'os';
 
 export class UserServiceClass {
 
->>>>>>> dev
     @Mutation(() => User)
     public async signUp(newUser: User): Promise<User> {
         const model = getModelForClass(User);
         newUser.password = await argon.hash(newUser.password);
-<<<<<<< HEAD
-        return await model.create(newUser);    
-    }
-    
-    @Mutation(() => User, {nullable : true})
-    public async updateOne(@Arg('id') id: string,@Arg('data') data : UserUpdate){
-        const user = await UserService.findById(id);
-        Object.assign(user, data);
-        return await user.save();
-        }
-
-    @Mutation(() => User, {nullable : true})
-    public async lostPassword(@Arg('email') email : string): Promise<User>{
-=======
         console.log(newUser)
         return await model.create(newUser);
     }
@@ -73,7 +37,6 @@ export class UserServiceClass {
 
     @Mutation(() => User, {nullable: true})
     public async lostPassword(@Arg('email') email: string): Promise<User> {
->>>>>>> dev
         const model = getModelForClass(User);
         const user = await Auth.passwordLost(email);
         const userUpdating = await model.findOneAndUpdate(
