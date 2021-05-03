@@ -9,7 +9,7 @@ import cookieParser from 'cookie-parser';
 import { UserResolver } from './resolvers/UserResolver';
 import { SlideController } from './resolvers/SlideController';
 import { PresentationController } from './resolvers/PresentationController';
-import { LessonController } from './resolvers/LessonController';
+import { LessonResolver } from './resolvers/LessonResolver';
 import {Auth}  from './services/AuthService'
 
 export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) => {
