@@ -1,13 +1,10 @@
 import AdminMember from "../entities/AdminMember";
-
-import {Request, Response} from 'express';
 import { getModelForClass } from "@typegoose/typegoose";
 import { Arg, Mutation } from "type-graphql";
-import { Resolver } from "dns";
-import { Query } from "mongoose";
 
 
-export class AdminController{
+
+export class AdminResolver{
     @Mutation(() => AdminMember)
     public async create(@Arg('data') data: AdminMember):Promise<AdminMember>{
         const model = getModelForClass(AdminMember);

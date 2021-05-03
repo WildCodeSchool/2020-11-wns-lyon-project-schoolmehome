@@ -3,7 +3,7 @@ import {Request, Response} from "express";
 import { Arg } from "type-graphql";
 import {Student} from "../entities/Student";
 
-export class StudentsController{
+export class StudentsResolver{
     public async create(@Arg('data') data: Student): Promise<Student>{
         const model =  getModelForClass(Student)
         return await model.create(data)

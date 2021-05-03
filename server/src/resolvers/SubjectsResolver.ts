@@ -1,11 +1,10 @@
 import {Subject} from "../entities/Subject";
 
-import {Request, Response} from 'express';
 import { getModelForClass } from "@typegoose/typegoose";
 import { Arg } from "type-graphql";
 
 
-export class SubjectController{
+export class SubjectResolver{
        public async create(@Arg('data') data: Subject): Promise<Subject>{
         const model =  getModelForClass(Subject)
         return await model.create(data)

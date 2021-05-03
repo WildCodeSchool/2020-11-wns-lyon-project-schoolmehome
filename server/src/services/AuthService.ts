@@ -8,6 +8,15 @@ import { Mail } from '../services/MailService';
 import { AuthResult } from '../entities/AuthResult';
 
 export class AuthService {
+    @Mutation(() => User) 
+    public async create(data: User){
+        const model = getModelForClass(User);
+        const userToken = {data : data.email};
+        const token =  jwt.sign(userToken, "secret");
+        //renvoyer le token par mail
+        const user = await model.create(data);
+        return {token, user};
+    }
 
     public async signin(email, password, ctx){
         const model = getModelForClass(User);
@@ -25,7 +34,7 @@ export class AuthService {
         if (user) {
             const provisoryToken = {userEmail : user.email, userFirstName : user.firstName, userLastName : user.lastName};
             const token = jwt.sign(provisoryToken, "secret");
-            await Mail.main(email)
+            await Mail.main(email, token)
             return {user, token}
         }
     }

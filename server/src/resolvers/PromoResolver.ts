@@ -1,5 +1,4 @@
 
-import {Request, Response} from 'express';
 import {Promo} from '../entities/Promo';
 import {Teacher} from "../entities/Teacher";
 import {arrayNotEmpty} from "class-validator";
@@ -7,7 +6,7 @@ import { Arg, Mutation } from 'type-graphql';
 import { getModelForClass } from '@typegoose/typegoose';
 
 
-export class PromoController {
+export class PromoResolver {
 
     @Mutation(() => Promo)
     public async  create(@Arg('data') data: Promo):Promise<Promo>{
