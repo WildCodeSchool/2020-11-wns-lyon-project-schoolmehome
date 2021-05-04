@@ -1,8 +1,10 @@
 import { gql, useQuery } from '@apollo/client';
-import { Card, CardContent, Grid } from '@material-ui/core';
+import { Card, CardContent, Grid, Typography, CardActions } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Presentation } from '../slideCreation/interfaces';
+import './SlidesHome.css';
+import Button from '../global/button/Button';
 
 export const SlidesHome = () => {
     const GET_PRESENTATIONS = gql`
@@ -10,7 +12,8 @@ export const SlidesHome = () => {
 `;
 
   const { loading, error, data } = useQuery(GET_PRESENTATIONS);
-  const [presentation, setPresentation] = useState<Presentation[]>([])
+  const [presentation, setPresentation] = useState<(Presentation & {_id : string})[]>([])
+  const history = useHistory();
 
   useEffect(() => {
     if (data) {
@@ -20,9 +23,14 @@ export const SlidesHome = () => {
     }
   }, [data])
 
+  const edit = (id : string) => (event : any) => {
+    history.push(`/slides/edit/${id}`);
+  }
+
     return(
         <div>
-            <Link to="/slides/creation" className="link">Créer un cour</Link>
+            <Link to="/slides/creation" className="link"><Button>+ Créer un cour</Button></Link>
+            <div className="grid">
             <Grid
               container
               direction="row"
@@ -36,15 +44,19 @@ export const SlidesHome = () => {
                       <Grid item xs={2}>
                         <Card elevation={3} className="blue" >
                             <CardContent>
-                            {p.title}
+                            <Typography gutterBottom variant="h5" component="h3">{p.title}</Typography>
                           </CardContent>
+                          <CardActions>
+                            <button onClick={edit(p._id)}>Modifier</button>
+                          </CardActions>
                         </Card>
                       </Grid>
                     )
                 })
             }  
             </Grid>
-            
+            </div>
         </div>
     )
 }
+

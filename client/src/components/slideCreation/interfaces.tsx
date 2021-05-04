@@ -3,7 +3,7 @@ export interface SlideInterface {
   isActive: Boolean;
 }
 
-export interface Presentation {
+export type Presentation = {
   title : string,
   slides : any[]
 }

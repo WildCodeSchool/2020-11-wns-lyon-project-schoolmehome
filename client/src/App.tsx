@@ -12,6 +12,7 @@ import {DashboardAdmin} from "./components/dashboard/dashboard-admin/DashboardAd
 import { DashboardRouting } from './components/dashboard/DashboardRouting';
 import { Profil } from './components/Profil/profil';
 import { SlidesHome } from './components/Slides/SlidesHome';
+import SlideEdit from './components/Slides/SlideEdit';
 
 function App() {
 
@@ -42,6 +43,11 @@ function App() {
       path: "/slides",
       exact: true,
       main: () => <SlidesHome />
+    },
+    {
+      path: "/slides/edit/:id",
+      exact: true,
+      main: () => <SlideEdit />
     }
   ];
   return (
