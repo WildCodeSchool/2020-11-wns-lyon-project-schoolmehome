@@ -62,7 +62,7 @@ export const useAuth = () => {
           setUser({firstName: result.user.firsName, lastName: result.user.lastName, role: result.user.role})
           setPassword(null)
           localStorage.setItem('authToken', result.token)
-          localStorage.setItem('user', JSON.stringify({firstName: result.user.firsName, lastName: result.user.lastName, role: 'Teacher'}))
+          localStorage.setItem('user', JSON.stringify({firstName: result.user.firsName, lastName: result.user.lastName, role: result.user.role}))
         } else {
           setAlert(true)
         }
