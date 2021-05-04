@@ -44,7 +44,7 @@ const DashboardTeacher = () => {
                   className="cours"
                 />
 
-                <Link to="/creation" className="link">Créer un cour</Link>
+                <Link to="/slides" className="link">Créer un cour</Link>
               </CardContent>
 
           </Card>

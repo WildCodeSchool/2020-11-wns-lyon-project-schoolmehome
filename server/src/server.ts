@@ -34,7 +34,7 @@ export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) 
     }
 };
 (async () => {
-    await mongoose.connect('mongodb://mongodb:27017/', { useNewUrlParser: true, useUnifiedTopology: true, dbName: "home" });
+    await mongoose.connect('mongodb://localhost:27017/', { useNewUrlParser: true, useUnifiedTopology: true, dbName: "home" });
 
     const schema = await buildSchema({
         resolvers: [UserResolver, SlideController, PresentationController, LessonResolver],
@@ -54,7 +54,7 @@ export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) 
 
     server.applyMiddleware({ app, cors: false });
 
-    app.listen({ port: 4200 }, () =>
-        console.log(`Server ready at http://localhost:4200${server.graphqlPath}`)
+    app.listen({ port: 4300 }, () =>
+        console.log(`Server ready at http://localhost:4300${server.graphqlPath}`)
     );
 })();

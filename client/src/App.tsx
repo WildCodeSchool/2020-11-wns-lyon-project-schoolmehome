@@ -10,6 +10,8 @@ import { Navbar } from './components/navbar/navbar';
 import { AuthProvider } from './context/authContext'
 import {DashboardAdmin} from "./components/dashboard/dashboard-admin/DashboardAdmin";
 import { DashboardRouting } from './components/dashboard/DashboardRouting';
+import { Profil } from './components/Profil/profil';
+import { SlidesHome } from './components/Slides/SlidesHome';
 
 function App() {
 
@@ -24,7 +26,7 @@ function App() {
     {
       path: "/profil",
       exact: true,
-      main: () => <h2>Mon profil</h2>
+      main: () => <Profil />
     },
     {
       path: "/cours",
@@ -32,9 +34,14 @@ function App() {
       main: () => <h2>Mes cours</h2>
     },
     {
-      path: "/creation",
+      path: "/slides/creation",
       exact: true,
       main: () => <SlideCreation />
+    },
+    {
+      path: "/slides",
+      exact: true,
+      main: () => <SlidesHome />
     }
   ];
   return (
@@ -69,37 +76,3 @@ function App() {
 }
 
 export default App;
-
-
-
-
-
-
-
-
-
-
-{/* <AuthContext.Provider value={{ token }}>
-<div className="App">
-  <Router>
-    <Switch>
-      <Route exact path="/login">
-        <Login />
-      </Route>
-      <Navbar />
-
-      {routes.map((route, index) => (
-        <main>
-          <PrivateRoute
-            key={index}
-            path={route.path}
-            exact={route.exact}
-            children={route.main()}
-          />
-        </main>
-      ))}
-
-    </Switch>
-  </Router>
-</div>
-</AuthContext.Provider> */}

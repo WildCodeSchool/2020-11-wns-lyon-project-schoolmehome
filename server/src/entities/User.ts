@@ -49,6 +49,7 @@ export class User {
 
    @Field({nullable :  true})
    @prop()
+   @IsIn(['Admin', 'User', 'Teacher'])
    role!: string;
 
 }
