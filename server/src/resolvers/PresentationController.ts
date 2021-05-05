@@ -42,4 +42,9 @@ export class PresentationController {
       { new: true })
     return newPresentation;
   }
+
+  @Mutation(() => Presentation)
+  public async updatePresentation(@Arg('data') data: Presentation): Promise<Presentation> {
+    return await presentationService.update(data);
+  }
 } 

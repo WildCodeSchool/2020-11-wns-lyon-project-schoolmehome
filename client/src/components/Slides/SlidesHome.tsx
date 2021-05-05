@@ -47,7 +47,8 @@ export const SlidesHome = () => {
                             <Typography gutterBottom variant="h5" component="h3">{p.title}</Typography>
                           </CardContent>
                           <CardActions>
-                            <button onClick={edit(p._id)}>Modifier</button>
+                            <Link to={`/slides/edit/${p._id}`}>Modifier</Link>
+                            {/* <button onClick={edit(p._id)}>Modifier</button> */}
                           </CardActions>
                         </Card>
                       </Grid>

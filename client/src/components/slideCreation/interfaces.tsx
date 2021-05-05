@@ -1,4 +1,5 @@
 export interface SlideInterface {
+  order?: number;
   content: string;
   isActive: Boolean;
 }
