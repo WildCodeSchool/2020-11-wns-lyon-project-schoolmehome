@@ -23,9 +23,6 @@ export const SlidesHome = () => {
     }
   }, [data])
 
-  const edit = (id : string) => (event : any) => {
-    history.push(`/slides/edit/${id}`);
-  }
 
     return(
         <div>
@@ -41,14 +38,13 @@ export const SlidesHome = () => {
             {
                 presentation.map( p => {
                     return (
-                      <Grid item xs={2}>
+                      <Grid item xs={2} key={p._id}>
                         <Card elevation={3} className="blue" >
                             <CardContent>
                             <Typography gutterBottom variant="h5" component="h3">{p.title}</Typography>
                           </CardContent>
                           <CardActions>
                             <Link to={`/slides/edit/${p._id}`}>Modifier</Link>
-                            {/* <button onClick={edit(p._id)}>Modifier</button> */}
                           </CardActions>
                         </Card>
                       </Grid>

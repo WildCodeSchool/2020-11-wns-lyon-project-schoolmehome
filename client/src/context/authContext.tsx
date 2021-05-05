@@ -40,6 +40,7 @@ export const useAuth = () => {
     signin(email: $email, password: $password){
       token
       user {
+        email
         firstName
         lastName
         role
@@ -59,10 +60,10 @@ export const useAuth = () => {
         const result = data.data.signin
         if (result) {
           setToken(result.token)
-          setUser({firstName: result.user.firsName, lastName: result.user.lastName, role: result.user.role})
+          setUser({firstName: result.user.firstName, lastName: result.user.lastName, role: result.user.role, email : result.user.email})
           setPassword(null)
           localStorage.setItem('authToken', result.token)
-          localStorage.setItem('user', JSON.stringify({firstName: result.user.firsName, lastName: result.user.lastName, role: result.user.role}))
+          localStorage.setItem('user', JSON.stringify({firstName: result.user.firstName, lastName: result.user.lastName, role: result.user.role, email : result.user.email}))
         } else {
           setAlert(true)
         }

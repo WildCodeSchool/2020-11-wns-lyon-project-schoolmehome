@@ -7,7 +7,6 @@ import Button from '../global/button/Button'
 import Input from '../global/input/Input';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { useHistory, useParams } from 'react-router-dom';
-import { useAuth } from '../../context/authContext';
 
 const SlideCreation = () => {
     const history = useHistory();
@@ -37,7 +36,7 @@ const SlideCreation = () => {
         console.log(data.findOnePresentation)
         setTitlePres(data.findOnePresentation.title)
         let slides : any[] = [];
-        data.findOnePresentation.slides.map( (s : any) => {
+        data.findOnePresentation.slides.forEach( (s : any) => {
             slides.push({content : s.htmlContent, isActive : false, order : s.order })
         })
         if(slides[0]){
@@ -75,7 +74,10 @@ const SlideCreation = () => {
       }
       console.log(JSON.stringify(slideListCopy, null, 4))
       setSlideList(slideListCopy)
-      setActiveContent(slideListCopy[Math.max(0, index - 1)]!.content)
+      setTimeout(() => {
+        setActiveContent(slideListCopy[Math.max(0, index - 1)]!.content)
+      }, 0)
+      console.log(Math.max(0, index - 1))
     }
   }
 

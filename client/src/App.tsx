@@ -2,13 +2,11 @@ import React from 'react';
 import Login from './components/login/Login';
 import SlideCreation from './components/slideCreation/SlideCreation';
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
-import { AuthContext, useAuth } from './context/authContext'
 import PrivateRoute from './components/privateRoute/PrivateRoute'
 import './App.css';
 import './index.css'
 import { Navbar } from './components/navbar/navbar';
 import { AuthProvider } from './context/authContext'
-import {DashboardAdmin} from "./components/dashboard/dashboard-admin/DashboardAdmin";
 import { DashboardRouting } from './components/dashboard/DashboardRouting';
 import { Profil } from './components/Profil/profil';
 import { SlidesHome } from './components/Slides/SlidesHome';
@@ -20,34 +18,34 @@ function App() {
     {
       path: "/dashboard",
       exact: true,
-      main: () => <DashboardRouting/>
+      main: () => <main><DashboardRouting/></main>
       // main: () => <h2>Home Dashboard</h2>
       // main: () => <DashboardAdmin />
     },
     {
       path: "/profil",
       exact: true,
-      main: () => <Profil />
+      main: () => <main className='bg'><Profil /></main>
     },
     {
       path: "/cours",
       exact: true,
-      main: () => <h2>Mes cours</h2>
+      main: () => <main><h2>Mes cours</h2></main>
     },
     {
       path: "/slides/creation",
       exact: true,
-      main: () => <SlideCreation />
+      main: () => <main><SlideCreation /></main>
     },
     {
       path: "/slides",
       exact: true,
-      main: () => <SlidesHome />
+      main: () => <main><SlidesHome /></main>
     },
     {
       path: "/slides/edit/:id",
       exact: true,
-      main: () => <SlideEdit />
+      main: () => <main><SlideEdit /></main>
     }
   ];
   return (
@@ -61,18 +59,16 @@ function App() {
             <PrivateRoute path="/">
               <Redirect to="/dashboard" />
               <Navbar />
-              <main>
                 <Switch>
                   {routes.map((route, index) => (
-                    <PrivateRoute
-                      key={index}
-                      path={route.path}
-                      exact={route.exact}
-                      children={route.main()}
-                    />
+                      <PrivateRoute
+                        key={index}
+                        path={route.path}
+                        exact={route.exact}
+                        children={route.main()}
+                      />
                   ))}
                 </Switch>
-              </main>
             </PrivateRoute>
           </Switch>
         </Router>
