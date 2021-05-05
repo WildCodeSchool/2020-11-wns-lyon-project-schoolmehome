@@ -21,31 +21,31 @@ const DashboardTeacher = () => {
       >
         <Grid item xs={4}>
           <Card elevation={3} className="blue" >
-              <CardContent>
-                <CardMedia
-                  component="img"
-                  image={dashboardNextCours}
-                  title="Prochain cours"
-                  className="nextcours"
-                />
+            <CardContent>
+              <CardMedia
+                component="img"
+                image={dashboardNextCours}
+                title="Prochain cours"
+                className="nextcours"
+              />
 
-               Mes Prochains Cours
+              <Link to="/visio/89489489456151" className="link">Prochain cour</Link>
             </CardContent>
           </Card>
         </Grid>
         <Grid item xs={4}>
           <Card elevation={3} className="green">
 
-              <CardContent>
-                <CardMedia
-                  component="img"
-                  image={dashboardCours}
-                  title="Créer un cours"
-                  className="cours"
-                />
+            <CardContent>
+              <CardMedia
+                component="img"
+                image={dashboardCours}
+                title="Créer un cours"
+                className="cours"
+              />
 
-                <Link to="/creation" className="link">Créer un cour</Link>
-              </CardContent>
+              <Link to="/creation" className="link">Créer un cour</Link>
+            </CardContent>
 
           </Card>
           <Card elevation={3} className="green promoCard">
@@ -56,21 +56,21 @@ const DashboardTeacher = () => {
                 title="Mes promotions"
                 className="promo"
               />
-               Mes Promotions
+              Mes Promotions
             </CardContent>
           </Card>
         </Grid>
         <Grid item xs={4}>
           <Card elevation={3} className="blue">
-              <CardContent>
-                <CardMedia
-                  component="img"
-                  image={dashboardAdmin}
-                  title="Administration"
-                  className="admin"
-                />
+            <CardContent>
+              <CardMedia
+                component="img"
+                image={dashboardAdmin}
+                title="Administration"
+                className="admin"
+              />
 
-               Administration
+              Administration
             </CardContent>
           </Card>
         </Grid>

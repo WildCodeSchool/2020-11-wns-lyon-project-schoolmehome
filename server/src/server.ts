@@ -11,6 +11,7 @@ import { SlideController } from './controllers/SlideController';
 import { PresentationController } from './controllers/PresentationController';
 import { LessonController } from './controllers/LessonController';
 import {Auth}  from './services/AuthService'
+import { Server } from 'http';
 
 export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) => {
     try {
@@ -43,6 +44,8 @@ export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) 
 
     });
 
+
+
     const server = new ApolloServer({
         schema,
         playground: true,
@@ -54,7 +57,9 @@ export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) 
     app.use(cookieParser());
 
     server.applyMiddleware({ app, cors: false });
-
+    // const test = Server.CreateServer
+    // const serverIo = new Server(server, {cors: {origin: '*'}})
+    
     app.listen({ port: 4300 }, () =>
         console.log(`Server ready at http://localhost:4300${server.graphqlPath}`)
     );
