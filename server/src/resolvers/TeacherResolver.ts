@@ -4,7 +4,7 @@ import { Arg } from "type-graphql";
 import { getModelForClass } from "@typegoose/typegoose";
 
 
-export class TeacherController {
+export class TeacherResolver {
     public async create (@Arg('data') data: Teacher): Promise<Teacher>{
         const model = getModelForClass(Teacher)
         return await model.create(data)

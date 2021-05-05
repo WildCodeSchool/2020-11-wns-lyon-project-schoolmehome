@@ -3,7 +3,7 @@ import { UserService } from './UserService';
 
 export class MailService{
     
-    public async main(email: string) {
+    public async main(email: string, token: string) {
         let account = await UserService.findByEmail(email);
         console.log(account)
         console.log('Credentials obtained, sending message...');

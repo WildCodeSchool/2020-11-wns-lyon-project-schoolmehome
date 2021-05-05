@@ -1,11 +1,12 @@
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useEffect } from 'react';
 import { useAuth } from '../../context/authContext';
-import SlideCreation from '../slideCreation/SlideCreation';
 import { DashboardAdmin } from './dashboard-admin/DashboardAdmin';
 import DashboardTeacher from './dashboard-teacher/DashboardTeacher';
+import { DashboardUser } from './dashboard-user/DashboardUser';
 
 export const DashboardRouting = (): ReactElement => {
   const { user } = useAuth();
+
   switch (user.role) {
     case 'Admin':
       return (
@@ -17,7 +18,7 @@ export const DashboardRouting = (): ReactElement => {
       )
     default:
       return (
-        <div>NON</div>
+        <DashboardUser />
       )
   }
 }

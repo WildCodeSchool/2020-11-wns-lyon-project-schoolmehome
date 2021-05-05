@@ -1,15 +1,15 @@
 import 'reflect-metadata';
-import { AuthChecker, buildSchema, Ctx } from "type-graphql";
+import { AuthChecker, buildSchema } from "type-graphql";
 import { getModelForClass, mongoose } from '@typegoose/typegoose';
 import { User } from './entities/User';
 import { ApolloServer } from 'apollo-server-express';
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import { UserController } from './controllers/UserController';
-import { SlideController } from './controllers/SlideController';
-import { PresentationController } from './controllers/PresentationController';
-import { LessonController } from './controllers/LessonController';
+import { UserResolver } from './resolvers/UserResolver';
+import { SlideController } from './resolvers/SlideController';
+import { PresentationController } from './resolvers/PresentationController';
+import { LessonResolver } from './resolvers/LessonResolver';
 import {Auth}  from './services/AuthService'
 import { Server } from 'http';
 
@@ -21,13 +21,12 @@ export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) 
             const model = getModelForClass(User);
             const user = await model.findById(data.userId);
             context.user = user;
-            console.log(user.role)
-            console.log(roles)
-            if(roles && !user.role){
-                console.log(roles)
-                return false;
+            if (roles.length > 0){
+                if(roles.find(e => e === user.role)){
+                    return true;
+                }return false
             }
-            return true;
+            return true
         } else {
             return false;
         }
@@ -36,10 +35,10 @@ export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) 
     }
 };
 (async () => {
-    await mongoose.connect('mongodb://mongodb:27017/', { useNewUrlParser: true, useUnifiedTopology: true, dbName: "home" });
+    await mongoose.connect('mongodb://localhost:27017/', { useNewUrlParser: true, useUnifiedTopology: true, dbName: "home" });
 
     const schema = await buildSchema({
-        resolvers: [UserController, SlideController, PresentationController, LessonController],
+        resolvers: [UserResolver, SlideController, PresentationController, LessonResolver],
         authChecker: passwordAuthChecker 
 
     });

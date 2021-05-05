@@ -44,8 +44,8 @@ const DashboardTeacher = () => {
                 className="cours"
               />
 
-              <Link to="/creation" className="link">Créer un cour</Link>
-            </CardContent>
+                <Link to="/slides" className="link">Créer un cour</Link>
+              </CardContent>
 
           </Card>
           <Card elevation={3} className="green promoCard">
