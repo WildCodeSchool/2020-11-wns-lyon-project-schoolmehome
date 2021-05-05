@@ -72,9 +72,10 @@ export class UserServiceClass {
     @Mutation(() => [User])
     async delete(id: string) {
         const model = getModelForClass(User);
-        model.findByIdAndDelete(
+        const user = await model.findByIdAndRemove(
             {_id: id}
         )
+        console.log("Hello User deleted", user)
         return model.find()
     }
 }

@@ -61,7 +61,7 @@ const ModalAddNewUser = ({userType}: ModalAddNewUserProps): ReactElement => {
             case "ADMIN":
                 userFormData.role = "Admin"
         }
-        const user = new User(userFormData.firstName, userFormData.lastName, userFormData.email, userFormData.password, userFormData.role)
+        const user = new User("",userFormData.firstName, userFormData.lastName, userFormData.email, userFormData.password, userFormData.role)
         signup({ variables: { user: user} })
             .then((data) => {
                 console.log(data)
@@ -92,13 +92,15 @@ const ModalAddNewUser = ({userType}: ModalAddNewUserProps): ReactElement => {
 }
 
 export class User {
+    _id: String
     firstName: String
     lastName: String
     email: String
     password: String
     role: String
 
-    constructor(firstName: String, lastName: String, email: String, password: String, role: String) {
+    constructor(id: String, firstName: String, lastName: String, email: String, password: String, role: String) {
+        this._id = id
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

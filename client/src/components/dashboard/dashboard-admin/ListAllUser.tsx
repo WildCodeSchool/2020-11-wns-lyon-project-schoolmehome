@@ -27,7 +27,13 @@ const ListAllUser = (): ReactElement => {
 
     const DELETE_USER = gql`
         mutation ($id: String!) {
-            delete(id: $id)
+            delete(id: $id){
+                _id
+                lastName
+                firstName
+                email
+                role
+            }
         }
     `;
 
@@ -35,6 +41,8 @@ const ListAllUser = (): ReactElement => {
     const {loading, error, data} = useQuery(SEARCH_USER, {variables: {name: value}})
 
     const [search, setSearch] = useState<User[]>([])
+    const [newDataAfterDelete] = useMutation<any>(DELETE_USER)
+
 
     useEffect(() => {
         if (data !== undefined) {
@@ -97,13 +105,17 @@ const ListAllUser = (): ReactElement => {
     };
 
     const removeUser = (user: User) => {
+        console.log(user)
 
-        // const {loading, error, data} = useMutation(DELETE_USER, {variables: {id: user.id}})
+        newDataAfterDelete({variables: {id: user._id}})
+            .then((data: any) => {
+                console.log(data)
+            })
 
 
 
         const indexOfItem = search.indexOf(user)
-        if(indexOfItem > -1) {
+        if (indexOfItem > -1) {
             search.splice(indexOfItem, 1)
         }
         console.log(JSON.stringify(search))
@@ -135,7 +147,8 @@ const ListAllUser = (): ReactElement => {
             <List>
                 {
                     search !== undefined ? search.map((user: User, index) => {
-                        return <Paper key={index} className="margin-list-item"><CustomUserItem user={user} removeHandler={(user: User) => removeUser(user)}/></Paper>
+                        return <Paper key={index} className="margin-list-item"><CustomUserItem user={user}
+                                                                                               removeHandler={(user: User) => removeUser(user)}/></Paper>
                     }) : ""
                 }
             </List>
