@@ -64,4 +64,9 @@ export class UserResolver{
     public async search(@Arg('name') name: string) {
         return await UserService.search(name)
     }
+
+    @Mutation(() => [User])
+    public async delete(@Arg('id') id: string){
+        return await UserService.delete(id)
+    }
 }

@@ -42,6 +42,7 @@ export const useAuth = () => {
       user {
         firstName
         lastName
+        role
       }
     }
   }
@@ -56,25 +57,25 @@ export const useAuth = () => {
     signin({ variables: { email: user.email, password: password } })
       .then((data: any) => {
         const result = data.data.signin
+        console.log(result)
         if (result) {
           setToken(result.token)
-          setUser({firstName: result.user.firsName, lastName: result.user.lastName, role: 'Teacher'})
+          setUser({firstName: result.user.firsName, lastName: result.user.lastName, role: result.user.role})
           setPassword(null)
           localStorage.setItem('authToken', result.token)
-          localStorage.setItem('user', JSON.stringify({firstName: result.user.firsName, lastName: result.user.lastName, role: 'Teacher'}))
+          localStorage.setItem('user', JSON.stringify({firstName: result.user.firsName, lastName: result.user.lastName, role: result.user.role}))
         } else {
           setAlert(true)
         }
       })
       .catch((err: any) => console.error(err))
-
   }
 
   const disconnect = () => {
     setToken(null)
     setUser({})
-    localStorage.setItem('authToken', '')
-    localStorage.setItem('user', '')
+    localStorage.removeItem('authToken')
+    localStorage.removeItem('user')
   }
 
   const handleCloseMui = (event: any, reason: any) => {
