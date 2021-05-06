@@ -8,6 +8,7 @@ import './index.css'
 import { Navbar } from './components/navbar/navbar';
 import { AuthProvider } from './context/authContext'
 import { DashboardRouting } from './components/dashboard/DashboardRouting';
+import Visio from './components/visio/Visio';
 import { Profil } from './components/Profil/profil';
 import { SlidesHome } from './components/Slides/SlidesHome';
 import SlideEdit from './components/Slides/SlideEdit';
@@ -42,6 +43,11 @@ function App() {
       path: "/slides/creation",
       exact: true,
       main: () => <main><SlideCreation /></main>
+    },
+    {
+      path: "/visio/:id",
+      exact: true,
+      main: () => <Visio />
     },
     {
       path: "/slides",

@@ -1,24 +1,34 @@
 import { prop } from "@typegoose/typegoose";
 import { Field, InputType, ObjectType } from "type-graphql";
+import { Presentation } from "./Presentation";
 import { Subject } from "./Subject";
 
 @ObjectType('LessonType')
 @InputType('LessonInput')
-export  class Lesson {
-    @Field()
-    @prop()
-    start!: Date;
+export class Lesson {
 
-    @Field()
-    @prop()
-    end!: Date;
+  @Field({ nullable: true })
+  _id!: string;
 
-    @Field()
-    @prop()
-    promo!:String;
+  @Field()
+  @prop()
+  start!: Date;
 
-    @Field(() => Subject)
-    @prop()
-    subject: Subject;
+  @Field()
+  @prop()
+  end!: Date;
+
+  @Field()
+  @prop()
+  promo!: String;
+
+  @Field(() => Subject)
+  @prop()
+  subject: Subject;
+
+  @Field(() => [Presentation])
+  @prop()
+  presentation: Presentation[];
+
 
 }

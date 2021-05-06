@@ -5,7 +5,7 @@ import { Slide } from "../entities/Slide";
 import { SlideService } from '../services/SlideService'
 
 @Resolver(() => Slide)
-export class SlideController {
+export class SlideResolver {
 
   @Mutation(() => Slide)
   public async createSlide(@Arg('data', () => Slide) data: Slide): Promise<Slide> {
