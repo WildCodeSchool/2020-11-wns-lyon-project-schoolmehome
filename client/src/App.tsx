@@ -47,7 +47,7 @@ function App() {
     {
       path: "/visio/:id",
       exact: true,
-      main: () => <Visio />
+      main: () => <main><Visio /></main>
     },
     {
       path: "/slides",
