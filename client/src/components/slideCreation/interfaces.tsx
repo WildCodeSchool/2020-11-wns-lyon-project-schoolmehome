@@ -1,9 +1,10 @@
 export interface SlideInterface {
+  order?: number;
   content: string;
   isActive: Boolean;
 }
 
-export interface Presentation {
+export type Presentation = {
   title : string,
   slides : any[]
 }

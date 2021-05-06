@@ -38,5 +38,14 @@ export class PresentationServiceClass{
       return deletedPresentation;
     }
 
+    @Mutation(() => Presentation)
+    public async update(@Arg('data') data: Presentation): Promise<Presentation> {
+        const model = getModelForClass(Presentation);
+        const update = model.findByIdAndUpdate({_id: data._id},
+            {$set: data},
+            {new: true})
+        return update;
+    }
+
 }
 export const presentationService = new PresentationServiceClass();

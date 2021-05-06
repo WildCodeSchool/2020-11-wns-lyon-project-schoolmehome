@@ -1,17 +1,51 @@
 import React, { FormEvent, useEffect, useState } from 'react'
 import { Editor } from '@tinymce/tinymce-react';
-import Slide from './Slide';
-import { Presentation, SlideInterface } from './interfaces';
-import './SlideCreation.css'
+import Slide from '../slideCreation/Slide';
+import { Presentation, SlideInterface } from '../slideCreation/interfaces';
+import '../slideCreation/SlideCreation.css'
 import Button from '../global/button/Button'
 import Input from '../global/input/Input';
-import { gql, useMutation } from '@apollo/client';
+import { gql, useMutation, useQuery } from '@apollo/client';
+import { useHistory, useParams } from 'react-router-dom';
 
 const SlideCreation = () => {
+    const history = useHistory();
 
+    let { id }: { id: string } = useParams();
+
+    const GET_PRES = gql`
+        query getPresentation ($id: String!) {
+            findOnePresentation(_id: $id){
+                _id
+                title
+                slides {
+                    title
+                    htmlContent
+                    order
+                }
+            }
+        }
+    `;
+    const { loading, error, data } = useQuery<any>(GET_PRES, {variables: {id}, fetchPolicy : 'network-only'})
   const [ActiveContent, setActiveContent] = useState<string>('')
   const [slideList, setSlideList] = useState<SlideInterface[]>([{ content: '', isActive: true }])
   const [titlePres, setTitlePres] = useState<string>('')
+
+  useEffect(() => {
+    if(data){
+        console.log(data.findOnePresentation)
+        setTitlePres(data.findOnePresentation.title)
+        let slides : any[] = [];
+        data.findOnePresentation.slides.forEach( (s : any) => {
+            slides.push({content : s.htmlContent, isActive : false, order : s.order })
+        })
+        if(slides[0]){
+            slides[0].isActive = true;
+        }
+        setSlideList(slides);
+        // setActiveContent(slides[0].content)
+    }
+  }, [data])
 
   useEffect(() => {
     const c = slideList.find(slide => slide.isActive)
@@ -35,52 +69,59 @@ const SlideCreation = () => {
 
   const handleDelete = (e: any, index: number) => {
     e.stopPropagation();
+    console.log(index);
     if (slideList.length > 1) {
       let slideListCopy = slideList.slice()
-      slideListCopy = slideListCopy.filter((slide, i) => i !== index)
+      slideListCopy.splice(index, 1)
+    
       if (!slideListCopy.find(slide => slide.isActive)) {
-        slideListCopy[slideListCopy.length - 1].isActive = true
+        slideListCopy[Math.max(0, index - 1)].isActive = true
       }
+      console.log(JSON.stringify(slideListCopy, null, 4))
       setSlideList(slideListCopy)
-      // setActiveContent(slideListCopy[slideListCopy.length - 1]!.content)
+      // setTimeout(() => {
+      //   setActiveContent(slideListCopy[Math.max(0, index - 1)]!.content)
+      // }, 0)
+      console.log(Math.max(0, index - 1))
     }
   }
 
-  const NEW_PRES = gql`
-        mutation createPresentation ($pres: PresentationInput!) {
-          createPresentation(data: $pres){
-                _id
+  const UPD_PRES = gql`
+        mutation updatePresentation ($pres: PresentationInput!) {
+          updatePresentation(data: $pres){
+                title
             }
         }
     `;
-    const [createPresentation] = useMutation<any>(NEW_PRES)
+    const [updatePresentation] = useMutation<any>(UPD_PRES)
 
   const save = () => {
-    const pres : Presentation = {
+    const pres : Presentation & {_id : string} = {
+      _id : id,
       title : titlePres,
       slides : [],
-    }
-    Object.keys(slideList).map( k => {
-        return pres.slides.push({
+      }
+      Object.keys(slideList).map( k => {
+          return pres.slides.push({
           order : +k,
           htmlContent : slideList[+k].content
-        })
-    })
-    console.log(pres);
-    createPresentation({ variables: { pres: pres} })
-            .then((data) => {
-                console.log(data)
-            }).catch((e) => {
-                console.log(e)
-        })
-    
+          })
+      })
+      console.log(pres);
+      updatePresentation({ variables: { pres: pres} })
+              .then((data) => {
+                  console.log(data)
+                  history.push(`/slides`);
+              }).catch((e) => {
+                  console.log(e)
+          })
   }
 
   return (
     <div>
       <div>
-        <Input type="text" placeholder="Titre de la présentation" onChange={(e: FormEvent<HTMLInputElement>) => setTitlePres(e.currentTarget.value)} />
-        <Button onClick={save}>Enregistrer</Button>
+        <Input type="text" value={titlePres} placeholder="Titre de la présentation" onChange={(e: FormEvent<HTMLInputElement>) => setTitlePres(e.currentTarget.value)} />
+        <Button onClick={save}>Enregistrer les modifications</Button>
       </div>
       <div className="slideCreation-container">
       
@@ -114,10 +155,10 @@ const SlideCreation = () => {
             <h2>Slide show</h2>
               {slideList.map((slide: SlideInterface, index) => {
                 return (
-                  <Slide slide={slide} index={index} changeSlide={changeSlide} handleDelete={handleDelete} />
+                  <Slide key={slide.order} slide={slide} index={index} changeSlide={changeSlide} handleDelete={handleDelete} />
                 )
               })}
-          </div>
+          </div> 
           <Button onClick={addSlide}>Ajouter</Button>
         </div>
       </div>

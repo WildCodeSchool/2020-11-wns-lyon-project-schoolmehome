@@ -40,6 +40,7 @@ export const useAuth = () => {
     signin(email: $email, password: $password){
       token
       user {
+        email
         firstName
         lastName
         email
