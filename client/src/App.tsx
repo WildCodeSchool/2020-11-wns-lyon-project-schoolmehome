@@ -11,6 +11,7 @@ import { DashboardRouting } from './components/dashboard/DashboardRouting';
 import { Profil } from './components/Profil/profil';
 import { SlidesHome } from './components/Slides/SlidesHome';
 import SlideEdit from './components/Slides/SlideEdit';
+import { ProfilEdit } from './components/Profil/profiledit';
 
 function App() {
 
@@ -26,6 +27,11 @@ function App() {
       path: "/profil",
       exact: true,
       main: () => <main className='bg'><Profil /></main>
+    },
+    {
+      path: "/profil/edit",
+      exact: true,
+      main: () => <main className='bg'><ProfilEdit /></main>
     },
     {
       path: "/cours",

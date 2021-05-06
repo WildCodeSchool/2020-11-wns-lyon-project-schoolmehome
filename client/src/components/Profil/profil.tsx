@@ -1,10 +1,39 @@
 import { gql, useQuery } from '@apollo/client';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useAuth } from '../../context/authContext';
 import './profil.css'
 import avatar from '../../image/unnamed.gif';
+import books from '../../icons/hobbies/book.png';
+import flute from '../../icons/hobbies/flute.png';
+import puzzle from '../../icons/hobbies/puzzle-pieces.png';
+import vgames from '../../icons/hobbies/videogames.png';
+import docker from '../../icons/lessons/Docker.png';
+import flutter from '../../icons/lessons/Flutter.png';
+import gqli from '../../icons/lessons/GQL.png';
+import rn from '../../icons/lessons/RN.png';
+import ts from '../../icons/lessons/Ts.png';
+import fr from '../../icons/lessons/study.png';
 import { Avatar, createStyles, makeStyles, Theme } from '@material-ui/core';
-import { FaBirthdayCake } from 'react-icons/fa';
+import { FaBirthdayCake, FaPhone } from 'react-icons/fa';
+import { HiMail } from 'react-icons/hi';
+import { IoLocationSharp } from 'react-icons/io5';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItem from '@material-ui/core/ListItem';
+import List from '@material-ui/core/List';
+import Divider from '@material-ui/core/Divider';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
+import CloseIcon from '@material-ui/icons/Close';
+import Slide from '@material-ui/core/Slide';
+import { TransitionProps } from '@material-ui/core/transitions';
+import {TextField} from "@material-ui/core";
+import { UserFormContext } from '../dashboard/dashboard-admin/DashboardAdmin';
+import { Link } from 'react-router-dom';
+
 
 export type ProfilInfo = {
     _id : string,
@@ -18,8 +47,18 @@ export type ProfilInfo = {
     city : string | null,
   }
 
+  const Transition = React.forwardRef(function Transition(
+    props: TransitionProps & { children?: React.ReactElement },
+    ref: React.Ref<unknown>,
+  ) {
+    return <Slide direction="up" ref={ref} {...props} />;
+  });
+
 export const Profil = () => {
     const classes = useStyles();
+
+    const [edit, setEdit] = useState(false);
+    
     const {user} = useAuth();
     const GET_USER = gql`
       query findUser($email: String!){
@@ -47,27 +86,52 @@ export const Profil = () => {
                 </div>
                 <div className="profil-info-1">
                     <div className="profil-card">
-                        <h3>Mes compétences</h3>
+                        <h3>Mes Notes</h3>
+                        <div className='profil-card-content flex-around'>
+                        <div className="grid-1-2">
+                                <img className='profil-img' src={docker} alt='docker' title='docker'/><div className='desc'>15 / 20</div>
+                                <img className='profil-img' src={flutter} alt='flutter' title='flutter'/><div className='desc'>11 / 20</div>
+                                <img className='profil-img' src={gqli} alt='graphQl' title='graphQl'/><div className='desc'>05 / 20</div>
+                            </div>
+                            <div className='grid-1-2'>
+                                <img className='profil-img' src={rn} alt='react native' title='react native'/><div className='desc'>18 / 20</div>
+                                <img className='profil-img' src={ts} alt='typescript' title='typescript'/><div className='desc'>20 / 20</div>
+                                <img className='profil-img' src={fr} alt='français' title='français'/><div className='desc'>19 / 20</div>
+                            </div>
+                        </div>
                     </div>
                     <div className="profil-card">
-                        <h3>Mes notes et devoirs</h3>
+                        <h3>Mes centres d'intérêts</h3>
+                        <div className='profil-card-content flex-around'>
+                            <div className="grid-1-2">
+                                <img className='profil-img' src={books} alt='Lecture' title='Lecture'/><div className='desc'>Lecture</div>
+                                <img className='profil-img' src={puzzle} alt='Puzzle' title='Puzzle'/><div className='desc'>Puzzle</div>
+                            </div>
+                            <div className='grid-1-2'>
+                                <img className='profil-img' src={flute} alt='Jouer de la musique' title='Jouer de la musique'/><div className='desc'>Jouer de la musique</div>
+                                <img className='profil-img' src={vgames} alt='Jeux vidéos' title='Jeux vidéos'/><div className='desc'>Jeux videos</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div className="profil-info-1">
                     <div className='profil-card'>
                         <h3>Mes informations personnelles</h3>
-                        <div className='profil-card-content'>
-                            <ul>
-                                <li><FaBirthdayCake /> {info ? info.birthdate : ''}</li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                                <li></li>
-                            </ul>
-                            
+                        <div className='profil-card-content flex-around'>
+                            <div className="grid-1-2 mg-6">
+                                <FaBirthdayCake color="#f05454" size={20}/> <div>{info ? info.birthdate : ''}</div>
+                                <FaPhone color="#f05454" size={20}/><div>{info ? info.phone : ''}</div>
+                                <HiMail color="#f05454" size={20}/><div>{info ? info.email : ''}</div>
+                            </div>
+                            <div className="grid-1-2">
+                                <IoLocationSharp color="#f05454" size={20}/><div>{info ? info.street : ''} </div>
+                                <div></div><div>{info ? info.zipcode : ''} {info ? info.city : ''}</div>
+                                <div></div><div></div>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <Link to='/profil/edit'>Editer mon profil</Link>
             </div>
         
     )

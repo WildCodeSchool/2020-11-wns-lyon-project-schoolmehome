@@ -9,6 +9,12 @@
 
 .bg{
     background-color: var(--primary);
+    background-image: url("../../image/global/profilBG.png");
+    background-repeat: no-repeat;
+    background-position: top;
+    background-position-x: right;
+    background-size: contain;
+    background-position-y: -90px;
 }
 .MuiAvatar-root.MuiAvatar-circle{
     margin-left: 3em;
@@ -40,10 +46,39 @@
     border-radius: var(--radius-bg);
     color: white;
     width: -webkit-fill-available;
+    width: -moz-available;
 }
 .profil-card h3{
     text-align: center;
 }
 .profil-card-content{
     padding: 1em;
+}
+
+.flex-around{
+    display: flex;
+    justify-content: space-around;
+}
+.flex-around > * {
+    flex: 1;
+}
+.grid-1-2{
+    
+    display: grid;
+  grid-template-columns: 1fr 5fr;
+  grid-template-rows: 3em 3em 3em;
+  align-items: center;
+}
+
+img.profil-img {
+    /* width : 30px; */
+    height : 30px;
+    justify-self: center;
+}
+
+.mg-6{
+    margin: 0 6em;
+}
+div.desc{
+    margin-left: 2em
 }
