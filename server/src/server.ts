@@ -7,11 +7,11 @@ import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { UserResolver } from './resolvers/UserResolver';
-import { SlideController } from './resolvers/SlideController';
-import { PresentationController } from './resolvers/PresentationController';
+import { SlideResolver } from './resolvers/SlideResolver';
+import { PresentationResolver } from './resolvers/PresentationResolver';
 import { LessonResolver } from './resolvers/LessonResolver';
+import { TeacherResolver } from './resolvers/TeacherResolver';
 import {Auth}  from './services/AuthService'
-import { Server } from 'http';
 
 export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) => {
     try {
@@ -38,7 +38,7 @@ export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) 
     await mongoose.connect('mongodb://localhost:27017/', { useNewUrlParser: true, useUnifiedTopology: true, dbName: "home" });
 
     const schema = await buildSchema({
-        resolvers: [UserResolver, SlideController, PresentationController, LessonResolver],
+        resolvers: [UserResolver, SlideResolver, PresentationResolver, LessonResolver, TeacherResolver],
         authChecker: passwordAuthChecker 
 
     });
@@ -56,8 +56,6 @@ export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) 
     app.use(cookieParser());
 
     server.applyMiddleware({ app, cors: false });
-    // const test = Server.CreateServer
-    // const serverIo = new Server(server, {cors: {origin: '*'}})
     
     app.listen({ port: 4300 }, () =>
         console.log(`Server ready at http://localhost:4300${server.graphqlPath}`)

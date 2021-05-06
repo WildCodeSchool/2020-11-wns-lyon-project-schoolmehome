@@ -3,14 +3,14 @@ import {Subject} from './Subject';
 import {Promo} from './Promo';
 import { Field, InputType, ObjectType } from 'type-graphql';
 import { prop } from '@typegoose/typegoose';
-@ObjectType('UserType')
-@InputType('UserInput')
+@ObjectType('StudentType')
+@InputType('StudentInput')
 export class Student extends User {
-    @Field()
+    @Field(() => [Subject])
     @prop()
     subject!: Subject[];
     
-    @Field()
+    @Field(() => [Promo])
     @prop()
     promo!: Promo[];
 }

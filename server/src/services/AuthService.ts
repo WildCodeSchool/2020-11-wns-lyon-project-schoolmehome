@@ -6,6 +6,7 @@ import { User } from '../entities/User';
 import { Arg, Mutation } from 'type-graphql';
 import { Mail } from '../services/MailService';
 import { AuthResult } from '../entities/AuthResult';
+import { Teacher } from '../entities/Teacher';
 
 export class AuthService {
     @Mutation(() => User) 
@@ -16,6 +17,16 @@ export class AuthService {
         //renvoyer le token par mail
         const user = await model.create(data);
         return {token, user};
+    }
+
+    @Mutation(() => User) 
+    public async createTeacher(data: Teacher){
+        const model = getModelForClass(Teacher);
+        const userToken = {data : data.email};
+        const token =  jwt.sign(userToken, "secret");
+        //renvoyer le token par mail
+        const teacher = await model.create(data);
+        return {token, teacher};
     }
 
     public async signin(email, password, ctx){
