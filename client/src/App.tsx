@@ -10,6 +10,7 @@ import { Navbar } from './components/navbar/navbar';
 import { AuthProvider } from './context/authContext'
 import {DashboardAdmin} from "./components/dashboard/dashboard-admin/DashboardAdmin";
 import { DashboardRouting } from './components/dashboard/DashboardRouting';
+import Visio from './components/visio/Visio';
 import { Profil } from './components/Profil/profil';
 import { SlidesHome } from './components/Slides/SlidesHome';
 
@@ -37,6 +38,11 @@ function App() {
       path: "/slides/creation",
       exact: true,
       main: () => <SlideCreation />
+    },
+    {
+      path: "/visio/:id",
+      exact: true,
+      main: () => <Visio />
     },
     {
       path: "/slides",

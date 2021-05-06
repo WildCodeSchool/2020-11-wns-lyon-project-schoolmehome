@@ -1,8 +1,11 @@
 import { getModelForClass } from '@typegoose/typegoose';
-import { Arg } from 'type-graphql';
+import { Arg, Mutation, Query, Resolver } from 'type-graphql';
 import {Lesson} from "../entities/Lesson";
+import { Presentation } from '../entities/Presentation';
+import { lessonService } from '../services/LessonService';
+import { presentationService } from '../services/PresentationService';
 
-
+@Resolver(() => Lesson)
 export class LessonResolver {
     public async create(@Arg('data') data: Lesson): Promise<Lesson>{
         const model =  getModelForClass(Lesson)
@@ -17,7 +20,25 @@ export class LessonResolver {
             .populate("subject")
         return Lessons
     }
-    // A modifier normalement la méthode appel un findById
+
+    @Query(() => Lesson)
+    public async findOneLesson(@Arg('_id') _id: string): Promise<Lesson> {
+      return lessonService.findOne(_id)
+    }
+
+    @Mutation(() => Lesson)
+    public async addPresentation(@Arg('data') data: Presentation, @Arg('_id') _id: string): Promise<Lesson> {
+      const model = getModelForClass(Lesson)
+      const lesson = await model.findById(_id);
+      const newPresentation = await presentationService.add(data);
+      const newLesson = await model.findByIdAndUpdate(
+        { _id },
+        { presentation: [...lesson.presentation, newPresentation] },
+        { new: true })
+      return newLesson;
+    }
+
+    //A modifier normalement la méthode appel un findById
     // public async patch (@Arg('data') data: Lesson): Promise<Lesson> {
     //     const model = getModelForClass(Lesson)
     //     const lesson = await model.find({"name": data.name})

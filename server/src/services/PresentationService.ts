@@ -11,6 +11,12 @@ export class PresentationServiceClass{
     //     const model = getModelForClass(Slide);
     //     return await model.create(newSlide);    
     // }
+
+    @Mutation(() => Presentation)
+    public async add(newPres: Presentation): Promise<Presentation> {
+      const model = getModelForClass(Presentation);
+      return model.create(newPres);
+    }
     
     @Query(() => Presentation)
     public async findById(_id: string): Promise<Presentation>{
