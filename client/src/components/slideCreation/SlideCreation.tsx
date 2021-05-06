@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from 'react'
+import React, { FormEvent, useEffect, useState } from 'react'
 import { Editor } from '@tinymce/tinymce-react';
 import Slide from './Slide';
 import { Presentation, SlideInterface } from './interfaces';
@@ -13,10 +13,15 @@ const SlideCreation = () => {
   const [slideList, setSlideList] = useState<SlideInterface[]>([{ content: '', isActive: true }])
   const [titlePres, setTitlePres] = useState<string>('')
 
+  useEffect(() => {
+    const c = slideList.find(slide => slide.isActive)
+    setActiveContent(c.content)
+  }, [slideList])
+
   const addSlide = () => {
     const slideListCopy = slideList.slice()
     slideListCopy.filter(slide => slide.isActive)[0].isActive = false;
-    setActiveContent('')
+    // setActiveContent('')
     setSlideList([...slideList, { content: '', isActive: true }])
   }
 
@@ -25,7 +30,7 @@ const SlideCreation = () => {
     slideListCopy.forEach(slide => slide.isActive = false)
     slideListCopy.filter((slide, i) => i === index)[0].isActive = true;
     setSlideList(slideListCopy)
-    setActiveContent(slideListCopy.find((slide, i) => i === index)!.content)
+    // setActiveContent(slideListCopy.find((slide, i) => i === index)!.content)
   }
 
   const handleDelete = (e: any, index: number) => {
@@ -37,7 +42,7 @@ const SlideCreation = () => {
         slideListCopy[slideListCopy.length - 1].isActive = true
       }
       setSlideList(slideListCopy)
-      setActiveContent(slideListCopy[slideListCopy.length - 1]!.content)
+      // setActiveContent(slideListCopy[slideListCopy.length - 1]!.content)
     }
   }
 

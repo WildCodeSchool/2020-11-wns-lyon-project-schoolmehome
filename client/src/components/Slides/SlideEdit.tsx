@@ -43,14 +43,19 @@ const SlideCreation = () => {
             slides[0].isActive = true;
         }
         setSlideList(slides);
-        setActiveContent(slides[0].content)
+        // setActiveContent(slides[0].content)
     }
   }, [data])
+
+  useEffect(() => {
+    const c = slideList.find(slide => slide.isActive)
+    setActiveContent(c.content)
+  }, [slideList])
 
   const addSlide = () => {
     const slideListCopy = slideList.slice()
     slideListCopy.filter(slide => slide.isActive)[0].isActive = false;
-    setActiveContent('')
+    // setActiveContent('')
     setSlideList([...slideList, { content: '', isActive: true }])
   }
 
@@ -59,7 +64,7 @@ const SlideCreation = () => {
     slideListCopy.forEach(slide => slide.isActive = false)
     slideListCopy.filter((slide, i) => i === index)[0].isActive = true;
     setSlideList(slideListCopy)
-    setActiveContent(slideListCopy.find((slide, i) => i === index)!.content)
+    // setActiveContent(slideListCopy.find((slide, i) => i === index)!.content)
   }
 
   const handleDelete = (e: any, index: number) => {
@@ -74,9 +79,9 @@ const SlideCreation = () => {
       }
       console.log(JSON.stringify(slideListCopy, null, 4))
       setSlideList(slideListCopy)
-      setTimeout(() => {
-        setActiveContent(slideListCopy[Math.max(0, index - 1)]!.content)
-      }, 0)
+      // setTimeout(() => {
+      //   setActiveContent(slideListCopy[Math.max(0, index - 1)]!.content)
+      // }, 0)
       console.log(Math.max(0, index - 1))
     }
   }
