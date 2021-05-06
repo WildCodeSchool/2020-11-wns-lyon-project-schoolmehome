@@ -82,3 +82,24 @@ img.profil-img {
 div.desc{
     margin-left: 2em
 }
+
+div.profilformrow{
+    margin: 1em 6em;
+    color: white;
+}
+
+div.profiledit input.MuiInputBase-input {
+    background-color: #233445 !important;
+    color: white;
+    border-radius: 16px !important;
+}
+div.profiledit{
+    width: -webkit-fill-available;
+    width: -moz-available;
+}
+div.profileditlabel{
+    margin-left: 16px;
+    margin-bottom: 5px;
+    font-size: larger;
+    text-transform: uppercase;
+}

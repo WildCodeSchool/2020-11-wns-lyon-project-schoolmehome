@@ -1,5 +1,5 @@
 import { gql, useQuery } from '@apollo/client';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../context/authContext';
 import './profil.css'
 import avatar from '../../image/unnamed.gif';
@@ -17,22 +17,9 @@ import { Avatar, createStyles, makeStyles, Theme } from '@material-ui/core';
 import { FaBirthdayCake, FaPhone } from 'react-icons/fa';
 import { HiMail } from 'react-icons/hi';
 import { IoLocationSharp } from 'react-icons/io5';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItem from '@material-ui/core/ListItem';
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import CloseIcon from '@material-ui/icons/Close';
-import Slide from '@material-ui/core/Slide';
-import { TransitionProps } from '@material-ui/core/transitions';
-import {TextField} from "@material-ui/core";
-import { UserFormContext } from '../dashboard/dashboard-admin/DashboardAdmin';
+
 import { Link } from 'react-router-dom';
+import Button from '../global/button/Button';
 
 
 export type ProfilInfo = {
@@ -47,19 +34,10 @@ export type ProfilInfo = {
     city : string | null,
   }
 
-  const Transition = React.forwardRef(function Transition(
-    props: TransitionProps & { children?: React.ReactElement },
-    ref: React.Ref<unknown>,
-  ) {
-    return <Slide direction="up" ref={ref} {...props} />;
-  });
-
 export const Profil = () => {
-    const classes = useStyles();
-
-    const [edit, setEdit] = useState(false);
-    
+    const classes = useStyles();   
     const {user} = useAuth();
+
     const GET_USER = gql`
       query findUser($email: String!){
         getOne(email : $email) {_id, firstName, lastName, email, phone, birthdate, street, zipcode, city}
@@ -131,7 +109,9 @@ export const Profil = () => {
                         </div>
                     </div>
                 </div>
-                <Link to='/profil/edit'>Editer mon profil</Link>
+                <div style={{textAlign : 'center'}}>
+                    <Link to='/profil/edit' className="link"><Button>Editer mon profil</Button></Link>
+                </div>
             </div>
         
     )
