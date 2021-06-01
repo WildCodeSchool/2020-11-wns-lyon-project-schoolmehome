@@ -16,11 +16,11 @@ export class UserResolver{
         return await Auth.create(data);
     }
     
-    @Authorized()
-    public async authenticatedUser(@Ctx() ctx): Promise<User> {
-        //console.log(ctx.user);
-        return ctx.user;
-    }
+    // @Authorized()
+    // public async authenticatedUser(@Ctx() ctx): Promise<User> {
+    //     //console.log(ctx.user);
+    //     return ctx.user;
+    // }
 
     @Mutation(() => User)
     public async signup(@Arg('data', () => User) data: User): Promise<User> {
@@ -31,28 +31,26 @@ export class UserResolver{
     public async signin(@Arg('email') email: string, @Arg('password') password: string, @Ctx() ctx): Promise<AuthResult> {
         return await Auth.signin(email, password, ctx);
     }
-    @Authorized()
-    @Mutation(() => User, { nullable: true })
+    @Mutation(() => AuthResult, { nullable: true })
     public async lost(@Arg('email') email: string){
-        return await UserService.lostPassword(email);
+        return await Auth.passwordLost(email);
+    }
+
+    @Mutation(() => AuthResult, { nullable: true })
+    public async resetPassword(@Arg('token') token: string, @Arg('password') password: string, @Arg('email') email: string){
+        return Auth.restorePassword(token, password, email);
     }
     //@Authorized(['Admin'])
     @Query(() => User)
     public async getOne(@Arg('email') email: string): Promise<User>{
         return await UserService.findByEmail(email);
     }
-    // @Query(()=> User)
-    // public async getOneById(@Arg('id') id: string):Promise<User>{
-    //     return await UserService.findById(id);
-    // }
+
     @Mutation(() => User, {nullable : true})
     public async update(@Arg('data') data: User){
         return await UserService.updateOne(data)
     }
-    @Mutation(() => User)
-    public async verifyToken(@Arg('token') token :string) :Promise<User>{
-        return await Auth.verifyToken(token)
-    }
+
 
     // @Authorized(['Admin'])
     @Query(() => [User])

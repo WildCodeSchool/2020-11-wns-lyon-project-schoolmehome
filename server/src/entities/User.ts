@@ -51,6 +51,9 @@ export class User {
    @prop()
    role!: string;
 
+   @Field({nullable: true})
+   @prop()
+   restoreToken!: string;
 }
 @InputType('UserUpdate')
 export class UserUpdate{
