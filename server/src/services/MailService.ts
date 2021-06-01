@@ -3,35 +3,34 @@ import { UserService } from './UserService';
 
 export class MailService{
     
-    public async main(email: string, token: string) {
+    public async mail(email: string, token: string) {
         let account = await UserService.findByEmail(email);
-        console.log(account)
         console.log('Credentials obtained, sending message...');
         let transporter = nodemailer.createTransport(
             {
-                host: "smptp.localhost",
+                host: 'smtp.ethereal.email',
                 port: 587,
-                secure: false,
                 auth: {
-                    user: account.firstName,
-                    pass: account.password
-                },
-                logger: false,
-                debug: false // include SMTP traffic in the logs
+                    user: 'donato.kihn@ethereal.email',
+                    pass: 'MRRCFXhvWuPsCRxHU9'
+                }
             })
             // Message object
             let message = {
-                from: account.email,
+                headers: { 'My-Custom-Header': 'header value'},
+                from: 'schoolMeHome@admin.fr',
                 to: account.email,
-                subject: 'Nodemailer is unicode friendly ✔',
-                text: 'Hello to myself!',
+                subject: 'Réinitialisation du mot de passe',
+                text: 'Cliquer sur le lien ci-dessous pour réinitialiser votre mot de passe',
                 html:
-                    '<p><b>Hello</b> to myself ' +
-                    '<p>Here\'s a nyan cat for you as an embedded attachment:<br/><img src="cid:nyan@example.com"/></p>',
+                    '<p>Cliquer sur le lien ci-dessous pour réinitialiser votre mot de passe</p>'+
+                    '<p> Réinitialiser : ' +
+                    '<a href="http://localhost:3000/reset?='+ token +' " >'+'Cliquez' +  '</a>',
             };
             // verify connection configuration
             await transporter.verify(function(error, success) {
             if (error) {
+                console.log("ERROR")
                 console.log(error);
             } else {
                 console.log("Server is ready to take our messages");
@@ -39,7 +38,7 @@ export class MailService{
             }
             });
 
-            let info = await transporter.sendMail(message, err => {console.log(err)});
+            let info = await transporter.sendMail(message, err => {console.log("INFO"); console.log(err)});
             console.log('Message sent successfully as %s', info, message);
         }
 }

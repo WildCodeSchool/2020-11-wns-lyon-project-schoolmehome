@@ -57,6 +57,9 @@ export class User {
   @prop()
   lessons: Lesson[];
 
+  @Field({nullable: true})
+  @prop()
+  restoreToken!: string;
 }
 @InputType('UserUpdate')
 export class UserUpdate {
