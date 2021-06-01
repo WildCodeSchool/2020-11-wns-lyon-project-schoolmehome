@@ -9,50 +9,56 @@ import { useAuth } from "../../context/authContext";
 
 export function Navbar() {
   const { user, disconnect } = useAuth()
-    return (
-      <nav className="navbar">
-        <ul className="navbar-nav">
-          <li className="avatar">
-            <div className='avatar-div'>
-              <img src={avatar} alt="avatar" className="avatarImg"/>
-              <div className="avatarName">
-                <h1>{user.firstName}&nbsp;{user.lastName}</h1>
-                <div className="avatarStudy">
-                  <p>Master&nbsp;1</p>
+  return (
+    <nav className="navbar">
+      <ul className="navbar-nav">
+        <li className="avatar">
+          <div className='avatar-div'>
+            <img src={avatar} alt="avatar" className="avatarImg" />
+            <div className="avatarName">
+              <h1>{user.firstName}&nbsp;{user.lastName}</h1>
+              <div className="avatarStudy">
+                <p>Master&nbsp;1</p>
                 <p>Développement&nbsp;web</p>
-                </div>
               </div>
             </div>
-          </li>
-          <li className="nav-item">
-            <NavLink to="/dashboard" className="nav-link" activeClassName="active">
-              <MdDashboard size={30}/>
-              <span className="link-text">Mon&nbsp;dashboard</span>
-            </NavLink>
-            </li>
-          <li className="nav-item">
-            <NavLink to="/profil" className="nav-link" activeClassName="active">
-              <FaUser size={30}/>
-              <span className="link-text">Mon&nbsp;profil</span>
-            </NavLink>
-          </li >
-            <li className="nav-item">
-              <NavLink to="/slides" className="nav-link" activeClassName="active">
-              <FaBook size={30}/>
-              <span className="link-text">Mes&nbsp;cours</span>
-            </NavLink>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" onClick={disconnect}>
-              <FaSignOutAlt size={30}/>
-              <span className="link-text">Se&nbsp;déconnecter</span>
-            </a>
-            </li>
-          
-          
-        </ul>
-        
-      </nav>
-    );
-  }
-  
+          </div>
+        </li>
+        <li className="nav-item">
+          <NavLink to="/dashboard" className="nav-link" activeClassName="active">
+            <MdDashboard size={30} />
+            <span className="link-text">Mon&nbsp;dashboard</span>
+          </NavLink>
+        </li>
+        <li className="nav-item">
+          <NavLink to="/profil" className="nav-link" activeClassName="active">
+            <FaUser size={30} />
+            <span className="link-text">Mon&nbsp;profil</span>
+          </NavLink>
+        </li >
+        <li className="nav-item">
+          <NavLink to="/slides" className="nav-link" activeClassName="active">
+            <FaBook size={30} />
+            <span className="link-text">Mes&nbsp;cours</span>
+          </NavLink>
+        </li>
+        <li className="nav-item">
+          <NavLink to="/calendar" className="nav-link" activeClassName="active">
+            <FaBook size={30} />
+            <span className="link-text">Mon calendrier</span>
+          </NavLink>
+        </li>
+        <li className="nav-item">
+          <a className="nav-link" onClick={disconnect}>
+            <FaSignOutAlt size={30} />
+            <span className="link-text">Se&nbsp;déconnecter</span>
+          </a>
+        </li>
+
+
+      </ul>
+
+    </nav>
+  );
+}
+

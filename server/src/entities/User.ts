@@ -53,7 +53,7 @@ export class User {
   @IsIn(['Admin', 'User', 'Teacher'])
   role!: string;
 
-  @Field(() => [Lesson])
+  @Field(() => [Lesson],{ nullable: true} )
   @prop()
   lessons: Lesson[];
 

@@ -30,6 +30,7 @@ export class LessonResolver {
     public async addPresentation(@Arg('data') data: Presentation, @Arg('_id') _id: string): Promise<Lesson> {
       const model = getModelForClass(Lesson)
       const lesson = await model.findById(_id);
+      console.log(lesson, _id)
       const newPresentation = await presentationService.add(data);
       const newLesson = await model.findByIdAndUpdate(
         { _id },
