@@ -6,6 +6,11 @@
     background-color:var(--alternative-primary-light) ;
 }
 
+.MuiPaper-root.red{
+  background-color:var(--accent) ;
+  color: var(--color-text-on-accent);
+}
+
 .MuiCardMedia-media.cours{
     width: 50%;
 }
@@ -21,4 +26,8 @@
 
 .promoCard{
     margin-top: 32px;
+}
+
+.lessonCard {
+  margin-top: 16px;
 }

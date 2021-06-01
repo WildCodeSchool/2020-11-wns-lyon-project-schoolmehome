@@ -37,7 +37,7 @@ export function Navbar() {
             </NavLink>
           </li >
             <li className="nav-item">
-              <NavLink to="/cours" className="nav-link" activeClassName="active">
+              <NavLink to="/slides" className="nav-link" activeClassName="active">
               <FaBook size={30}/>
               <span className="link-text">Mes&nbsp;cours</span>
             </NavLink>

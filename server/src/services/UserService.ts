@@ -4,6 +4,7 @@ import {Arg, Mutation, Query, Resolver} from 'type-graphql';
 import {getModelForClass} from '@typegoose/typegoose';
 import {Auth} from './AuthService';
 import {userInfo} from 'os';
+import { Teacher } from '../entities/Teacher';
 
 
 export class UserServiceClass {
@@ -12,6 +13,14 @@ export class UserServiceClass {
     public async signUp(newUser: User): Promise<User> {
         const model = getModelForClass(User);
         newUser.password = await argon.hash(newUser.password);
+        return await model.create(newUser);
+    }
+
+    @Mutation(() => Teacher)
+    public async signUpTeacher(newUser: Teacher): Promise<Teacher> {
+        const model = getModelForClass(Teacher);
+        newUser.password = await argon.hash(newUser.password);
+        console.log(newUser)
         return await model.create(newUser);
     }
 

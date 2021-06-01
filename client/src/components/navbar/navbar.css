@@ -4,6 +4,7 @@
     position: fixed;
     background: var(--primary);
     transition: width 600ms ease;
+    z-index: 50;
 }
 .navbar-nav{
     list-style: none;

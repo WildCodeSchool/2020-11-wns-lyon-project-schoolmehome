@@ -7,7 +7,7 @@ import { SlideService } from '../services/SlideService';
 import { presentationService } from '../services/PresentationService';
 
 @Resolver(() => Presentation)
-export class PresentationController {
+export class PresentationResolver {
 
   @Mutation(() => Presentation)
   public async createPresentation(@Arg('data') data: Presentation): Promise<Presentation> {
@@ -41,5 +41,10 @@ export class PresentationController {
       { slides: [...presentation.slides, newSlide] },
       { new: true })
     return newPresentation;
+  }
+
+  @Mutation(() => Presentation)
+  public async updatePresentation(@Arg('data') data: Presentation): Promise<Presentation> {
+    return await presentationService.update(data);
   }
 } 

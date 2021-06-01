@@ -7,9 +7,10 @@ import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { UserResolver } from './resolvers/UserResolver';
-import { SlideController } from './resolvers/SlideController';
-import { PresentationController } from './resolvers/PresentationController';
+import { SlideResolver } from './resolvers/SlideResolver';
+import { PresentationResolver } from './resolvers/PresentationResolver';
 import { LessonResolver } from './resolvers/LessonResolver';
+import { TeacherResolver } from './resolvers/TeacherResolver';
 import {Auth}  from './services/AuthService'
 
 export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) => {
@@ -34,13 +35,15 @@ export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) 
     }
 };
 (async () => {
-    await mongoose.connect('mongodb://mongodb:27017/', { useNewUrlParser: true, useUnifiedTopology: true, dbName: "home" });
+    await mongoose.connect('mongodb://localhost:27017/', { useNewUrlParser: true, useUnifiedTopology: true, dbName: "home" });
 
     const schema = await buildSchema({
-        resolvers: [UserResolver, SlideController, PresentationController, LessonResolver],
+        resolvers: [UserResolver, SlideResolver, PresentationResolver, LessonResolver, TeacherResolver],
         authChecker: passwordAuthChecker 
 
     });
+
+
 
     const server = new ApolloServer({
         schema,
@@ -53,7 +56,7 @@ export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) 
     app.use(cookieParser());
 
     server.applyMiddleware({ app, cors: false });
-
+    
     app.listen({ port: 4300 }, () =>
         console.log(`Server ready at http://localhost:4300${server.graphqlPath}`)
     );

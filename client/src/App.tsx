@@ -2,14 +2,17 @@ import React from 'react';
 import Login from './components/login/Login';
 import SlideCreation from './components/slideCreation/SlideCreation';
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
-import { AuthContext, useAuth } from './context/authContext'
 import PrivateRoute from './components/privateRoute/PrivateRoute'
 import './App.css';
 import './index.css'
 import { Navbar } from './components/navbar/navbar';
 import { AuthProvider } from './context/authContext'
-import {DashboardAdmin} from "./components/dashboard/dashboard-admin/DashboardAdmin";
 import { DashboardRouting } from './components/dashboard/DashboardRouting';
+import Visio from './components/visio/Visio';
+import { Profil } from './components/Profil/profil';
+import { SlidesHome } from './components/Slides/SlidesHome';
+import SlideEdit from './components/Slides/SlideEdit';
+import { ProfilEdit } from './components/Profil/profiledit';
 
 function App() {
 
@@ -17,24 +20,44 @@ function App() {
     {
       path: "/dashboard",
       exact: true,
-      main: () => <DashboardRouting/>
+      main: () => <main><DashboardRouting/></main>
       // main: () => <h2>Home Dashboard</h2>
       // main: () => <DashboardAdmin />
     },
     {
       path: "/profil",
       exact: true,
-      main: () => <h2>Mon profil</h2>
+      main: () => <main className='bg'><Profil /></main>
+    },
+    {
+      path: "/profil/edit",
+      exact: true,
+      main: () => <main className='bg'><ProfilEdit /></main>
     },
     {
       path: "/cours",
       exact: true,
-      main: () => <h2>Mes cours</h2>
+      main: () => <main><h2>Mes cours</h2></main>
     },
     {
-      path: "/creation",
+      path: "/slides/creation",
       exact: true,
-      main: () => <SlideCreation />
+      main: () => <main><SlideCreation /></main>
+    },
+    {
+      path: "/visio/:id",
+      exact: true,
+      main: () => <main><Visio /></main>
+    },
+    {
+      path: "/slides",
+      exact: true,
+      main: () => <main><SlidesHome /></main>
+    },
+    {
+      path: "/slides/edit/:id",
+      exact: true,
+      main: () => <main><SlideEdit /></main>
     }
   ];
   return (
@@ -48,18 +71,16 @@ function App() {
             <PrivateRoute path="/">
               <Redirect to="/dashboard" />
               <Navbar />
-              <main>
                 <Switch>
                   {routes.map((route, index) => (
-                    <PrivateRoute
-                      key={index}
-                      path={route.path}
-                      exact={route.exact}
-                      children={route.main()}
-                    />
+                      <PrivateRoute
+                        key={index}
+                        path={route.path}
+                        exact={route.exact}
+                        children={route.main()}
+                      />
                   ))}
                 </Switch>
-              </main>
             </PrivateRoute>
           </Switch>
         </Router>
@@ -69,37 +90,3 @@ function App() {
 }
 
 export default App;
-
-
-
-
-
-
-
-
-
-
-{/* <AuthContext.Provider value={{ token }}>
-<div className="App">
-  <Router>
-    <Switch>
-      <Route exact path="/login">
-        <Login />
-      </Route>
-      <Navbar />
-
-      {routes.map((route, index) => (
-        <main>
-          <PrivateRoute
-            key={index}
-            path={route.path}
-            exact={route.exact}
-            children={route.main()}
-          />
-        </main>
-      ))}
-
-    </Switch>
-  </Router>
-</div>
-</AuthContext.Provider> */}
