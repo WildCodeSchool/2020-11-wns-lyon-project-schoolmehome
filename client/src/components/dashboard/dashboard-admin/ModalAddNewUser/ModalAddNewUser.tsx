@@ -5,7 +5,9 @@ import {UserFormContext, UserType} from "../DashboardAdmin";
 import "./ModalAddNewUser.css"
 import {Button, Grid, Paper} from "@material-ui/core";
 import DefaultPicture from "../../../../../src/image/profil.png"
+import DefaultBackground from "../../../../../src/image/background-user.jpg"
 import {gql, useMutation} from "@apollo/client";
+
 
 
 interface ModalAddNewUserProps {
@@ -72,11 +74,11 @@ const ModalAddNewUser = ({userType}: ModalAddNewUserProps): ReactElement => {
 
     return (
         <Paper className="margin-default padding-default text-center">
-            <Grid item xs={12}>
-                <img className="width-max" src={DefaultPicture} alt="Default Picture"/>
+            <Grid item xs={12} onClick={handleClickOpen}>
+                <img className="width-max" src={DefaultBackground} alt="Default Picture"/>
             </Grid>
             <Grid item xs={12}>
-                <Button onClick={handleClickOpen}>Open Modal</Button>
+                <Button onClick={handleClickOpen}>{userType}</Button>
             </Grid>
             <CustomDialog open={open}
                           handleClose={handleClose}

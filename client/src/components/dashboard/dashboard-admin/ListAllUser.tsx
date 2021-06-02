@@ -1,15 +1,18 @@
 import React, {ReactElement, useEffect, useState} from "react";
-import {List, ListItem, Paper} from "@material-ui/core";
+import {List, ListItem, Paper, GridList, Button, Grid} from "@material-ui/core";
 import {empty, gql, useMutation, useQuery} from "@apollo/client";
 import CustomUserItem from "../../global/viewholder/CustomUserItem";
 import "./ListAllUser.css"
 import IconButton from "@material-ui/core/IconButton";
 import InputBase from "@material-ui/core/InputBase";
 import SearchIcon from "@material-ui/icons/Search";
-import {User} from "./ModalAddNewUser/ModalAddNewUser";
+import ModalAddNewUser, {User} from "./ModalAddNewUser/ModalAddNewUser";
 import {ToggleButton, ToggleButtonGroup} from "@material-ui/lab";
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import {stringify} from "querystring";
+import {UserType} from "./DashboardAdmin";
+import AddUserForm from "../../global/form/AddUserForm";
+import CustomDialog from "../../global/CustomDialog";
 
 const ListAllUser = (): ReactElement => {
 
@@ -37,9 +40,26 @@ const ListAllUser = (): ReactElement => {
         }
     `;
 
+    const DIALOG_TITLE = "Ajoutez un.e nouvel.le utilisateur"
+    const DIALOG_CONTENT = "Sélectionner le type d'utilisateur"
+    const DIALOG_NEGATIVE = "Annuler"
+
+
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handlePositiveAction = (): void => {
+    }
+
     const [value, setName] = useState<String>("")
     const {loading, error, data} = useQuery(SEARCH_USER, {variables: {name: value}})
-
     const [search, setSearch] = useState<User[]>([])
     const [newDataAfterDelete] = useMutation<any>(DELETE_USER)
 
@@ -50,10 +70,6 @@ const ListAllUser = (): ReactElement => {
             setSearch(JSON.parse(JSON.stringify(data.search)))
         }
     }, [data])
-
-    // useEffect(() => {
-    //     console.log("Search : ", search)
-    // }, [search])
 
     const loadDynamicQuery = (value: String) => {
         setName(value)
@@ -71,7 +87,7 @@ const ListAllUser = (): ReactElement => {
                     case "student":
                         formatFetchData = formatFetchData.concat(data.search.filter((user: User) => {
                             console.log(user.role)
-                            return user.role === "User"
+                            return user.role === "User" || user.role === "Student"
                         }))
                         console.log(formatFetchData)
                         break
@@ -104,6 +120,22 @@ const ListAllUser = (): ReactElement => {
         }
     };
 
+    const openModalAddUser = () => {
+        return (
+            <Grid container justify="center" alignItems="center" className="item-height" spacing={4}>
+                <Grid item xs={12} sm={4}>
+                    <ModalAddNewUser userType={UserType.STUDENT}/>
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                    <ModalAddNewUser userType={UserType.TEACHER}/>
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                    <ModalAddNewUser userType={UserType.CAMPUS_MANAGER}/>
+                </Grid>
+            </Grid>
+        )
+    }
+
     const removeUser = (user: User) => {
         console.log(user)
 
@@ -111,7 +143,6 @@ const ListAllUser = (): ReactElement => {
             .then((data: any) => {
                 console.log(data)
             })
-
 
 
         const indexOfItem = search.indexOf(user)
@@ -124,6 +155,14 @@ const ListAllUser = (): ReactElement => {
 
     return (
         <div>
+            <CustomDialog open={open}
+                          handleClose={handleClose}
+                          handlePositiveAction={handlePositiveAction}
+                          dialogTitle={DIALOG_TITLE}
+                          dialogContent={DIALOG_CONTENT}
+                          negativeButton={DIALOG_NEGATIVE}>
+                {openModalAddUser()}
+            </CustomDialog>
             <Paper component="form">
                 <InputBase
                     onChange={e => {
@@ -131,11 +170,13 @@ const ListAllUser = (): ReactElement => {
                     }}
                     placeholder="Rechercher un utilisateur"
                     inputProps={{'aria-label': 'Search User'}}
+                    className="search-bar"
                 />
                 <IconButton type="submit" aria-label="search">
                     <SearchIcon/>
                 </IconButton>
-                <ToggleButtonGroup value={formats} onChange={handleFormat} aria-label="text formatting">
+                <ToggleButtonGroup className="filterBtn" value={formats} onChange={handleFormat}
+                                   aria-label="text formatting">
                     <ToggleButton value="asc" aria-label="asc">
                         <ArrowDownwardIcon/>
                     </ToggleButton>
@@ -143,15 +184,18 @@ const ListAllUser = (): ReactElement => {
                     <ToggleButton value="teacher" aria-label="teacher">Professeur</ToggleButton>
                     <ToggleButton value="admin" aria-label="admin">Admin</ToggleButton>
                 </ToggleButtonGroup>
+                <Button className="buttonAddUser" color={"primary"} variant={"outlined"} onClick={handleClickOpen}>Ajouter
+                    un nouvel utilisateur</Button>
             </Paper>
-            <List>
+
+            <GridList className="containerUser" cellHeight={"auto"} cols={5} spacing={16}>
                 {
                     search !== undefined ? search.map((user: User, index) => {
-                        return <Paper key={index} className="margin-list-item"><CustomUserItem user={user}
-                                                                                               removeHandler={(user: User) => removeUser(user)}/></Paper>
+                        return <CustomUserItem user={user} removeHandler={(user: User) => removeUser(user)}/>
+
                     }) : ""
                 }
-            </List>
+            </GridList>
         </div>
     )
 

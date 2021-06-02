@@ -1,0 +1,20 @@
+.userContainer {
+    display: block;
+    width: 24%;
+    height: 200px;
+    margin-top: 1.5rem;
+    margin-left: 4px;
+    margin-right: 4px;
+    border: 2px var(--primary) solid;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.tileBar {
+    background: #30475eBB !important;
+    font-weight: bold;
+}
+
+.iconDeleteButton {
+    color: #f05454;
+}
