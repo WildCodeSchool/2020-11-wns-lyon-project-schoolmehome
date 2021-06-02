@@ -67,12 +67,22 @@ export class UserServiceClass {
         const model = getModelForClass(User)
         if (name.length > 1) {
             return (await model.find()).filter(user => {
-                return user.lastName.includes(name) || user.firstName.includes(name)
+                return user.lastName.toUpperCase().includes(name.toUpperCase()) || user.firstName.toUpperCase().includes(name.toUpperCase())
             })
         } else {
             return model.find();
         }
 
+    }
+
+    @Mutation(() => [User])
+    async delete(id: string) {
+        const model = getModelForClass(User);
+        const user = await model.findByIdAndRemove(
+            {_id: id}
+        )
+        console.log("Hello User deleted", user)
+        return model.find()
     }
 }
 

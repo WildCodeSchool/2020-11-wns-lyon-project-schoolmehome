@@ -65,6 +65,11 @@ export class UserResolver {
         return await UserService.search(name)
     }
 
+    @Mutation(() => [User])
+    public async delete(@Arg('id') id: string){
+        return await UserService.delete(id)
+    }
+
     @Mutation(() => User)
     public async addLesson(@Arg('data') data: Lesson, @Arg('_id') _id: string): Promise<User> {
         const model = getModelForClass(User)
