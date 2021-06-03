@@ -49,6 +49,7 @@ export class AuthService {
             const token = jwt.sign(provisoryToken, "secret", provisoryTokenTime);
             user.restoreToken = token;
             user.save();
+            console.log('USERSAVE');
             return Mail.mail(user.email, token);
         }else{
             return null
