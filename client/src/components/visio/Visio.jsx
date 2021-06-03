@@ -17,10 +17,6 @@ const Visio = () => {
   const jitsiContainerId = "jitsi-container-id";
   const [jitsi, setJitsi] = useState({});
 
-  useEffect(() => {
-    console.log(lesson)
-  }, [])
-
   const loadJitsiScript = () => {
     let resolveLoadJitsiScriptPromise = null;
 
@@ -44,7 +40,7 @@ const Visio = () => {
 
     const _jitsi = new window.JitsiMeetExternalAPI("meet.jit.si", {
       parentNode: document.getElementById(jitsiContainerId),
-      roomName: id,
+      roomName: lesson ? lesson.findOneLesson.subject.name : '',
       userInfo: {
         displayName: (user.firstName && user.lastName) ? `${user.firstName} ${user.lastName}` : ''
       }

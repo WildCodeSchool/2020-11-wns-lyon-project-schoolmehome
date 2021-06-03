@@ -9,49 +9,59 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '../global/button/Button';
-// import 'bootstrap/dist/css/bootstrap.min.css';
-// import Modal from '@material-ui/core/Modal';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import useUser from '../../hooks/useUser';
-import { Input } from "@material-ui/core";
+import { Input, FormControl, InputLabel, Select, MenuItem } from "@material-ui/core";
+import LessonType from '../../types/lessonType';
+import { gql, useQuery, useMutation } from '@apollo/client';
+import useSubjects from '../../hooks/useSubjects';
 
 const Calendar = (): ReactElement => {
-  const [intervenant, setIntervenant] = useState<any>([]);
-  // const getTeachers = async () => {
-  //   try {
-  //     const resultList = await axios.get('http://localhost:3000/api/teacher');
-  //     setIntervenant(resultList.data.result);
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // }
 
-  type LessonType = {
-    start: string;
-    end: string;
-    subject: { name: string, id: string };
-    promo: string;
+  const NEW_LESSON = gql`
+  mutation addLesson (
+    $_id: String!
+    $data: LessonInput!
+  ) {
+    addLesson(_id: $_id, data: $data){
+      _id
+    }
   }
+`;
+
+const UPDATE_LESSON = gql`
+mutation updateLesson (
+  $_id: String!
+  $data: LessonInput!
+) {
+  UpdateLesson(_id: $_id, data: $data){
+    _id
+  }
+}
+`;
 
   const [lessons, setLessons] = useState<EventInput[]>([])
   const [newLesson, setNewLesson] = useState<LessonType>({
     start: '',
     end: '',
-    subject: { name: '', id: '' },
+    subject: { name: '', _id: '' },
     promo: ''
   })
   const [show, setShow] = useState<boolean>(false);
-  const [subjects, setSubjects] = useState<{ name: string, _id: string }[]>([]);
+  const { subjects } = useSubjects();
   const [promos, setPromos] = useState<{ _id: string, name: string }[]>([]);
   const { user } = useUser();
+  const [createLesson] = useMutation<any>(NEW_LESSON);
+  const [updateLesson] = useMutation<any>(UPDATE_LESSON);
+
+  // const [form, setForm] = useState({ subject: "", promo: "" })
   // let { id }: { id: string } = useParams();
   // let prof: any = intervenant.find((i: any) => id === i._id);
 
 
   useEffect(() => {
     if (user) {
-      console.log("calendar", user)
       setLessons(user.getOne.lessons.map((d: any): EventInput => {
         return ({
           id: d._id,
@@ -87,46 +97,32 @@ const Calendar = (): ReactElement => {
     // fetchData();
   }, [user])
 
+  useEffect(() => {
+    console.log(subjects)
+  }, [subjects])
+
   const handleClose = (): void => setShow(false);
   const handleShow = (): void => setShow(true);
   const handleChange = (e: any) => {
-    // setNewLesson({ ...newLesson, [e.target.name]: e.target.value })
+    setNewLesson({ ...newLesson, [e.target.name]: e.target.value })
   }
   const handleChangeSubject = (e: any) => {
-    // setNewLesson({ ...newLesson, subject: { id: e.target.id, name: e.target.value } })
+    console.log(e.target.value)
+    console.log(subjects.getAllSubjects.find((s: any) => s._id == e.target.value))
+    setNewLesson({ ...newLesson, subject: { _id: e.target.value, name: subjects.getAllSubjects.find((s: any) => s._id == e.target.value)?.name } })
   }
-  const handleSubmit = (e: FormEvent) => {
-    // e.preventDefault()
-    // const fetchData = async () => {
-    //   try {
-    //     const result = await axios.post(`http://localhost:3000/api/lesson`, {
-    //       name: newLesson.promo,
-    //       subject: newLesson.subject.id,
-    //       start: newLesson.start,
-    //       end: newLesson.end
-    //     })
-    //     // console.log(result.data.result.name)
-    //     const lessonsId = lessons.map(l => l.id)
-    //     const resultTeacher = await axios.patch(`http://localhost:3000/api/teacher/${id}`, {
-    //       lessons: [...lessonsId, result.data.result._id]
-    //     })
-    //     const promoId = promos.find(p => p.name === result.data.result.name)?._id;
-    //     const resultPromo = await axios(`http://localhost:3000/api/promo/${promoId}`)
-    //     // console.log(resultPromo.data.result.lessons)
-    //     const existPromosId = resultPromo.data.result.lessons
-    //     await axios.patch(`http://localhost:3000/api/promo/${promoId}`, {
-    //       lessons: [...existPromosId, result.data.result._id]
-    //     })
-    //     setLessons([...lessons, { id: `${result.data.result._id}`, title: `${newLesson.subject.name} / ${newLesson.promo}`, start: newLesson.start, end: newLesson.end }])
-    //   } catch (error) {
-    //     console.error(error);
-    //   }
-    // };
-    // fetchData()
-
+  const handleSubmit = () => {
+    createLesson({ variables: { _id: user.getOne._id, data: newLesson } })
+    .then((d: any) => {
+      setLessons([...lessons, { id: `${d.data.addLesson._id}`, title: `${newLesson.subject.name} / ${newLesson.promo}`, start: newLesson.start, end: newLesson.end }]) 
+    })
+    .catch(e => console.log(JSON.stringify(e)))
+    handleClose()
   }
 
   const saveChange = (info: any) => {
+      console.log(info.event)
+    // updateLesson({ variables: { _id: user.getOne._id, data: newLesson } })
     // const fetchData = async () => {
     //   try {
     //     const result = await axios.put(`http://localhost:3000/api/lesson/${info.event.id}`, {
@@ -144,107 +140,73 @@ const Calendar = (): ReactElement => {
     // fetchData()
   }
 
-  // if (subjects.length > 0 && promos.length > 0) {
-  return (
-    <>
-      {/* <Breadcrumb>
-          <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/" }}>
-            Gestion
-          </Breadcrumb.Item>
-          <Breadcrumb.Item active>
-            Calendrier
-          </Breadcrumb.Item>
-        </Breadcrumb> */}
-      {/* <h1> Calendrier : {prof && prof.user.firstName} {prof && prof.user.lastName}</h1> */}
-      <FullCalendar
-        plugins={[timeGridPlugin, interactionPlugin]}
-        initialView='timeGridWeek'
-        events={lessons}
-        headerToolbar={{
-          left: '',
-          center: '',
-          right: ''
-        }}
-        height='auto'
-        locale='fr'
-        hiddenDays={[0, 6]}
-        slotDuration='00:30'
-        slotMinTime='08:00'
-        slotMaxTime='19:00'
-        editable={true}
-        selectable={true}
-        select={function (info) {
-          // setNewLesson({ ...newLesson, start: info.startStr, end: info.endStr })
-          handleShow()
-          console.log(info)
-        }}
-        eventDrop={function (info) {
-          saveChange(info)
-        }}
-        eventResize={function (info) {
-          saveChange(info)
-        }}
-      />
+  if (subjects) {
+    return (
+      <>
+        <FullCalendar
+          plugins={[timeGridPlugin, interactionPlugin]}
+          initialView='timeGridWeek'
+          events={lessons}
+          headerToolbar={{
+            left: '',
+            center: '',
+            right: ''
+          }}
+          height='auto'
+          locale='fr'
+          hiddenDays={[0, 6]}
+          slotDuration='00:30'
+          slotMinTime='08:00'
+          slotMaxTime='19:00'
+          editable={true}
+          selectable={true}
+          select={function (info) {
+            setNewLesson({ ...newLesson, start: info.startStr, end: info.endStr })
+            handleShow()
+          }}
+          eventDrop={function (info) {
+            saveChange(info)
+          }}
+          eventResize={function (info) {
+            saveChange(info)
+          }}
+        />
+        <Dialog open={show} onClose={handleClose} aria-labelledby="form-dialog-title">
+          <DialogTitle id="form-dialog-title">Nouveau cours</DialogTitle>
+          <DialogContent>
 
-      {/* <Modal show={show} onHide={handleClose} animation={true}>
-        <Modal.Header closeButton>
-          <Modal.Title>Nouveau cours</Modal.Title>
-        </Modal.Header>
-        <Form onSubmit={e => handleSubmit(e)}>
-          <Modal.Body>
-            <Form.Group className="d-flex">
-              <Form.Label className="m-2" style={{ width: "70px" }}>Matière</Form.Label>
-              <Form.Control as="select" name="subject" id={newLesson.subject.id} value={newLesson.subject.name} onChange={e => handleChangeSubject(e)}>
-                {subjects.map(subject => <option value={subject.name}>{subject.name}</option>)}
-              </Form.Control>
-            </Form.Group>
-            <Form.Group className="d-flex">
-              <Form.Label className="m-2" style={{ width: "70px" }}>Promo</Form.Label>
-              <Form.Control as="select" name="promo" value={newLesson.promo} onChange={e => handleChange(e)}>
-                {promos.map(promo => <option value={promo.name}>{promo.name}</option>)}
-              </Form.Control>
-            </Form.Group>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Fermer
-          </Button>
-            <Button variant="primary" type="submit" onClick={handleClose}>
-              Sauvegarder
-          </Button>
-          </Modal.Footer>
-        </Form>
-      </Modal> */}
-      <Dialog open={show} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Nouveau cours</DialogTitle>
-        <DialogContent>
-          <TextField
-            style={{height:"10px"}}
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Email Address"
-            type="email"
-            fullWidth
-          />
-           <div className='profileditlabel'>Nom</div>
-             <Input type='text'className='profiledit'  />
+            <FormControl >
+              <InputLabel id="demo-simple-select-label">Matière</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={newLesson.subject._id}
+                style={{ width: "500px" }}
+                onChange={e => handleChangeSubject(e)}
+              >
+                {subjects.getAllSubjects.map((s: any) => <MenuItem value={s._id}>{s.name}</MenuItem>)}
+              </Select>
+            </FormControl>
+            <FormControl>
+            <InputLabel htmlFor="promo">Promo</InputLabel>
+            <Input id="promo" aria-describedby="my-helper-text" name="promo" onChange={e => handleChange(e)} />
+          </FormControl>
 
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancel
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Cancel
           </Button>
-          <Button onClick={handleClose} color="primary">
-            Subscribe
+            <Button onClick={handleSubmit} color="primary">
+              Valider
           </Button>
-        </DialogActions>
-      </Dialog>
-    </>
-  )
-  // } else {
-  //   return <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "50vh" }}><Spinner animation="border" variant="primary" style={{ width: "100px", height: "100px" }} /></div>
-  // }
+          </DialogActions>
+        </Dialog>
+      </>
+    )
+  } else {
+    return <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "50vh" }}>Loading...</div>
+  }
 
 }
 

@@ -39,6 +39,16 @@ export class LessonResolver {
       return newLesson;
     }
 
+    @Mutation(() => Lesson)
+    public async UpdateLesson(@Arg('data') data: Lesson, @Arg('_id') _id: string): Promise<Lesson> {
+      const model = getModelForClass(Lesson)
+      const newLesson = await model.findByIdAndUpdate(
+        { _id },
+        { data },
+        { new: true })
+      return newLesson;
+    }
+
     //A modifier normalement la méthode appel un findById
     // public async patch (@Arg('data') data: Lesson): Promise<Lesson> {
     //     const model = getModelForClass(Lesson)

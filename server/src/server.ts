@@ -11,6 +11,7 @@ import { SlideResolver } from './resolvers/SlideResolver';
 import { PresentationResolver } from './resolvers/PresentationResolver';
 import { LessonResolver } from './resolvers/LessonResolver';
 import { TeacherResolver } from './resolvers/TeacherResolver';
+import { SubjectResolver } from './resolvers/SubjectsResolver';
 import {Auth}  from './services/AuthService'
 
 export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) => {
@@ -38,7 +39,7 @@ export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) 
     await mongoose.connect('mongodb://localhost:27017/', { useNewUrlParser: true, useUnifiedTopology: true, dbName: "home" });
 
     const schema = await buildSchema({
-        resolvers: [UserResolver, SlideResolver, PresentationResolver, LessonResolver, TeacherResolver],
+        resolvers: [UserResolver, SlideResolver, PresentationResolver, LessonResolver, TeacherResolver, SubjectResolver],
         authChecker: passwordAuthChecker 
 
     });

@@ -70,6 +70,7 @@ export class UserResolver {
 
   @Mutation(() => User)
   public async addLesson(@Arg('data') data: Lesson, @Arg('_id') _id: string): Promise<User> {
+    console.log(data)
     const model = getModelForClass(User)
     const presentation = await model.findById(_id);
     const newLesson = await lessonService.create(data)
@@ -77,6 +78,8 @@ export class UserResolver {
       { _id },
       { lessons: [...presentation.lessons, newLesson] },
       { new: true })
+
+    // console.log(newUser)
     return newUser;
   }
 }

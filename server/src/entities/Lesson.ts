@@ -26,9 +26,9 @@ export class Lesson {
   @prop()
   subject: Subject;
 
-  @Field(() => [Presentation])
+  @Field(() => [Presentation], { nullable: true } )
   @prop()
-  presentation: Presentation[];
+  presentation?: Presentation[];
 
 
 }
