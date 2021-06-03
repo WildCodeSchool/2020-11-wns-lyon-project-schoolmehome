@@ -11,6 +11,19 @@ import { User } from "../entities/User";
 export class ArticlesWikiResolver {
 
     @Query(() => [ArticlesWikiType])
+    public async getAllWiki() {
+        const model = getModelForClass(ArticlesWikiType);
+        const promoModel = getModelForClass(Promo);
+        const userModel = getModelForClass(User);
+        return model.find()
+        .populate('promo',undefined, promoModel)
+        .populate('author', undefined, userModel)
+        .populate('content.author', undefined, userModel)
+        .populate('content.validatorTeacher', undefined, userModel)
+        .exec()
+    }
+
+    @Query(() => [ArticlesWikiType])
     public async getArticlesByPromo(@Arg('promo') promo : string) : Promise<ArticlesWikiType[]> {
         const model = getModelForClass(ArticlesWikiType);
         const promoModel = getModelForClass(Promo);
@@ -44,6 +57,35 @@ export class ArticlesWikiResolver {
         return model.findByIdAndDelete(_id);
     }
 
+    @Query(() => ArticlesWikiType)
+    public async isArticleEditing(@Arg('_id') _id: string) : Promise<boolean>{
+        const model = getModelForClass(ArticlesWikiType);
+        const article = await model.findById(_id);
+        if(article.isEditing){
+            return true;
+        }
+        return false;
+    }
 
+    @Mutation(() => ArticlesWikiType)
+    public async makeArticleEditing(@Arg('_id') _id: string, @Arg('value') value: boolean){
+        const model = getModelForClass(ArticlesWikiType);
+        if(value){
+            setTimeout(async () => {
+                await model.findByIdAndUpdate(_id, 
+                    {$set: {isEditing : false}},
+                    {new: true});
+            }, 10000)
+        }
+        return model.findByIdAndUpdate(_id,
+            {$set: {isEditing : value}},
+            {new: true});
+    }
+
+    @Mutation(() => ArticlesWikiType)
+    public async editArticles (@Arg('data') data : ArticlesWikiInput){
+        const model = getModelForClass(ArticlesWikiInput);
+        return model.findByIdAndUpdate(data._id, {$set : data}, {new : true})
+    }
 
 }
