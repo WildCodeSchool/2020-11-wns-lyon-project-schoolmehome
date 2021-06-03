@@ -8,6 +8,8 @@ import Button from "@material-ui/core/Button";
 import Slide from "@material-ui/core/Slide";
 import {TransitionProps} from "@material-ui/core/transitions";
 import {TextField} from "@material-ui/core";
+import "./CustomDialog.css";
+
 
 interface CustomDialogProps {
     open: boolean,
@@ -15,17 +17,17 @@ interface CustomDialogProps {
     handlePositiveAction: () => void,
     dialogTitle: String,
     dialogContent: String
-    positiveButton: String,
-    negativeButton: String
+    positiveButton?: String,
+    negativeButton?: String,
     children: ReactChild
 }
+
 const Transition = React.forwardRef(function Transition(
     props: TransitionProps & { children?: React.ReactElement<any, any> },
     ref: React.Ref<unknown>,
 ) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
-
 
 
 const CustomDialog = (customDialogProps: CustomDialogProps): ReactElement => {
@@ -47,12 +49,16 @@ const CustomDialog = (customDialogProps: CustomDialogProps): ReactElement => {
                 {customDialogProps.children}
             </DialogContent>
             <DialogActions>
-                <Button onClick={event => {close(event, false)}} color="primary">
+                {customDialogProps.negativeButton ? <Button onClick={event => {
+                    close(event, false)
+                }} color="primary">
                     {customDialogProps.negativeButton}
-                </Button>
-                <Button onClick={event => {close(event, true)}} color="primary">
+                </Button> : <></>}
+                {customDialogProps.positiveButton ? <Button onClick={event => {
+                    close(event, true)
+                }} color="primary">
                     {customDialogProps.positiveButton}
-                </Button>
+                </Button> : <></>}
             </DialogActions>
         </Dialog>
     )

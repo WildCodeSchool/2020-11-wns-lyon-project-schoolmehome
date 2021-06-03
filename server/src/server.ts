@@ -44,8 +44,6 @@ export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) 
 
     });
 
-
-
     const server = new ApolloServer({
         schema,
         playground: true,
@@ -57,7 +55,7 @@ export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) 
     app.use(cookieParser());
 
     server.applyMiddleware({ app, cors: false });
-    
+
     app.listen({ port: 4300 }, () =>
         console.log(`Server ready at http://localhost:4300${server.graphqlPath}`)
     );
