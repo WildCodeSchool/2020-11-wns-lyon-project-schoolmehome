@@ -40,22 +40,6 @@ export class UserServiceClass {
 
     }
 
-    // @Mutation(() => User, {nullable: true})
-    // public async lostPassword(@Arg('email') email: string): Promise<User> {
-    //     const model = getModelForClass(User);
-    //     const user = await Auth.passwordLost(email);
-    //     console.log(user);
-    //     const userUpdating = await model.findOneAndUpdate(
-    //         {email: email},
-    //         // {user: user.user, token: user.token},
-    //         {new: true});
-    //     if (userUpdating) {
-    //         return (userUpdating);
-    //     }
-    //     return null as any;
-    // }
-
-
     @Query(() => [User])
     public async fetchAll(): Promise<User[]> {
         const model = getModelForClass(User)
@@ -72,8 +56,8 @@ export class UserServiceClass {
         } else {
             return model.find();
         }
-
     }
+    
 }
 
 export const UserService = new UserServiceClass();

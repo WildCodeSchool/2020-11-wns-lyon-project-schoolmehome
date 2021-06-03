@@ -18,7 +18,8 @@ services:
       - 4300:4300
     volumes: 
       - ./server/src:/app/src
-
+    env_file: 
+      - ./server/.env
   mongodb:
     image: mongo
     volumes: 
