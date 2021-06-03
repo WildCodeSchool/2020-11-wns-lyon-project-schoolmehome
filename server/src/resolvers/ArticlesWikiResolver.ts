@@ -15,12 +15,20 @@ export class ArticlesWikiResolver {
         const model = getModelForClass(ArticlesWikiType);
         const promoModel = getModelForClass(Promo);
         const userModel = getModelForClass(User);
-        return model.find()
+        const all = await model.find()
         .populate('promo',undefined, promoModel)
         .populate('author', undefined, userModel)
         .populate('content.author', undefined, userModel)
         .populate('content.validatorTeacher', undefined, userModel)
-        .exec()
+        .exec();
+        return all.map(w => {
+            console.log(w.createdAt);
+            const lastIndex = w.content.length -1;
+            return {
+                ...w.toObject(), 
+                lastVersion : w.content[lastIndex],
+            }
+        });
     }
 
     @Query(() => [ArticlesWikiType])
@@ -37,12 +45,16 @@ export class ArticlesWikiResolver {
         const model = getModelForClass(ArticlesWikiType);
         const promoModel = getModelForClass(Promo);
         const userModel = getModelForClass(User)
-        return await model.findById(_id)
+        const w = await model.findById(_id)
         .populate('promo',undefined, promoModel)
         .populate('author', undefined, userModel)
         .populate('content.author', undefined, userModel)
         .populate('content.validatorTeacher', undefined, userModel)
         .exec()
+        return {
+            ...w.toObject(),
+            lastVersion : w.content[w.content.length - 1],
+        }
     }
 
     @Mutation(() => ArticlesWikiType)

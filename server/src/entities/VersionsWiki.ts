@@ -11,7 +11,7 @@ export class VersionsWiki{
     @Field({ nullable: true })
     _id!: string;
 
-    @Field()
+    @Field({nullable : true})
     @prop()
     createdAt : string
 
@@ -23,6 +23,10 @@ export class VersionsWiki{
     @prop()
     @IsIn([1, 2, 3])
     isValid : number;
+
+    @Field()
+    @prop()
+    version : number;
 
 }
 

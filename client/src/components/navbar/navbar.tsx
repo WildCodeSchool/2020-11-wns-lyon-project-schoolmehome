@@ -43,6 +43,12 @@ export function Navbar() {
             </NavLink>
             </li>
             <li className="nav-item">
+              <NavLink to="/wiki" className="nav-link" activeClassName="active">
+              <FaBook size={30}/>
+              <span className="link-text">Mes&nbsp;wikis</span>
+            </NavLink>
+            </li>
+            <li className="nav-item">
               <a className="nav-link" onClick={disconnect}>
               <FaSignOutAlt size={30}/>
               <span className="link-text">Se&nbsp;déconnecter</span>

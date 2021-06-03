@@ -13,6 +13,7 @@ import { Profil } from './components/Profil/profil';
 import { SlidesHome } from './components/Slides/SlidesHome';
 import SlideEdit from './components/Slides/SlideEdit';
 import { ProfilEdit } from './components/Profil/profiledit';
+import { Wiki } from './components/wiki/Wiki';
 
 function App() {
 
@@ -58,7 +59,13 @@ function App() {
       path: "/slides/edit/:id",
       exact: true,
       main: () => <main><SlideEdit /></main>
+    }, 
+    {
+      path: "/wiki",
+      exact : true,
+      main: () => <main><Wiki /></main>
     }
+
   ];
   return (
     <AuthProvider>

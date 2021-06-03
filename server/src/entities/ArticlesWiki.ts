@@ -41,6 +41,9 @@ export class ArticlesWikiType extends ArticlesWiki {
     @Field(() => [VersionsWikiType])
     @prop()
     content : VersionsWikiType[]
+
+    @Field(() => VersionsWikiType)
+    lastVersion : VersionsWikiType
 }
 
 @InputType('ArticlesWikiInput')
