@@ -2,3 +2,25 @@
     display: flex;
     flex-wrap: wrap;
 }
+
+a {
+    text-decoration: none;
+}
+
+.created{
+    font-size: x-small;
+    color: lightslategrey;
+}
+
+.wikiread{
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    margin-left: 1em;
+}
+
+.wikititle{
+    font-size: xxx-large;
+    border-bottom: 1px solid grey;
+    margin-bottom: 0;
+    margin-top: .5em;
+    font-weight: normal;
+}

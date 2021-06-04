@@ -2,6 +2,7 @@ import React from "react";
 import "./navbar.css";
 import { FaUser, FaSignOutAlt, FaBook } from "react-icons/fa";
 import { MdDashboard } from "react-icons/md";
+import { SiWikipedia } from "react-icons/si";
 import avatar from '../../image/unnamed.gif';
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../context/authContext";
@@ -44,7 +45,7 @@ export function Navbar() {
             </li>
             <li className="nav-item">
               <NavLink to="/wiki" className="nav-link" activeClassName="active">
-              <FaBook size={30}/>
+              <SiWikipedia size={30}/>
               <span className="link-text">Mes&nbsp;wikis</span>
             </NavLink>
             </li>

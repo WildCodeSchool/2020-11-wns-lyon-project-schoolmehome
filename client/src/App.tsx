@@ -14,6 +14,8 @@ import { SlidesHome } from './components/Slides/SlidesHome';
 import SlideEdit from './components/Slides/SlideEdit';
 import { ProfilEdit } from './components/Profil/profiledit';
 import { Wiki } from './components/wiki/Wiki';
+import { WikiRead } from './components/wiki/WikiRead';
+import { WikiNew } from './components/wiki/WikiNew';
 
 function App() {
 
@@ -64,7 +66,17 @@ function App() {
       path: "/wiki",
       exact : true,
       main: () => <main><Wiki /></main>
-    }
+    },
+    {
+      path: "/wiki/new",
+      exact : true,
+      main: () => <main><WikiNew /></main>
+    },
+    {
+      path: "/wiki/:id",
+      exact: true,
+      main: () => <main><WikiRead /></main>
+    },
 
   ];
   return (
