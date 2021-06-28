@@ -18,7 +18,7 @@ export interface CustomUserItemProps {
 const CustomUserItem = ({user, removeHandler}: CustomUserItemProps): ReactElement => {
 
     return (
-        <GridListTile key={user._id.toString()} className="userContainer">
+        <GridListTile className="userContainer">
             <img className="avatar" alt="Remy Sharp" src={DefaultBackground} />
             <GridListTileBar
                 className="tileBar"

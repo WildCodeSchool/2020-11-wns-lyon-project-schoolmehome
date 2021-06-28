@@ -16,7 +16,7 @@ export enum UserType {
 export const DashboardAdmin = (): ReactElement => {
 
     //TODO: Create Custom Hook | export function
-    const formState = React.useState(new UserFormData("", "", "", "", ""));
+    const formState = React.useState(new UserFormData("", "", "", "", "", []));
 
     return (
         <UserFormContext.Provider value={formState}>

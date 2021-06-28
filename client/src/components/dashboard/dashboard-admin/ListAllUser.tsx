@@ -191,7 +191,7 @@ const ListAllUser = (): ReactElement => {
             <GridList className="containerUser" cellHeight={"auto"} cols={5} spacing={16}>
                 {
                     search !== undefined ? search.map((user: User, index) => {
-                        return <CustomUserItem user={user} removeHandler={(user: User) => removeUser(user)}/>
+                        return <CustomUserItem key={index} user={user} removeHandler={(user: User) => removeUser(user)}/>
 
                     }) : ""
                 }

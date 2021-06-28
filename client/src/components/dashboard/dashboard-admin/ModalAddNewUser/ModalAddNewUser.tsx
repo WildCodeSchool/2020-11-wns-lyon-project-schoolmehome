@@ -63,10 +63,10 @@ const ModalAddNewUser = ({userType}: ModalAddNewUserProps): ReactElement => {
             case "ADMIN":
                 userFormData.role = "Admin"
         }
-        const user = new User("",userFormData.firstName, userFormData.lastName, userFormData.email, userFormData.password, userFormData.role)
+        const user = new User(userFormData.firstName, userFormData.lastName, userFormData.email, userFormData.password, userFormData.role, userFormData._lesson)
         signup({ variables: { user: user} })
             .then((data) => {
-                console.log(data)
+                console.log(data.data._id)
             }).catch((e) => {
                 console.log(e)
         })
@@ -100,14 +100,15 @@ export class User {
     email: String
     password: String
     role: String
+    lessons: []
 
-    constructor(id: String, firstName: String, lastName: String, email: String, password: String, role: String) {
-        this._id = id
+    constructor(firstName: String, lastName: String, email: String, password: String, role: String, lessons: []) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.role = role;
+        this.lessons = lessons;
     }
 }
 
@@ -117,6 +118,7 @@ export class UserFormData {
     _email: String
     _password: String
     _role: String
+    _lesson: []
 
 
     get firstName(): String {
@@ -160,13 +162,14 @@ export class UserFormData {
         this._role = value;
     }
 
-    constructor(firstName: String, lastName: String, email: String, password: String, userRole: String) {
+    constructor(firstName: String, lastName: String, email: String, password: String, userRole: String, lesson: []) {
         console.log('constructing')
         this._firstName = firstName;
         this._lastName = lastName;
         this._email = email;
         this._password = password;
         this._role = userRole;
+        this._lesson = lesson;
     }
 }
 
