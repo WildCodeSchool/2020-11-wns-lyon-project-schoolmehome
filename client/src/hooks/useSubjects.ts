@@ -12,7 +12,8 @@ const useSubjects = () => {
   const { loading, error, data } = useQuery<any>(GEt_SUBJECTS, {
     fetchPolicy: 'network-only'
   });
-
+  // fetchPolicy: 'cache-and-network'
+// refetchQueries: ['getAllSubjects']
   useEffect(() => {
     if(error) console.log(JSON.stringify(error))
     if(data) console.log(data)

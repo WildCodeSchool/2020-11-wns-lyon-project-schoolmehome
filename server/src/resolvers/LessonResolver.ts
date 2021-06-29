@@ -42,10 +42,14 @@ export class LessonResolver {
     @Mutation(() => Lesson)
     public async UpdateLesson(@Arg('data') data: Lesson, @Arg('_id') _id: string): Promise<Lesson> {
       const model = getModelForClass(Lesson)
+      const lesson = await model.findById(_id);
+      // console.log( { ...lesson, start: data.start, end: data.end })
       const newLesson = await model.findByIdAndUpdate(
         { _id },
-        { data },
+        { start: data.start || lesson.start, end: data.end, promo: lesson.promo, subject: lesson.subject},
         { new: true })
+
+        console.log(newLesson)
       return newLesson;
     }
 

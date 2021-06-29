@@ -1,10 +1,11 @@
 import * as argon from 'argon2'
 import {User} from '../entities/User';
 import {Arg, Mutation, Query, Resolver} from 'type-graphql';
-import {getModelForClass} from '@typegoose/typegoose';
+import {getModelForClass, mongoose} from '@typegoose/typegoose';
 import {Auth} from './AuthService';
 import {userInfo} from 'os';
 import { Teacher } from '../entities/Teacher';
+import { Lesson } from '../entities/Lesson';
 
 
 export class UserServiceClass {
@@ -28,7 +29,9 @@ export class UserServiceClass {
     @Query(() => User)
     public async findByEmail(email: string): Promise<User> {
         const model = getModelForClass(User);
-        return await model.findOne({email});
+        const lessonModel = getModelForClass(Lesson);
+        const user = await model.findOne({email}).populate('lessons', undefined, lessonModel).exec()
+        return user;
     }
 
     @Mutation(() => User, {nullable: true})

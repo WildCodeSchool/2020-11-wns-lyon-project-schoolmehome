@@ -68,12 +68,11 @@ export class TeacherResolver {
     public async findNextlesson(@Arg('email') email: string): Promise<Lesson>{
 
       const model = getModelForClass(User)
-      const teacher = await model.findOne({"email": email});
-
-      console.log(teacher)
+      const lessonModel = getModelForClass(Lesson);
+      const teacher = await model.findOne({email}).populate('lessons', undefined, lessonModel).exec()
       if(teacher.lessons.length === 0)
         return null
-
+        
       return teacher.lessons
         .filter(l => moment(l.start) > moment(Date.now()))
         .sort((a, b) => (a.start > b.start) ? 1 : ((b.start > a.start) ? -1 : 0))[0] 

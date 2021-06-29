@@ -40,7 +40,7 @@ const Visio = () => {
 
     const _jitsi = new window.JitsiMeetExternalAPI("meet.jit.si", {
       parentNode: document.getElementById(jitsiContainerId),
-      roomName: lesson ? lesson.findOneLesson.subject.name : '',
+      roomName: id,
       userInfo: {
         displayName: (user.firstName && user.lastName) ? `${user.firstName} ${user.lastName}` : ''
       }
@@ -73,9 +73,16 @@ const Visio = () => {
             </Carousel> : <p>Pas de présentation pour ce cours</p>}
           </div>}
       </div>
-      <div style={{ display: "flex", alignItems:"center", justifyContent: "center", marginTop: "20px" }}>
-      <Button onClick={() => setLessonToggle(!lessonToggle)} >{lessonToggle ? "Masquer le cours" :"Afficher le cours"}</Button>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginTop: "20px" }}>
+        <Button onClick={() => setLessonToggle(!lessonToggle)} >{lessonToggle ? "Masquer le cours" : "Afficher le cours"}</Button>
       </div>
+      {/* <Carousel>
+        {lesson.presentation.slides.map(s => {
+          return (
+            <div key={s._id} dangerouslySetInnerHTML={{ __html: `${s.htmlContent}` }} />
+          )
+        })}
+      </Carousel> */}
     </div>
   )
 

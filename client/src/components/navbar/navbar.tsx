@@ -1,6 +1,6 @@
 import React from "react";
 import "./navbar.css";
-import { FaUser, FaSignOutAlt, FaBook } from "react-icons/fa";
+import { FaUser, FaSignOutAlt, FaBook, FaCalendarAlt } from "react-icons/fa";
 import { MdDashboard } from "react-icons/md";
 import avatar from '../../image/unnamed.gif';
 import { NavLink } from "react-router-dom";
@@ -44,7 +44,7 @@ export function Navbar() {
         </li>
         <li className="nav-item">
           <NavLink to="/calendar" className="nav-link" activeClassName="active">
-            <FaBook size={30} />
+            <FaCalendarAlt size={30} />
             <span className="link-text">Mon calendrier</span>
           </NavLink>
         </li>
