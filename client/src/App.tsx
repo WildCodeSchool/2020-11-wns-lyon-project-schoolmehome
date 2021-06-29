@@ -16,6 +16,7 @@ import { ProfilEdit } from './components/Profil/profiledit';
 import { Wiki } from './components/wiki/Wiki';
 import { WikiRead } from './components/wiki/WikiRead';
 import { WikiNew } from './components/wiki/WikiNew';
+import { WikiEdit } from './components/wiki/WikiEdit';
 
 function App() {
 
@@ -76,6 +77,11 @@ function App() {
       path: "/wiki/:id",
       exact: true,
       main: () => <main><WikiRead /></main>
+    },
+    {
+      path: "/wiki/edit/:id",
+      exact: true,
+      main: () => <main><WikiEdit /></main>
     },
 
   ];

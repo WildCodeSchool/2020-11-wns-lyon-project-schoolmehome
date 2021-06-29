@@ -42,6 +42,18 @@ export class VersionsWikiType extends VersionsWiki {
     author : User
 }
 
+@ObjectType('VersionsWikiTypeAll')
+export class VersionsWikiTypeAll extends VersionsWiki {
+
+    @Field({nullable : true})
+    @prop({ref : () => User})
+    validatorTeacher : string
+
+    @Field()
+    @prop({ref : () => User})
+    author : string
+}
+
 @InputType('VersionsWikiInput')
 export class VersionsWikiInput extends VersionsWiki {
     @Field({nullable : true})

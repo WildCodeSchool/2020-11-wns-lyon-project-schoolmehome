@@ -1,6 +1,6 @@
 import { modelOptions, mongoose, prop, Ref } from "@typegoose/typegoose";
 import { ArgsType, Field, InputType, ObjectType } from "type-graphql";
-import { VersionsWiki, VersionsWikiInput, VersionsWikiType } from "./VersionsWiki";
+import { VersionsWiki, VersionsWikiInput, VersionsWikiType, VersionsWikiTypeAll } from "./VersionsWiki";
 import { User } from "./User";
 import { Promo } from "./Promo";
 
@@ -46,6 +46,7 @@ export class ArticlesWikiType extends ArticlesWiki {
     lastVersion : VersionsWikiType
 }
 
+
 @InputType('ArticlesWikiInput')
 export class ArticlesWikiInput extends ArticlesWiki {
     @Field()
@@ -59,4 +60,19 @@ export class ArticlesWikiInput extends ArticlesWiki {
     @Field(() => [VersionsWikiInput])
     @prop()
     content : VersionsWikiInput[]
+}
+
+@ObjectType('ArticlesWikiTypeAll')
+export class ArticlesWikiTypeAll extends ArticlesWiki {
+    @Field()
+    @prop({ref : () => Promo})
+    promo : string
+
+    @Field()
+    @prop({ref : () => User})
+    author : string
+
+    @Field(() => [VersionsWikiTypeAll])
+    @prop()
+    content : VersionsWikiTypeAll[]
 }

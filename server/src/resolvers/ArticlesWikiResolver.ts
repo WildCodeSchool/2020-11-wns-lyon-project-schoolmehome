@@ -1,7 +1,7 @@
 
 import { getModelForClass, mongoose } from "@typegoose/typegoose";
 import { Arg, Mutation, Query, Resolver } from "type-graphql";
-import { ArticlesWiki, ArticlesWikiInput, ArticlesWikiType } from "../entities/ArticlesWiki";
+import { ArticlesWiki, ArticlesWikiInput, ArticlesWikiInput2, ArticlesWikiType, ArticlesWikiTypeAll } from "../entities/ArticlesWiki";
 import { Promo } from "../entities/Promo";
 import {ObjectId} from "mongodb"
 import { User } from "../entities/User";
@@ -22,7 +22,6 @@ export class ArticlesWikiResolver {
         .populate('content.validatorTeacher', undefined, userModel)
         .exec();
         return all.map(w => {
-            console.log(w.createdAt);
             const lastIndex = w.content.length -1;
             return {
                 ...w.toObject(), 
@@ -35,7 +34,6 @@ export class ArticlesWikiResolver {
     public async getArticlesByPromo(@Arg('promo') promo : string) : Promise<ArticlesWikiType[]> {
         const model = getModelForClass(ArticlesWikiType);
         const promoModel = getModelForClass(Promo);
-        console.log(promo);
         const test = await model.find().populate('promo',undefined, promoModel).exec();
         return test.filter( m => m.promo._id == promo)
     }
@@ -57,6 +55,16 @@ export class ArticlesWikiResolver {
         }
     }
 
+    @Query(() => ArticlesWikiTypeAll)
+    public async getArticlesByIdWithAll(@Arg('_id') _id: string) : Promise<ArticlesWikiTypeAll>{
+        const model = getModelForClass(ArticlesWikiTypeAll);
+        const promoModel = getModelForClass(Promo);
+        const userModel = getModelForClass(User)
+        const w = await model.findById(_id).exec()
+        console.log(w)
+        return w;
+    }
+
     @Mutation(() => ArticlesWikiType)
     public async createArticles(@Arg('data', () => ArticlesWikiInput) data : ArticlesWikiInput ) : Promise<ArticlesWikiInput> {
         const model = getModelForClass(ArticlesWikiInput);
@@ -69,7 +77,7 @@ export class ArticlesWikiResolver {
         return model.findByIdAndDelete(_id);
     }
 
-    @Query(() => ArticlesWikiType)
+    @Query(() => Boolean)
     public async isArticleEditing(@Arg('_id') _id: string) : Promise<boolean>{
         const model = getModelForClass(ArticlesWikiType);
         const article = await model.findById(_id);
