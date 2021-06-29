@@ -33,7 +33,7 @@ export class AuthService {
         const model = getModelForClass(User);
         const user = await model.findOne({ email });
         if (user && await argon.verify(user.password, password) === true) {
-            const UserToken = {userId: user.id, nale: user.firstName};
+            const UserToken = {userId: user.id, name: user.firstName};
             const token = jwt.sign(UserToken, "secret");
             ctx.res.cookie('appSession', token, { maxAge: 60, httpOnly: true });
             return { token, user };
@@ -49,7 +49,6 @@ export class AuthService {
             const token = jwt.sign(provisoryToken, "secret", provisoryTokenTime);
             user.restoreToken = token;
             user.save();
-            console.log('USERSAVE');
             return Mail.mail(user.email, token);
         }else{
             return null

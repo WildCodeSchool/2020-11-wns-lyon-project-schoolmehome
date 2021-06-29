@@ -12,9 +12,6 @@ export class MailService{
             host: 'smtp.gmail.com',
             port: 465,
             secure: true,
-            tls: {
-                rejectUnauthorized: false
-            },
             auth: {
                 user: this.env.EMAIL,
                 pass: this.env.PASSWORD,
@@ -27,7 +24,7 @@ export class MailService{
             to: 'kasas.isabelle@gmail.com', 
             text: 'Cliquer sur le lien ci-dessous pour réinitialiser votre mot de passe',
             html:
-                '<p>Bonjour </p>' + account.firstName + account.lastName + 
+                '<p>Bonjour </p>' + account.firstName + ' ' + account.lastName + 
                 '<p>Cliquer sur le lien ci-dessous pour réinitialiser votre mot de passe</p>'+
                 '<p> Réinitialiser : ' +
                 '<a href="http://localhost:3000/reset?='+ token +' " >'+'Cliquez' +  '</a>',
