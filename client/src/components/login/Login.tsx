@@ -32,10 +32,6 @@ const Login = () => {
               <NavLink to="#" className="navlink-login">Help</NavLink>
               <NavLink to="#" className="navlink-login">Contact us</NavLink>
             </div>
-            <div>
-              <NavLink to="#" className="navlink-login">Sign in</NavLink>
-              <Button>Sign Up</Button>
-            </div>
           </nav>
           <div className="login-main-container">
             <div className="login-left-container">
@@ -45,7 +41,7 @@ const Login = () => {
               <form onSubmit={formSubmit} className="login-form-container">
                 <Input style={{ marginBottom: "50px" }} type="email" placeholder="Enter email" {...inputEmail} />
                 <Input style={{ marginBottom: "60px" }} type="password" placeholder="Enter password" {...inputPassword} />
-                <Button type="submit">Sign in</Button>
+                <Button type="submit">Login</Button>
               </form>
             </div>
           </div>
