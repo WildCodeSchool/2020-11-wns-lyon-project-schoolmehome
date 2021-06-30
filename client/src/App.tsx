@@ -17,6 +17,7 @@ import { Wiki } from './components/wiki/Wiki';
 import { WikiRead } from './components/wiki/WikiRead';
 import { WikiNew } from './components/wiki/WikiNew';
 import { WikiEdit } from './components/wiki/WikiEdit';
+import { WikiValidate } from './components/wiki/WikiValidate';
 
 function App() {
 
@@ -25,8 +26,6 @@ function App() {
       path: "/dashboard",
       exact: true,
       main: () => <main><DashboardRouting/></main>
-      // main: () => <h2>Home Dashboard</h2>
-      // main: () => <DashboardAdmin />
     },
     {
       path: "/profil",
@@ -64,6 +63,11 @@ function App() {
       main: () => <main><SlideEdit /></main>
     }, 
     {
+      path: "/wiki/validate",
+      exact: true,
+      main: () => <main><WikiValidate /></main>
+    },
+    {
       path: "/wiki",
       exact : true,
       main: () => <main><Wiki /></main>
@@ -83,6 +87,7 @@ function App() {
       exact: true,
       main: () => <main><WikiEdit /></main>
     },
+    
 
   ];
   return (

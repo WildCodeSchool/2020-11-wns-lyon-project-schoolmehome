@@ -10,6 +10,8 @@ import { User } from "../entities/User";
 @Resolver(() => ArticlesWikiType)
 export class ArticlesWikiResolver {
 
+    myTimeouts : Map<string, NodeJS.Timeout> = new Map()
+
     @Query(() => [ArticlesWikiType])
     public async getAllWiki() {
         const model = getModelForClass(ArticlesWikiType);
@@ -61,7 +63,6 @@ export class ArticlesWikiResolver {
         const promoModel = getModelForClass(Promo);
         const userModel = getModelForClass(User)
         const w = await model.findById(_id).exec()
-        console.log(w)
         return w;
     }
 
@@ -81,6 +82,7 @@ export class ArticlesWikiResolver {
     public async isArticleEditing(@Arg('_id') _id: string) : Promise<boolean>{
         const model = getModelForClass(ArticlesWikiType);
         const article = await model.findById(_id);
+        console.log(article.isEditing);
         if(article.isEditing){
             return true;
         }
@@ -90,12 +92,17 @@ export class ArticlesWikiResolver {
     @Mutation(() => ArticlesWikiType)
     public async makeArticleEditing(@Arg('_id') _id: string, @Arg('value') value: boolean){
         const model = getModelForClass(ArticlesWikiType);
+        console.log('toto')
         if(value){
-            setTimeout(async () => {
+            const t = this.myTimeouts.get(_id);
+            clearTimeout(t);
+            const x = setTimeout(async () => {
                 await model.findByIdAndUpdate(_id, 
                     {$set: {isEditing : false}},
                     {new: true});
-            }, 10000)
+                    console.log('patate')
+            }, 15000)
+            this.myTimeouts.set(_id, x);
         }
         return model.findByIdAndUpdate(_id,
             {$set: {isEditing : value}},
@@ -106,6 +113,16 @@ export class ArticlesWikiResolver {
     public async editArticles (@Arg('data') data : ArticlesWikiInput){
         const model = getModelForClass(ArticlesWikiInput);
         return model.findByIdAndUpdate(data._id, {$set : data}, {new : true})
+    }
+
+    @Mutation(() => ArticlesWikiType)
+    public async validArticle (@Arg('id') id : string, @Arg('valid') valid : boolean, @Arg('validator') validator : string){
+        const model = getModelForClass(ArticlesWikiInput);
+        const find = await model.findById(id);
+        find.content[find.content.length - 1].isValid = 1;
+        find.content[find.content.length - 1].validatorTeacher = validator;
+        await model.findByIdAndUpdate(find._id, {$set : find}, {new : true});
+        return this.getArticlesById(id)
     }
 
 }

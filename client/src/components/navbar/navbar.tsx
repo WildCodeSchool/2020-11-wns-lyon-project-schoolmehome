@@ -37,18 +37,33 @@ export function Navbar() {
               <span className="link-text">Mon&nbsp;profil</span>
             </NavLink>
           </li >
+          {
+            user.role === 'Teacher' ?
             <li className="nav-item">
               <NavLink to="/slides" className="nav-link" activeClassName="active">
               <FaBook size={30}/>
               <span className="link-text">Mes&nbsp;cours</span>
             </NavLink>
             </li>
+            : ''
+          }
+          {
+            user.role === 'Teacher' ?
             <li className="nav-item">
-              <NavLink to="/wiki" className="nav-link" activeClassName="active">
+              <NavLink to="/wiki/validate" className="nav-link" activeClassName="active">
               <SiWikipedia size={30}/>
-              <span className="link-text">Mes&nbsp;wikis</span>
+                <span className="link-text">Wikis&nbsp;élèves</span>
             </NavLink>
             </li>
+            : <li className="nav-item">
+              <NavLink to="/wiki" className="nav-link" activeClassName="active">
+              <SiWikipedia size={30}/>
+                <span className="link-text">Mes&nbsp;wikis</span>
+            </NavLink>
+            </li>
+          }
+            
+            
             <li className="nav-item">
               <a className="nav-link" onClick={disconnect}>
               <FaSignOutAlt size={30}/>

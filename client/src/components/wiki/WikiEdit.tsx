@@ -47,6 +47,7 @@ export const WikiEdit = () => {
     useEffect(() => {
       const idI = setInterval(async () => {
         await makeArticleEditing({variables : {id : id, value : true}})
+        console.log('ok')
       }, 5000)
       return (() => {
         clearInterval(idI)
@@ -99,30 +100,33 @@ export const WikiEdit = () => {
     
     return(
         <div>
-            <div className="slideCreation-container">
+
+          
+
+          <div className="slideCreation-container">
       
-      <div className="editor-container">
-        <Editor
-          initialValue=''
-          value={ActiveContent}
-          init={{
-            height: 800,
-            menubar: true,
-            plugins: [
-              'advlist autolink lists link image charmap print preview anchor',
-              'searchreplace visualblocks code fullscreen',
-              'insertdatetime media table paste code help wordcount'
-            ],
-            toolbar:
-              'undo redo | formatselect | bold italic backcolor | \
-            alignleft aligncenter alignright alignjustify | \
-            bullist numlist outdent indent | removeformat | help'
-          }}
-          onEditorChange={content => {
-            setActiveContent(content)
-          }}
-        />
-      </div>
+          <div className="editor-container">
+            <Editor
+              initialValue=''
+              value={ActiveContent}
+              init={{
+                height: 800,
+                menubar: true,
+                plugins: [
+                  'advlist autolink lists link image charmap print preview anchor',
+                  'searchreplace visualblocks code fullscreen',
+                  'insertdatetime media table paste code help wordcount'
+                ],
+                toolbar:
+                  'undo redo | formatselect | bold italic backcolor | \
+                alignleft aligncenter alignright alignjustify | \
+                bullist numlist outdent indent | removeformat | help'
+              }}
+              onEditorChange={content => {
+                setActiveContent(content)
+              }}
+            />
+          </div>
       </div>
       <Button onClick={save}>Enregistrer</Button>
         </div>

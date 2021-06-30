@@ -24,3 +24,31 @@ a {
     margin-top: .5em;
     font-weight: normal;
 }
+
+.center{
+    text-align: center;
+}
+.unstyled{
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+button.unstyled.created:hover{
+    color: black;
+    text-shadow: -2px -2px 9px rgba(150, 150, 150, 1);
+}
+.wikiVersion {
+    margin-left: 1em;
+    font-size: small;
+    font-style: italic;
+}
+.wiki-writer{
+    padding: 1em;
+}
+
+.wikiList .listWiki:nth-child(2n) .MuiPaper-root.wikicard{
+    background-color: var(--primary-light);
+}
+.wikiList .listWiki:nth-child(2n+1) .MuiPaper-root.wikicard{
+    background-color:var(--alternative-primary-light);
+}

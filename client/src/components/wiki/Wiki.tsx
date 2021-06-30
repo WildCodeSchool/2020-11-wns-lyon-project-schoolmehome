@@ -31,14 +31,17 @@ export const Wiki =  () => {
 
     return(
         <div>
-            <h2>Wiki</h2>
-            <Link to={`/wiki/new`}>Nouveau wiki</Link>
+            <div  style={{display : 'flex', justifyContent : 'space-between', alignItems : 'baseline'}}>
+                <h2>Wiki</h2>
+                <Link className='button' to={`/wiki/new`}>Nouveau wiki</Link>
+            </div>
+            
             <div className="wikiList">
                 {
                     wikis.map( (w, index) => {
                         return(
-                            <NavLink to={`/wiki/${w._id}`}>
-                                <Card elevation={3} className='blue wikicard' key={index} style={{marginBottom : '32px'}}>
+                            <NavLink className="listWiki" to={`/wiki/${w._id}`}>
+                                <Card elevation={3} className='wikicard' key={index} style={{marginBottom : '32px'}}>
                                     <CardContent>
                                         <Typography >{w.title}</Typography>
                                         <Typography variant="body2">Créé par {w.author.firstName} {w.author.lastName} le {moment(w.createdAt).format("DD/MM/YYYY") }</Typography>
