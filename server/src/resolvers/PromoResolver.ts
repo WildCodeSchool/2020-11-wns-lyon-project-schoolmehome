@@ -9,11 +9,11 @@ import { getModelForClass } from '@typegoose/typegoose';
 export class PromoResolver {
 
     @Mutation(() => Promo)
-    public async  create(@Arg('data') data: Promo):Promise<Promo>{
+    public async  createPromo(@Arg('data') data: Promo):Promise<Promo>{
         const model = getModelForClass(Promo)
         return await model.create(data)
     }
-        public async read (@Arg('data') data: Teacher): Promise<Teacher[]>{
+        public async read(@Arg('data') data: Teacher): Promise<Teacher[]>{
         const model = getModelForClass(Teacher)
         const teachers = await model.find()
             .populate("promo")

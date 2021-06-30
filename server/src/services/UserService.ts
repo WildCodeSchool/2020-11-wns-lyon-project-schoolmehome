@@ -84,6 +84,12 @@ export class UserServiceClass {
         console.log("Hello User deleted", user)
         return model.find()
     }
+
+    @Query(() => [User])
+    async findByRole(role: string): Promise<User[]>{
+        const model = getModelForClass(User);
+        return await model.find({role: {$eq: role}})
+    }
 }
 
 export const UserService = new UserServiceClass();

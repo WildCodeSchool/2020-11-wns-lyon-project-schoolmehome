@@ -7,6 +7,7 @@ import { AuthResult } from '../entities/AuthResult';
 import { Document } from "mongoose";
 import { Lesson } from "../entities/Lesson";
 import { getModelForClass } from "@typegoose/typegoose";
+import { Subject } from "../entities/Subject";
 
 @Resolver(() => User)
 export class UserResolver {
@@ -81,4 +82,11 @@ export class UserResolver {
         { new: true })
         return newUser;
     }
+
+    @Query(() => [User])
+    public async findUsersByRole(@Arg('role') role: string): Promise<User[]>{
+        return await UserService.findByRole(role);
+    }
+
+
 }

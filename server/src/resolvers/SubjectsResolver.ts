@@ -1,15 +1,19 @@
 import {Subject} from "../entities/Subject";
 
-import { getModelForClass } from "@typegoose/typegoose";
-import { Arg } from "type-graphql";
+import {getModelForClass} from "@typegoose/typegoose";
+import {Arg, Mutation, Query, Resolver} from "type-graphql";
 
+// @ts-ignore
+@Resolver(() => Subject)
+export class SubjectResolver {
 
-export class SubjectResolver{
-       public async create(@Arg('data') data: Subject): Promise<Subject>{
-        const model =  getModelForClass(Subject)
-        return await model.create(data)
+    @Mutation(() => Subject)
+    public async createSubject(@Arg('subject') subject: Subject): Promise<Subject> {
+        const model = getModelForClass(Subject)
+        return await model.create(subject)
     }
-    public async read (@Arg('data') data: Subject): Promise<Subject[]>{
+
+    public async read(@Arg('data') data: Subject): Promise<Subject[]> {
         const model = getModelForClass(Subject)
         const subjects = await model.find()
             .populate("promo")
@@ -17,6 +21,15 @@ export class SubjectResolver{
             .populate("subject")
         return subjects
     }
+
+    //@ts-ignore
+    @Query(() => [Subject])
+    public async getAllSubjects(): Promise<Subject[]> {
+        const model = getModelForClass(Subject)
+        return await model.find();
+    }
+
+
     // A Modifier pour les id
     // public async patch (@Arg('data') data: Subject): Promise<Subject> {
     //     const model = getModelForClass(Subject)

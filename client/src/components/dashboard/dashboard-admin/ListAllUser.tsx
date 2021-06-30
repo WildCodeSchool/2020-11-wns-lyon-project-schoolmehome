@@ -13,6 +13,8 @@ import {stringify} from "querystring";
 import {UserType} from "./DashboardAdmin";
 import AddUserForm from "../../global/form/AddUserForm";
 import CustomDialog from "../../global/CustomDialog";
+import ModalAddPromo from "./ModalAddPromo/ModalAddPromo";
+import ModalAddSubject from "./ModalAddSubject/ModalAddSubject";
 
 const ListAllUser = (): ReactElement => {
 
@@ -66,7 +68,6 @@ const ListAllUser = (): ReactElement => {
 
     useEffect(() => {
         if (data !== undefined) {
-            console.log(JSON.parse(JSON.stringify(data.search)))
             setSearch(JSON.parse(JSON.stringify(data.search)))
         }
     }, [data])
@@ -130,6 +131,12 @@ const ListAllUser = (): ReactElement => {
                     <ModalAddNewUser userType={UserType.TEACHER}/>
                 </Grid>
                 <Grid item xs={12} sm={4}>
+                    <ModalAddPromo />
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                    <ModalAddSubject />
+                </Grid>
+                <Grid item xs={12} sm={4}>
                     <ModalAddNewUser userType={UserType.CAMPUS_MANAGER}/>
                 </Grid>
             </Grid>
@@ -184,8 +191,7 @@ const ListAllUser = (): ReactElement => {
                     <ToggleButton value="teacher" aria-label="teacher">Professeur</ToggleButton>
                     <ToggleButton value="admin" aria-label="admin">Admin</ToggleButton>
                 </ToggleButtonGroup>
-                <Button className="buttonAddUser" color={"primary"} variant={"outlined"} onClick={handleClickOpen}>Ajouter
-                    un nouvel utilisateur</Button>
+                <Button className="buttonAddUser" color={"primary"} variant={"outlined"} onClick={handleClickOpen}>Gestion des utilisateurs</Button>
             </Paper>
 
             <GridList className="containerUser" cellHeight={"auto"} cols={5} spacing={16}>
