@@ -7,11 +7,7 @@ import {Arg, Mutation, Query, Resolver} from "type-graphql";
 @Resolver(() => Subject)
 export class SubjectResolver {
 
-    @Mutation(() => Subject)
-    public async createSubject(@Arg('subject') subject: Subject): Promise<Subject> {
-        const model = getModelForClass(Subject)
-        return await model.create(subject)
-    }
+
 
     public async read(@Arg('data') data: Subject): Promise<Subject[]> {
         const model = getModelForClass(Subject)

@@ -1,14 +1,13 @@
-import { Grid } from "@material-ui/core";
-import { Button } from "@material-ui/core";
-import { Paper } from "@material-ui/core";
+import {Grid} from "@material-ui/core";
+import {Button} from "@material-ui/core";
+import {Paper} from "@material-ui/core";
 import React from "react";
-import { ReactElement } from "react";
+import {ReactElement} from "react";
 import CustomDialog from "../../../global/CustomDialog";
 import DefaultBackground from "../../../../../src/image/background-user.jpg"
 import AddStudentPromoForm from "../../../global/form/AddStudentPromoForm";
-
-
-
+import {Subject} from "../ModalAddSubject/ModalAddSubject";
+import {User} from "../ModalAddNewUser/ModalAddNewUser";
 
 
 const ModalAddPromo = (): ReactElement => {
@@ -17,6 +16,9 @@ const ModalAddPromo = (): ReactElement => {
     const DIALOG_CONTENT = "Remplissez le formulaire ci-dessous afin d'ajouter des étudiants à une promotion'"
     const DIALOG_POSITIVE = "Valider"
     const DIALOG_NEGATIVE = "Annuler"
+
+    const promo = new Promo([], [], "")
+
 
     const [open, setOpen] = React.useState(false);
 
@@ -33,8 +35,20 @@ const ModalAddPromo = (): ReactElement => {
     };
 
     const handlePositiveAction = (): void => {
-        console.log("OK")
+        console.log(promo)
         handleClose();
+    }
+
+    const getPromoName = (name: string) => {
+        promo.name = name
+    }
+
+    const getUsers = (user: User[]) => {
+        // promo.users.push(user)
+    }
+
+    const getSubjects = (subjects: Subject[]) => {
+        // promo.subjects.push(subjects)
     }
 
     return (
@@ -52,10 +66,23 @@ const ModalAddPromo = (): ReactElement => {
                           dialogContent={DIALOG_CONTENT}
                           positiveButton={DIALOG_POSITIVE}
                           negativeButton={DIALOG_NEGATIVE}>
-                <AddStudentPromoForm />
+                <AddStudentPromoForm getUsers={getUsers} getPromoName={getPromoName} getSubject={getSubjects}/>
             </CustomDialog>
         </Paper>
     )
 }
 
 export default ModalAddPromo
+
+
+export class Promo {
+    subjects: Subject[]
+    users: User[]
+    name: string
+
+    constructor(subjects: Subject[], users: User[], name: string) {
+        this.subjects = subjects
+        this.users = users
+        this.name = name
+    }
+}

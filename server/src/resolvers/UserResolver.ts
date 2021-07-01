@@ -88,5 +88,15 @@ export class UserResolver {
         return await UserService.findByRole(role);
     }
 
+    @Mutation(() => Subject)
+    public async createSubject(@Arg('subject') subject: Subject): Promise<Subject> {
+        const model = getModelForClass(Subject)
+        return await model.create(subject)
+    }
 
+    @Query(() => [Subject])
+    public async getAllSubjects(): Promise<Subject[]> {
+        const model = getModelForClass(Subject)
+        return await model.find();
+    }
 }

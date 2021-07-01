@@ -1,11 +1,9 @@
-import {Button, Grid, Paper } from "@material-ui/core"
-import React, { ReactElement } from "react"
+import {Button, Grid, Paper} from "@material-ui/core"
+import React, {ReactElement} from "react"
 import CustomDialog from "../../../global/CustomDialog"
 import DefaultBackground from "../../../../../src/image/background-user.jpg"
 import AddSubjectForm from "../../../global/form/AddSubjectForm"
-import { gql, useMutation } from "@apollo/client"
-
-
+import {gql, useMutation} from "@apollo/client"
 
 
 const ModalAddSubject = (): ReactElement => {
@@ -18,11 +16,11 @@ const ModalAddSubject = (): ReactElement => {
     const [open, setOpen] = React.useState(false);
     const [subjectName, setSubject] = React.useState("");
 
-    const CREATE_SUBJECT = gql`
-        mutation create($subject: Subject!) {
-            createSubject(subject: $subject) {
-                _id
 
+    const CREATE_SUBJECT = gql`
+        mutation create($subject: SubjectInput!) {
+            createSubject(subject: $subject) {
+                name
             }
         }
     `;
@@ -71,7 +69,7 @@ const ModalAddSubject = (): ReactElement => {
                           dialogContent={DIALOG_CONTENT}
                           positiveButton={DIALOG_POSITIVE}
                           negativeButton={DIALOG_NEGATIVE}>
-                <AddSubjectForm handler={formNameHandler} />
+                <AddSubjectForm handler={formNameHandler}/>
             </CustomDialog>
         </Paper>
     )
@@ -80,15 +78,19 @@ const ModalAddSubject = (): ReactElement => {
 export default ModalAddSubject
 
 
-export class Subject {
-    public name: string
-
-    constructor(name: string) {
-        this.name = name
-    }
-
-}
 class SubjectInput {
+    public _id: string
+    public name: string
+
+    constructor(_id: string, name: string) {
+        this._id = _id
+        this.name = name
+    }
+
+}
+
+export class Subject {
+    public _id: string
     public name: string
 
     constructor(name: string) {
@@ -96,3 +98,4 @@ class SubjectInput {
     }
 
 }
+

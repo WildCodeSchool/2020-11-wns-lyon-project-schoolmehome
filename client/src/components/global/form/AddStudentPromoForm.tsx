@@ -3,7 +3,8 @@ import {Chip, FormControl, Input, InputLabel, makeStyles, MenuItem, Select, Them
 import {TextField} from "@material-ui/core";
 import React, {ReactElement, useContext, useEffect, useState} from "react";
 import {User} from "../../dashboard/dashboard-admin/ModalAddNewUser/ModalAddNewUser";
-import { Subject } from "../../dashboard/dashboard-admin/ModalAddSubject/ModalAddSubject";
+import {Promo} from "../../dashboard/dashboard-admin/ModalAddPromo/ModalAddPromo";
+import {Subject} from "../../dashboard/dashboard-admin/ModalAddSubject/ModalAddSubject";
 import './AddStudentPromoForm.css'
 
 
@@ -27,7 +28,14 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const AddStudentPromoForm = (): ReactElement => {
+
+interface AddStudentPromoFormProps {
+    getUsers: (user: User[]) => void
+    getSubject: (subject: Subject[]) => void
+    getPromoName: (name: string) => void
+}
+
+const AddStudentPromoForm = ({getUsers, getPromoName, getSubject}: AddStudentPromoFormProps): ReactElement => {
     const SEARCH_USER = gql`
         query($role: String!) {
             findUsersByRole(role: $role) {
@@ -41,8 +49,9 @@ const AddStudentPromoForm = (): ReactElement => {
     `;
 
     const SEARCH_SUBJECT = gql`
-        query($test: String!) {
-            getAllSubjects(test:$test) {
+        query {
+            getAllSubjects {
+                _id
                 name
             }
         }
@@ -75,21 +84,51 @@ const AddStudentPromoForm = (): ReactElement => {
 
     useEffect(() => {
         if (subject.data !== undefined) {
-            console.log(JSON.parse(JSON.stringify(subject.data.findUsersByRole)))
-            setSubjects(JSON.parse(JSON.stringify(subject.data.findUsersByRole)))
+            console.log(JSON.parse(JSON.stringify(subject.data.getAllSubjects)))
+            setSubjects(JSON.parse(JSON.stringify(subject.data.getAllSubjects)))
         }
     }, [subject.data])
 
 
     const [personName, setPersonName] = React.useState([]);
+    const [subjectName, setSubjectName] = React.useState([]);
 
-    const handleChange = (event: any) => {
+    const findUserNameWith = (id: string): string => {
+        const user = search.find((user: User) => user._id == id)
+        return user.firstName + " " + user.lastName
+    }
+
+    const findSubjectWith = (id: string): string => {
+        const subject = searchSubjects.find((subject: Subject) => subject._id == id)
+        // return subject.name
+        return "lol"
+    }
+
+    const handleChangePerson = (event: any) => {
+        const selectedUser: User[] = []
+        event.target.value.forEach((id: string) => {
+            const user = search.find((user: User) => user._id.toString() == id)
+            selectedUser.push(user);
+        })
+
         setPersonName(event.target.value);
+        getUsers(selectedUser)
+    };
+    const handleChangeSubject = (event: any) => {
+        const selectedSubject: Subject[] = []
+        event.target.value.forEach((id: string) => {
+            const subject = searchSubjects.find((subject: Subject) => subject._id == id)
+            selectedSubject.push(subject);
+        })
+        setSubjectName(event.target.value);
+        console.log(selectedSubject)
+        getSubject(selectedSubject)
+
     };
 
-    const handleChangeMultiple = (event: any) => {
+    const handleChangeMultipleUser = (event: any) => {
         const {options} = event.target;
-        const value = [User];
+        const value: User[] = [];
         for (let i = 0, l = options.length; i < l; i += 1) {
             if (options[i].selected) {
                 value.push(options[i].value);
@@ -98,8 +137,24 @@ const AddStudentPromoForm = (): ReactElement => {
         setPersonName(value);
     };
 
+    const handleChangeMultipleSubject = (event: any) => {
+        const {options} = event.target;
+        const value: Subject[] = [];
+        for (let i = 0, l = options.length; i < l; i += 1) {
+            if (options[i].selected) {
+                value.push(options[i].value);
+            }
+        }
+        setSubjectName(value);
+    }
+
     const classes = useStyles();
     const theme = useTheme();
+
+    const handleRemove = (tab: string[], id: string) => {
+        tab.splice(tab.indexOf(id))
+        setPersonName(tab)
+    }
 
 
     return (
@@ -110,6 +165,7 @@ const AddStudentPromoForm = (): ReactElement => {
                        margin="dense"
                        fullWidth
                        required
+                       onChange={e => getPromoName(e.target.value)}
                        className="inputText"/>
             <FormControl className={classes.formControl}>
                 <InputLabel id="demo-mutiple-chip-label">{"Choisissez un ou plusieurs étudiants"}</InputLabel>
@@ -119,20 +175,24 @@ const AddStudentPromoForm = (): ReactElement => {
                     multiple
                     fullWidth
                     value={personName}
-                    onChange={handleChange}
+                    onChange={handleChangePerson}
                     input={<Input id="select-multiple-chip"/>}
                     renderValue={(selected: any) => (
                         <div className={classes.chips}>
-                            {selected.map((value: any) => (
-                                <Chip key={value} label={value} className={classes.chip}/>
-                            ))}
+                            {
+                                selected.map((id: string) => {
+                                    return <Chip key={id} label={findUserNameWith(id)} className={classes.chip} onDelete={(e) => handleRemove(selected, id)} onMouseDown={(event) => {
+                                        event.stopPropagation();
+                                    }}/>
+                                })
+                            }
                         </div>
                     )}
                     MenuProps={MenuProps}
                 >{
-                    search !== undefined ? search.map((data: User) => (
-                        <MenuItem key={data._id.toString()}
-                                  value={data.firstName + " " + data.lastName}
+                    search !== undefined ? search.map((data: User, index: number) => (
+                        <MenuItem key={index}
+                                  value={data._id.toString()}
                                   style={getStyles(data.firstName, personName, theme)}>
                             {data.firstName + " " + data.lastName}
                         </MenuItem>
@@ -148,13 +208,13 @@ const AddStudentPromoForm = (): ReactElement => {
                     id="demo-mutiple-chip-2"
                     multiple
                     fullWidth
-                    value={personName}
-                    onChange={handleChange}
+                    value={subjectName}
+                    onChange={handleChangeSubject}
                     input={<Input id="select-multiple-chip-2"/>}
                     renderValue={(selected: any) => (
                         <div className={classes.chips}>
-                            {selected.map((value: any) => (
-                                <Chip key={value} label={value} className={classes.chip}/>
+                            {selected.map((id: any) => (
+                                <Chip key={id} label={findSubjectWith(id)} className={classes.chip}/>
                             ))}
                         </div>
                     )}
@@ -163,7 +223,7 @@ const AddStudentPromoForm = (): ReactElement => {
 
                     searchSubjects !== undefined ? searchSubjects.map((data: Subject, index: number) => (
                         <MenuItem key={index.toString()}
-                                  value={data.name}
+                                  value={data._id}
                                   style={getStyles(data.name, personName, theme)}>
                             {data.name}
                         </MenuItem>
