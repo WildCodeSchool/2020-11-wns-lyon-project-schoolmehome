@@ -24,7 +24,7 @@ export class MailService{
         let mailOptions = {
             from: '"schoolmehome69@gmail.com" <schoolmehome69@gmail.com>',
             subject: 'Réinitialisation du mot de passe',
-            to: 'kasas.isabelle@gmail.com', 
+            to: email, 
             text: 'Cliquer sur le lien ci-dessous pour réinitialiser votre mot de passe',
             html:
                 '<p>Bonjour </p>' + account.firstName + account.lastName + 
