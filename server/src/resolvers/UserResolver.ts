@@ -11,13 +11,15 @@ import { getModelForClass } from "@typegoose/typegoose";
 @Resolver(() => User)
 export class UserResolver {
 
-    @Query(() => User)
-
     @Authorized(['Admin'])
-    @Mutation(() => AuthResult)
-    public async create(@Arg('data') data: User): Promise<AuthResult> {
-        return await Auth.create(data);
+    @Mutation(() => User)
+    public async createUser(@Arg('data') data: User): Promise<User> {
+        return await Auth.createUser(data);
     }
+    @Mutation(() => User)
+    public async firstConnexion(@Arg('data', () => User) data: User): Promise<User> {
+        return await Auth.createPassword(data);
+    };
 
     @Authorized()
     public async authenticatedUser(@Ctx() ctx): Promise<User> {
@@ -38,7 +40,7 @@ export class UserResolver {
     public async resetPassword(@Arg('token') token: string, @Arg('password') password: string, @Arg('email') email: string){
         return Auth.restorePassword(token, password, email);
     }
-    //@Authorized(['Admin'])
+    // @Authorized(['Admin'])
     @Query(() => User)
     public async getOne(@Arg('email') email: string): Promise<User>{
         return await UserService.findByEmail(email);
@@ -49,10 +51,7 @@ export class UserResolver {
         return await UserService.updateOne(data)
     }
 
-    @Mutation(() => User)
-    public async signup(@Arg('data', () => User) data: User): Promise<User> {
-        return await UserService.signUp(data);
-    };
+
 
     // @Authorized(['Admin'])
     @Query(() => [User])

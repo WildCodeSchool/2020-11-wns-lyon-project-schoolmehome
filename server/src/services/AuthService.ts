@@ -1,32 +1,36 @@
 import * as jwt from 'jsonwebtoken';
 import * as argon from 'argon2'
-import { UserService } from './UserService';
 import { getModelForClass } from '@typegoose/typegoose';
-import { User, UserUpdate } from '../entities/User';
-import { Arg, Ctx, Mutation } from 'type-graphql';
+import { User} from '../entities/User';
+import { Mutation } from 'type-graphql';
 import { Mail } from '../services/MailService';
-import { AuthResult } from '../entities/AuthResult';
-import { Teacher } from '../entities/Teacher';
 
 export class AuthService {
-    @Mutation(() => User) 
-    public async create(data: User){
-        const model = getModelForClass(User);
-        const userToken = {data : data.email};
-        const token =  jwt.sign(userToken, "secret");
-        //renvoyer le token par mail
-        const user = await model.create(data);
-        return {token, user};
-    }
 
     @Mutation(() => User) 
-    public async createTeacher(data: Teacher){
-        const model = getModelForClass(Teacher);
+    public async createUser(data: User){
+        const model = getModelForClass(User);
         const userToken = {data : data.email};
+        data.password = null;
         const token =  jwt.sign(userToken, "secret");
-        //renvoyer le token par mail
-        const teacher = await model.create(data);
-        return {token, teacher};
+        const user = await model.create(data);
+        await Mail.mail(token, user.email);
+        return data;
+    }
+
+    @Mutation(() => User)
+    public async createPassword(newUser: User): Promise<User> {
+        const model = getModelForClass(User);
+        let email = newUser.email;
+        let password = await argon.hash(newUser.password);
+        let user =  await model.findOne({ email });
+        if (user) {
+            user.password = password;
+            await user.save();
+            return user;
+        }else{
+            return null;
+        }
     }
 
     public async signin(email, password, ctx){
