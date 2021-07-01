@@ -15,7 +15,7 @@ export class AuthService {
         const token =  jwt.sign(userToken, "secret");
         const user = await model.create(data);
         await Mail.mail(token, user.email);
-        return true;
+        return data;
     }
 
     @Mutation(() => User)
