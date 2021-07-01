@@ -1,4 +1,5 @@
 import { gql, useMutation } from "@apollo/client";
+import { Button } from "@material-ui/core";
 import { Accordion, AccordionDetails, AccordionSummary, Typography } from "@material-ui/core";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import React from "react"
@@ -32,19 +33,22 @@ export const WikiLineValid = ({wiki} : any) => {
     }
 
     return(
-        <div>
+        <div style={{marginBottom: '1em'}}>
             <Accordion>
                 <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls={wiki._id}
                 id={wiki._id}
+                className='titreWiki'
                 >
                 <Typography>{wiki.title}</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                     <div>
                         <div dangerouslySetInnerHTML={{__html: wiki.lastVersion.content}} />
-                        <button onClick={() => validate()}>Valider la version</button>
+                        <div className='center'>
+                            <Button className='validButton' variant="contained" onClick={() => validate()}>Valider la version</Button>
+                        </div>
                     </div>
                 </AccordionDetails>
             </Accordion> 

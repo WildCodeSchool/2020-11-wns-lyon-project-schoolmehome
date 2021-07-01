@@ -52,3 +52,23 @@ button.unstyled.created:hover{
 .wikiList .listWiki:nth-child(2n+1) .MuiPaper-root.wikicard{
     background-color:var(--alternative-primary-light);
 }
+
+.MuiAccordion-root{
+    margin-bottom: 1em;
+}
+.MuiAccordion-root.Mui-expanded:last-child {
+    margin-bottom: 1em;
+}
+.MuiAccordionSummary-root.Mui-expanded {
+    border-bottom: 1px solid rgba(0, 0, 0, .125);
+}
+
+.MuiButtonBase-root.MuiButton-root.MuiButton-contained.validButton{
+    background-color: var(--alternative-primary-light);
+}
+.MuiButtonBase-root.MuiAccordionSummary-root.titreWiki{
+    background-color: var(--primary-light);
+}
+.center button.button{
+    line-height: normal;
+}

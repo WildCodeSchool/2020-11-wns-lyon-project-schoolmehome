@@ -42,7 +42,7 @@ export const WikiValidate = () => {
 
     return(
         <div>
-            <div>Validation des Wikis</div>
+            <h2>Validation des Wikis</h2>
             {
                 wikis.map( wiki => 
                     wiki.lastVersion.isValid ?
