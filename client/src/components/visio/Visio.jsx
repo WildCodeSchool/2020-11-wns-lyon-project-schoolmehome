@@ -64,8 +64,8 @@ const Visio = () => {
         <div id={jitsiContainerId} style={{ height: 750, width: "100%", flex: "1" }} />
         {lessonToggle &&
           <div style={{ flex: "1", paddingLeft: "15px" }}>
-            {(lesson && lesson.findOneLesson.presentation.length > 0) ? <Carousel>
-              {lesson.findOneLesson.presentation[0].slides.map(s => {
+            {(lesson && lesson.findOneLesson.presentation) ? <Carousel>
+              {lesson.findOneLesson.presentation.slides.map(s => {
                 return (
                   <div key={s._id} dangerouslySetInnerHTML={{ __html: `${s.htmlContent}` }} style={{ height: '100%' }}></div>
                 )

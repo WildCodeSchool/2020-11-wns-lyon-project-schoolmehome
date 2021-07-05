@@ -4,6 +4,8 @@ import {Lesson} from "../entities/Lesson";
 import { Presentation } from '../entities/Presentation';
 import { lessonService } from '../services/LessonService';
 import { presentationService } from '../services/PresentationService';
+import { mongoose } from '@typegoose/typegoose';
+import { ObjectId } from 'mongodb';
 
 @Resolver(() => Lesson)
 export class LessonResolver {
@@ -33,7 +35,7 @@ export class LessonResolver {
       const newPresentation = await presentationService.add(data);
       const newLesson = await model.findByIdAndUpdate(
         { _id },
-        { presentation: [...lesson.presentation, newPresentation] },
+        { presentation:  newPresentation },
         { new: true })
       return newLesson;
     }
@@ -41,14 +43,17 @@ export class LessonResolver {
     @Mutation(() => Lesson)
     public async UpdateLesson(@Arg('data') data: Lesson, @Arg('_id') _id: string): Promise<Lesson> {
       const model = getModelForClass(Lesson)
+      const modelPres = getModelForClass(Presentation)
       const lesson = await model.findById(_id);
-      console.log(_id)
+      const presentation = await modelPres.findById(data.presentation._id)
       const newLesson = await model.findByIdAndUpdate(
         { _id },
         { start: data.start || lesson.start,
           end: data.end || lesson.start, 
           promo: data.promo || lesson.promo, 
-          subject: data.subject || lesson.subject},
+          subject: data.subject || lesson.subject,
+          presentation: presentation
+        },
         { new: true })
 
       return newLesson;

@@ -19,8 +19,14 @@ const useUser = () => {
           start, 
           end, 
           promo
-          subject 
-          {_id, name}
+          subject {
+            _id, 
+            name
+          },
+          presentation {
+            _id,
+            title
+          }
         }
       }
   }

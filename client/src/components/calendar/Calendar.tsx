@@ -12,6 +12,7 @@ import Button from '../global/button/Button';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import useUser from '../../hooks/useUser';
+import usePresentations from '../../hooks/usePresentations';
 import { Input, FormControl, InputLabel, Select, MenuItem } from "@material-ui/core";
 import LessonType from '../../types/lessonType';
 import { gql, useQuery, useMutation } from '@apollo/client';
@@ -61,6 +62,7 @@ mutation updateLesson (
   const [show, setShow] = useState<boolean>(false);
   const [showUpdate, setShowUpdate] = useState<boolean>(false);
   const { subjects } = useSubjects();
+  const { presentations } = usePresentations();
   const [promos, setPromos] = useState<{ _id: string, name: string }[]>([]);
   const { user } = useUser();
   const [createLesson] = useMutation<any>(NEW_LESSON);
@@ -78,7 +80,10 @@ mutation updateLesson (
           id: d._id,
           title: `${d.promo} / ${d.subject.name}`,
           start: d.start,
-          end: d.end
+          end: d.end,
+          promo: d.promo,
+          subject: d.subject,
+          presentation: d.presentation._id
         })
       }))
     }
@@ -102,10 +107,13 @@ mutation updateLesson (
   }
 
   const handleSubmitUpdate = () => {
-    updateLesson({ variables: { _id: actualLesson._id, data: actualLesson } })
+    updateLesson({ variables: { _id: actualLesson._id, data: {...actualLesson, presentation: {_id: actualLesson.presentation}} } })
       .then((d: any) => {
         const lessonsCopy = lessons.slice();
         lessonsCopy.filter(l => l.id === actualLesson._id)[0].title = `${actualLesson.subject.name} / ${actualLesson.promo}`
+        lessonsCopy.filter(l => l.id === actualLesson._id)[0].presentation = actualLesson.presentation;
+        lessonsCopy.filter(l => l.id === actualLesson._id)[0].promo = actualLesson.promo;
+        lessonsCopy.filter(l => l.id === actualLesson._id)[0].subject = actualLesson.subject;
         setLessons(lessonsCopy)
         setShowUpdate(false)
       })
@@ -126,7 +134,7 @@ mutation updateLesson (
       .catch(e => console.log(JSON.stringify(e)))
   }
 
-  if (subjects) {
+  if (subjects && presentations) {
     return (
       <>
         <FullCalendar
@@ -158,13 +166,15 @@ mutation updateLesson (
           }}
           eventClick={function (info) {
             setShowUpdate(true)
-            const less = user.getOne.lessons.find((l: any) => l._id == info.event.id) || newLesson;
+            const less = lessons.find((l: any) => l.id == info.event.id) || newLesson;
+            // console.log(less.presentation._id, presentations)
             setActualLesson({ 
               _id: info.event.id, 
               start: info.event.startStr, 
               end: info.event.endStr, 
               promo: less.promo,
-              subject: {name: less.subject.name, _id: less.subject._id  }
+              subject: {name: less.subject.name, _id: less.subject._id  },
+              presentation: less.presentation
             })
           }}
         />
@@ -230,6 +240,19 @@ mutation updateLesson (
               <InputLabel htmlFor="promo">Promo</InputLabel>
               <Input id="promo" aria-describedby="my-helper-text" value={actualLesson.promo} style={{ width: "500px" }} name="promo" onChange={e => setActualLesson({ ...actualLesson, [e.target.name]: e.target.value })} />
             </FormControl>
+            <FormControl >
+              <InputLabel id="pres-label">Présentation</InputLabel>
+              <Select
+                labelId="pres-label"
+                id="presentation-up"
+                value={actualLesson.presentation}
+                style={{ width: "500px" }}
+                onChange={(e:any) => setActualLesson({ ...actualLesson, presentation: e.target.value }) }
+              >
+                <MenuItem value=""> </MenuItem>
+                {presentations.findAllPresentation.map((s: any) => <MenuItem value={s._id}>{s.title}</MenuItem>)}
+              </Select>
+            </FormControl> 
 
           </DialogContent>
           <DialogActions>

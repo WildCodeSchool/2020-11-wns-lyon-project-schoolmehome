@@ -26,9 +26,7 @@ export class Lesson {
   @prop()
   subject: Subject;
 
-  @Field(() => [Presentation], { nullable: true } )
-  @prop()
-  presentation?: Presentation[];
-
-
+  @Field({ nullable: true} )
+  @prop({ref: () => Presentation})
+  presentation?: Presentation;
 }
