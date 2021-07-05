@@ -16,6 +16,9 @@ import { Input, FormControl, InputLabel, Select, MenuItem } from "@material-ui/c
 import LessonType from '../../types/lessonType';
 import { gql, useQuery, useMutation } from '@apollo/client';
 import useSubjects from '../../hooks/useSubjects';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+
 
 const Calendar = (): ReactElement => {
 
@@ -30,7 +33,7 @@ const Calendar = (): ReactElement => {
   }
 `;
 
-const UPDATE_LESSON = gql`
+  const UPDATE_LESSON = gql`
 mutation updateLesson (
   $_id: String!
   $data: LessonInput!
@@ -48,7 +51,15 @@ mutation updateLesson (
     subject: { name: '', _id: '' },
     promo: ''
   })
+  const [actualLesson, setActualLesson] = useState<LessonType>({
+    _id:'',
+    start: '',
+    end: '',
+    subject: { name: '', _id: '' },
+    promo: ''
+  })
   const [show, setShow] = useState<boolean>(false);
+  const [showUpdate, setShowUpdate] = useState<boolean>(false);
   const { subjects } = useSubjects();
   const [promos, setPromos] = useState<{ _id: string, name: string }[]>([]);
   const { user } = useUser();
@@ -73,39 +84,46 @@ mutation updateLesson (
     }
   }, [user])
 
-  useEffect(() => {
-    console.log(subjects)
-  }, [subjects])
-
   const handleClose = (): void => setShow(false);
   const handleShow = (): void => setShow(true);
   const handleChange = (e: any) => {
     setNewLesson({ ...newLesson, [e.target.name]: e.target.value })
   }
   const handleChangeSubject = (e: any) => {
-    console.log(e.target.value)
-    console.log(subjects.getAllSubjects.find((s: any) => s._id == e.target.value))
     setNewLesson({ ...newLesson, subject: { _id: e.target.value, name: subjects.getAllSubjects.find((s: any) => s._id == e.target.value)?.name } })
   }
   const handleSubmit = () => {
     createLesson({ variables: { _id: user.getOne._id, data: newLesson } })
-    .then((d: any) => {
-      setLessons([...lessons, { id: `${d.data.addLesson._id}`, title: `${newLesson.subject.name} / ${newLesson.promo}`, start: newLesson.start, end: newLesson.end }]) 
-    })
-    .catch(e => console.log(JSON.stringify(e)))
+      .then((d: any) => {
+        setLessons([...lessons, { id: `${d.data.addLesson._id}`, title: `${newLesson.subject.name} / ${newLesson.promo}`, start: newLesson.start, end: newLesson.end }])
+      })
+      .catch(e => console.log(JSON.stringify(e)))
     handleClose()
   }
 
+  const handleSubmitUpdate = () => {
+    updateLesson({ variables: { _id: actualLesson._id, data: actualLesson } })
+      .then((d: any) => {
+        const lessonsCopy = lessons.slice();
+        lessonsCopy.filter(l => l.id === actualLesson._id)[0].title = `${actualLesson.subject.name} / ${actualLesson.promo}`
+        setLessons(lessonsCopy)
+        setShowUpdate(false)
+      })
+      .catch(e => console.log(JSON.stringify(e)))
+    
+  }
+
   const saveChange = (info: any) => {
-      const data = {
-        start: info.event.startStr,
-        end: info.event.endStr,
-      }
-      updateLesson({variables: { _id: info.event.id, data }})
-        .then((d:any) => {
-          console.log(d)  
-        })
-        .catch(e => console.log(JSON.stringify(e)))
+    const data = {
+      start: info.event.startStr,
+      end: info.event.endStr,
+    }
+    const lessonsCopy = lessons.slice();
+    lessonsCopy.filter(l => l.id === info.event.id)[0].start = data.start;
+    lessonsCopy.filter(l => l.id === info.event.id)[0].end = data.end;
+    setLessons(lessonsCopy)
+    updateLesson({ variables: { _id: info.event.id, data } })
+      .catch(e => console.log(JSON.stringify(e)))
   }
 
   if (subjects) {
@@ -138,9 +156,16 @@ mutation updateLesson (
           eventResize={function (info) {
             saveChange(info)
           }}
-          eventClick={function(info) {
-            console.log(info.event.id)
-            handleShow()
+          eventClick={function (info) {
+            setShowUpdate(true)
+            const less = user.getOne.lessons.find((l: any) => l._id == info.event.id) || newLesson;
+            setActualLesson({ 
+              _id: info.event.id, 
+              start: info.event.startStr, 
+              end: info.event.endStr, 
+              promo: less.promo,
+              subject: {name: less.subject.name, _id: less.subject._id  }
+            })
           }}
         />
         <Dialog open={show} onClose={handleClose} aria-labelledby="form-dialog-title">
@@ -160,52 +185,62 @@ mutation updateLesson (
               </Select>
             </FormControl>
             <FormControl>
-            <InputLabel htmlFor="promo">Promo</InputLabel>
-            <Input id="promo" aria-describedby="my-helper-text"  style={{ width: "500px" }} name="promo" onChange={e => handleChange(e)} />
-          </FormControl>
+              <InputLabel htmlFor="promo">Promo</InputLabel>
+              <Input id="promo" aria-describedby="my-helper-text" style={{ width: "500px" }} name="promo" onChange={e => handleChange(e)} />
+            </FormControl>
+            {/* <FormControlLabel
+              control={
+                <Checkbox
+                  // checked={state.checkedB}
+                  onChange={handleChange}
+                  name="checkedB"
+                  color="primary"
+                />
+              }
+              label="Primary"
+            /> */}
 
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose} color="primary">
               Fermer
-          </Button>
+            </Button>
             <Button onClick={handleSubmit} color="primary">
               Valider
-          </Button>
+            </Button>
           </DialogActions>
         </Dialog>
 
-        {/* <Dialog open={showupdate} onClose={handleClose} aria-labelledby="form-dialog-title">
+        <Dialog open={showUpdate} onClose={() => setShowUpdate(false)} aria-labelledby="form-dialog-title">
           <DialogTitle id="form-dialog-title">Modifier cours</DialogTitle>
           <DialogContent>
-
             <FormControl >
               <InputLabel id="demo-simple-select-label">Matière</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={newLesson.subject._id}
+                value={actualLesson.subject._id}
                 style={{ width: "500px" }}
-                onChange={e => handleChangeSubject(e)}
+                onChange={(e:any) => setActualLesson({ ...actualLesson, subject: { _id: e.target.value, name: subjects.getAllSubjects.find((s: any) => s._id == e.target.value)?.name} }) }
               >
                 {subjects.getAllSubjects.map((s: any) => <MenuItem value={s._id}>{s.name}</MenuItem>)}
               </Select>
             </FormControl>
             <FormControl>
-            <InputLabel htmlFor="promo">Promo</InputLabel>
-            <Input id="promo" aria-describedby="my-helper-text"  style={{ width: "500px" }} name="promo" onChange={e => handleChange(e)} />
-          </FormControl>
+              <InputLabel htmlFor="promo">Promo</InputLabel>
+              <Input id="promo" aria-describedby="my-helper-text" value={actualLesson.promo} style={{ width: "500px" }} name="promo" onChange={e => setActualLesson({ ...actualLesson, [e.target.name]: e.target.value })} />
+            </FormControl>
 
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose} color="primary">
+            <Button onClick={() => setShowUpdate(false)} color="primary">
               Fermer
-          </Button>
-            <Button onClick={handleSubmit} color="primary">
+            </Button>
+            <Button onClick={handleSubmitUpdate} color="primary">
               Valider
-          </Button>
+            </Button>
           </DialogActions>
-        </Dialog> */}
+        </Dialog>
       </>
     )
   } else {

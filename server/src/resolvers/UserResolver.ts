@@ -68,8 +68,8 @@ export class UserResolver {
     return await UserService.search(name)
   }
 
-  @Mutation(() => User)
-  public async addLesson(@Arg('data') data: Lesson, @Arg('_id') _id: string): Promise<User> {
+  @Mutation(() => Lesson)
+  public async addLesson(@Arg('data') data: Lesson, @Arg('_id') _id: string): Promise<Lesson> {
     console.log(data)
     const model = getModelForClass(User)
     const presentation = await model.findById(_id);
@@ -80,6 +80,6 @@ export class UserResolver {
       { new: true })
 
     // console.log(newUser)
-    return newUser;
+    return newLesson;
   }
 }

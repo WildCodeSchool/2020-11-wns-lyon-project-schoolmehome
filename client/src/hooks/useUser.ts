@@ -20,7 +20,7 @@ const useUser = () => {
           end, 
           promo
           subject 
-          {name}
+          {_id, name}
         }
       }
   }

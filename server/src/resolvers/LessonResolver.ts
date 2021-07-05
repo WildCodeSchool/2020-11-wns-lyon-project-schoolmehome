@@ -30,7 +30,6 @@ export class LessonResolver {
     public async addPresentation(@Arg('data') data: Presentation, @Arg('_id') _id: string): Promise<Lesson> {
       const model = getModelForClass(Lesson)
       const lesson = await model.findById(_id);
-      console.log(lesson, _id)
       const newPresentation = await presentationService.add(data);
       const newLesson = await model.findByIdAndUpdate(
         { _id },
@@ -43,13 +42,15 @@ export class LessonResolver {
     public async UpdateLesson(@Arg('data') data: Lesson, @Arg('_id') _id: string): Promise<Lesson> {
       const model = getModelForClass(Lesson)
       const lesson = await model.findById(_id);
-      // console.log( { ...lesson, start: data.start, end: data.end })
+      console.log(_id)
       const newLesson = await model.findByIdAndUpdate(
         { _id },
-        { start: data.start || lesson.start, end: data.end, promo: lesson.promo, subject: lesson.subject},
+        { start: data.start || lesson.start,
+          end: data.end || lesson.start, 
+          promo: data.promo || lesson.promo, 
+          subject: data.subject || lesson.subject},
         { new: true })
 
-        console.log(newLesson)
       return newLesson;
     }
 

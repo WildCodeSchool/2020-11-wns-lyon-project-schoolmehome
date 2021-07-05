@@ -1,6 +1,4 @@
-.MuiFormLabel-root.Mui-focused {
-  /* padding: 0 0 500px 0 !important; */
-  /* display: flex !important; */
+/* .MuiFormLabel-root.Mui-focused {
   display: none !important;
   color: var(--primary) !important;
 }
@@ -18,7 +16,6 @@
 }
 
 .MuiFormLabel-root {
-  /* font-size: 60px !important; */
   padding: 10px !important;
   font-size: 1.75rem !important;
   color: var(--primary) !important;
@@ -35,5 +32,5 @@
 }
 
 label + .MuiInput-formControl {
-  /* margin-top: 25px !important; */
-}
+ 
+} */
