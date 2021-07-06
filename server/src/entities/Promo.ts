@@ -9,9 +9,6 @@ export  class Promo {
     _id: string;
 
     @Field()
-    _id : string;
-
-    @Field()
     @prop()
     name!: string;
 

@@ -1,7 +1,7 @@
 
 import { getModelForClass, mongoose } from "@typegoose/typegoose";
 import { Arg, Mutation, Query, Resolver } from "type-graphql";
-import { ArticlesWiki, ArticlesWikiInput, ArticlesWikiInput2, ArticlesWikiType, ArticlesWikiTypeAll } from "../entities/ArticlesWiki";
+import { ArticlesWiki, ArticlesWikiInput, ArticlesWikiType, ArticlesWikiTypeAll } from "../entities/ArticlesWiki";
 import { Promo } from "../entities/Promo";
 import {ObjectId} from "mongodb"
 import { User } from "../entities/User";
