@@ -62,7 +62,7 @@ export const useAuth = () => {
         if (result) {
           console.log(result, 'titi')
           setToken(result.token)
-          setUser({firstName: result.user.firstName, lastName: result.user.lastName, role: result.user.role, email: result.user.email})
+          setUser({firstName: result.user.firstName, lastName: result.user.lastName, role: result.user.role, email: result.user.email, id: result.user._id,})
           setPassword(null)
           localStorage.setItem('authToken', result.token)
           localStorage.setItem('user', JSON.stringify({firstName: result.user.firstName, lastName: result.user.lastName, role: result.user.role, id: result.user._id, email: result.user.email }))

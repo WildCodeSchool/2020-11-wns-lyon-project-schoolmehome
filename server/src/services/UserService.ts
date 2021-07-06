@@ -22,7 +22,7 @@ export class UserServiceClass {
                     model: presentationModel
                 }
             }).populate({
-                path: 'promos',
+                path: 'promo',
                 model: promoModel,
             })
             .exec()

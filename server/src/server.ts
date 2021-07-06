@@ -10,9 +10,10 @@ import { UserResolver } from './resolvers/UserResolver';
 import { SlideResolver } from './resolvers/SlideResolver';
 import { PresentationResolver } from './resolvers/PresentationResolver';
 import { LessonResolver } from './resolvers/LessonResolver';
+import { ArticlesWikiResolver } from './resolvers/ArticlesWikiResolver';
+import {Auth}  from './services/AuthService'
 import { SubjectResolver } from './resolvers/SubjectsResolver';
 import { PromoResolver } from './resolvers/PromoResolver';
-import { Auth } from './services/AuthService';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -42,7 +43,7 @@ export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) 
     try {
         await mongoose.connect('mongodb://localhost:27017/', { useNewUrlParser: true, useUnifiedTopology: true, dbName: "home" });
         const schema = await buildSchema({
-            resolvers: [UserResolver, SlideResolver, PresentationResolver, LessonResolver, SubjectResolver, PromoResolver],
+            resolvers: [UserResolver, SlideResolver, PresentationResolver, LessonResolver, SubjectResolver, PromoResolver, ArticlesWikiResolver],
             authChecker: passwordAuthChecker
     
         });
