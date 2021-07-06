@@ -1,5 +1,5 @@
 import {Subject} from "./Subject";
-import {Student} from "./Student";
+import {User} from "./User";
 import { Field, InputType, ObjectType } from "type-graphql";
 import { prop } from "@typegoose/typegoose";
 @ObjectType('PromoType')
@@ -12,9 +12,9 @@ export  class Promo {
     @prop()
     name!: string;
 
-    @Field(() => [Student])
+    @Field(() => [User])
     @prop()
-    students!: Student[];
+    students!: User[];
 
     @Field(() => [Subject])
     @prop()

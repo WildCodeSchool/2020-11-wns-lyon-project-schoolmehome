@@ -18,6 +18,7 @@ import { WikiRead } from './components/wiki/WikiRead';
 import { WikiNew } from './components/wiki/WikiNew';
 import { WikiEdit } from './components/wiki/WikiEdit';
 import { WikiValidate } from './components/wiki/WikiValidate';
+import Calendar from './components/calendar/Calendar';
 
 function App() {
 
@@ -87,8 +88,11 @@ function App() {
       exact: true,
       main: () => <main><WikiEdit /></main>
     },
-    
-
+    {
+      path: "/calendar",
+      exact: true,
+      main: () => <main><Calendar /></main>
+    }
   ];
   return (
     <AuthProvider>

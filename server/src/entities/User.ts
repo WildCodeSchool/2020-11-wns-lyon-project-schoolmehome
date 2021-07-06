@@ -2,6 +2,8 @@ import { mongoose, prop } from "@typegoose/typegoose";
 import { IsDate, IsEmail, IsIn, IsPhoneNumber, Length } from "class-validator";
 import { Field, InputType, ObjectType } from "type-graphql";
 import {Lesson} from './Lesson';
+import { Subject } from "./Subject";
+import { Promo } from "./Promo";
 
 @ObjectType('UserType')
 @InputType('UserInput')
@@ -24,7 +26,7 @@ export class User {
   email!: string;
 
   @Field({ nullable: true })
-  @Length(8, 50)
+  // @Length(8, 50)
   @prop()
   password!: string;
 
@@ -48,16 +50,27 @@ export class User {
   @prop()
   city!: string
 
-  @Field({ nullable: true })
+  @Field()
   @prop()
   @IsIn(['Admin', 'User', 'Teacher'])
   role!: string;
 
-  @Field(() => [Lesson])
-  @prop()
+  @Field(() => [Lesson], { nullable: true} )
+  @prop({ref: () => Lesson})
   lessons: Lesson[];
 
+  @Field(() => [Subject], {nullable: true})
+  @prop()
+  subject: Subject[];
+  @Field(() => [Promo], {nullable: true})
+  @prop()
+  promo: Promo[];
+  
+  @Field({nullable: true})
+  @prop()
+  restoreToken!: string;
 }
+@ObjectType('UserUpdate')
 @InputType('UserUpdate')
 export class UserUpdate {
   @Field({ nullable: true })
