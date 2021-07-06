@@ -5,6 +5,9 @@ import { prop } from "@typegoose/typegoose";
 @ObjectType('PromoType')
 @InputType('PromoInput')
 export  class Promo {
+    @Field({ nullable: true })
+    _id: string;
+
     @Field()
     @prop()
     name!: string;
