@@ -100,8 +100,7 @@ const AddStudentPromoForm = ({getUsers, getPromoName, getSubject}: AddStudentPro
 
     const findSubjectWith = (id: string): string => {
         const subject = searchSubjects.find((subject: Subject) => subject._id == id)
-        // return subject.name
-        return "lol"
+        return subject.name
     }
 
     const handleChangePerson = (event: any) => {

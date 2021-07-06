@@ -44,11 +44,13 @@ const ModalAddPromo = (): ReactElement => {
     }
 
     const getUsers = (user: User[]) => {
-        // promo.users.push(user)
+        console.log("User: ", user)
+        promo.users = user
     }
 
     const getSubjects = (subjects: Subject[]) => {
-        // promo.subjects.push(subjects)
+        console.log("Subject: ", subjects)
+        promo.subjects = subjects
     }
 
     return (
