@@ -145,11 +145,6 @@ mutation updateLesson (
           plugins={[timeGridPlugin, interactionPlugin]}
           initialView='timeGridWeek'
           events={lessons}
-          // headerToolbar={{
-          //   left: '',
-          //   center: '',
-          //   right: ''
-          // }}
           height='auto'
           locale='fr'
           hiddenDays={[0, 6]}
@@ -201,17 +196,6 @@ mutation updateLesson (
               <InputLabel htmlFor="promo">Promo</InputLabel>
               <Input id="promo" aria-describedby="my-helper-text" style={{ width: "500px" }} name="promo" onChange={e => handleChange(e)} />
             </FormControl>
-            {/* <FormControlLabel
-              control={
-                <Checkbox
-                  // checked={state.checkedB}
-                  onChange={handleChange}
-                  name="checkedB"
-                  color="primary"
-                />
-              }
-              label="Primary"
-            /> */}
 
           </DialogContent>
           <DialogActions>
