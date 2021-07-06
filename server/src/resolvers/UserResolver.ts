@@ -7,6 +7,8 @@ import { AuthResult } from '../entities/AuthResult';
 import { Document } from "mongoose";
 import { Lesson } from "../entities/Lesson";
 import { getModelForClass } from "@typegoose/typegoose";
+import moment from "moment";
+
 
 @Resolver(() => User)
 export class UserResolver {
@@ -81,5 +83,19 @@ export class UserResolver {
 
     // console.log(newUser)
     return newLesson;
+  }
+
+  @Query(() => Lesson, { nullable: true })
+  public async findNextlesson(@Arg('email') email: string): Promise<Lesson>{
+
+    const model = getModelForClass(User)
+    const lessonModel = getModelForClass(Lesson);
+    const teacher = await model.findOne({email}).populate('lessons', undefined, lessonModel).exec()
+    if(teacher.lessons.length === 0)
+      return null
+      
+    return teacher.lessons
+      .filter(l => moment(l.start) > moment(Date.now()))
+      .sort((a, b) => (a.start > b.start) ? 1 : ((b.start > a.start) ? -1 : 0))[0] 
   }
 }

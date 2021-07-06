@@ -4,8 +4,6 @@ import {Lesson} from "../entities/Lesson";
 import { Presentation } from '../entities/Presentation';
 import { lessonService } from '../services/LessonService';
 import { presentationService } from '../services/PresentationService';
-import { mongoose } from '@typegoose/typegoose';
-import { ObjectId } from 'mongodb';
 
 @Resolver(() => Lesson)
 export class LessonResolver {
@@ -45,7 +43,7 @@ export class LessonResolver {
       const model = getModelForClass(Lesson)
       const modelPres = getModelForClass(Presentation)
       const lesson = await model.findById(_id);
-      const presentation = await modelPres.findById(data.presentation._id)
+      const presentation = data.presentation ? await modelPres.findById(data.presentation._id) : null
       const newLesson = await model.findByIdAndUpdate(
         { _id },
         { start: data.start || lesson.start,

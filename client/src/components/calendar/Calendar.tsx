@@ -1,24 +1,19 @@
-import React, { ReactElement, useState, FormEvent, useEffect } from 'react';
+import React, { ReactElement, useState, useEffect } from 'react';
 import FullCalendar, { EventInput } from '@fullcalendar/react';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '../global/button/Button';
-import { Link, useParams } from 'react-router-dom';
-import axios from 'axios';
 import useUser from '../../hooks/useUser';
 import usePresentations from '../../hooks/usePresentations';
 import { Input, FormControl, InputLabel, Select, MenuItem } from "@material-ui/core";
 import LessonType from '../../types/lessonType';
-import { gql, useQuery, useMutation } from '@apollo/client';
+import { gql, useMutation } from '@apollo/client';
 import useSubjects from '../../hooks/useSubjects';
-import Checkbox from '@material-ui/core/Checkbox';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
+
 
 
 const Calendar = (): ReactElement => {
@@ -53,7 +48,7 @@ mutation updateLesson (
     promo: ''
   })
   const [actualLesson, setActualLesson] = useState<LessonType>({
-    _id:'',
+    _id: '',
     start: '',
     end: '',
     subject: { name: '', _id: '' },
@@ -83,7 +78,7 @@ mutation updateLesson (
           end: d.end,
           promo: d.promo,
           subject: d.subject,
-          presentation: d.presentation._id
+          presentation: d.presentation ? d.presentation._id : null
         })
       }))
     }
@@ -100,14 +95,23 @@ mutation updateLesson (
   const handleSubmit = () => {
     createLesson({ variables: { _id: user.getOne._id, data: newLesson } })
       .then((d: any) => {
-        setLessons([...lessons, { id: `${d.data.addLesson._id}`, title: `${newLesson.subject.name} / ${newLesson.promo}`, start: newLesson.start, end: newLesson.end }])
+        setLessons([
+          ...lessons,
+          {
+            id: `${d.data.addLesson._id}`,
+            title: `${newLesson.subject.name} / ${newLesson.promo}`,
+            start: newLesson.start,
+            end: newLesson.end,
+            promo: newLesson.promo,
+            subject: { name: newLesson.subject.name, _id: newLesson.subject._id }
+          }])
       })
       .catch(e => console.log(JSON.stringify(e)))
     handleClose()
   }
 
   const handleSubmitUpdate = () => {
-    updateLesson({ variables: { _id: actualLesson._id, data: {...actualLesson, presentation: {_id: actualLesson.presentation}} } })
+    updateLesson({ variables: { _id: actualLesson._id, data: { ...actualLesson, presentation: { _id: actualLesson.presentation } } } })
       .then((d: any) => {
         const lessonsCopy = lessons.slice();
         lessonsCopy.filter(l => l.id === actualLesson._id)[0].title = `${actualLesson.subject.name} / ${actualLesson.promo}`
@@ -118,7 +122,7 @@ mutation updateLesson (
         setShowUpdate(false)
       })
       .catch(e => console.log(JSON.stringify(e)))
-    
+
   }
 
   const saveChange = (info: any) => {
@@ -166,14 +170,13 @@ mutation updateLesson (
           }}
           eventClick={function (info) {
             setShowUpdate(true)
-            const less = lessons.find((l: any) => l.id == info.event.id) || newLesson;
-            // console.log(less.presentation._id, presentations)
-            setActualLesson({ 
-              _id: info.event.id, 
-              start: info.event.startStr, 
-              end: info.event.endStr, 
+            const less = lessons.find((l: any) => l.id == info.event.id);
+            setActualLesson({
+              _id: info.event.id,
+              start: info.event.startStr,
+              end: info.event.endStr,
               promo: less.promo,
-              subject: {name: less.subject.name, _id: less.subject._id  },
+              subject: { name: less.subject.name, _id: less.subject._id },
               presentation: less.presentation
             })
           }}
@@ -222,37 +225,37 @@ mutation updateLesson (
         </Dialog>
 
         <Dialog open={showUpdate} onClose={() => setShowUpdate(false)} aria-labelledby="form-dialog-title">
-          <DialogTitle id="form-dialog-title">Modifier cours</DialogTitle>
+          <DialogTitle id="form-up">Modifier cours</DialogTitle>
           <DialogContent>
             <FormControl >
-              <InputLabel id="demo-simple-select-label">Matière</InputLabel>
+              <InputLabel id="subject-up-label">Matière</InputLabel>
               <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
+                labelId="subject-up-label"
+                id="subject-up"
                 value={actualLesson.subject._id}
                 style={{ width: "500px" }}
-                onChange={(e:any) => setActualLesson({ ...actualLesson, subject: { _id: e.target.value, name: subjects.getAllSubjects.find((s: any) => s._id == e.target.value)?.name} }) }
+                onChange={(e: any) => setActualLesson({ ...actualLesson, subject: { _id: e.target.value, name: subjects.getAllSubjects.find((s: any) => s._id == e.target.value)?.name } })}
               >
                 {subjects.getAllSubjects.map((s: any) => <MenuItem value={s._id}>{s.name}</MenuItem>)}
               </Select>
             </FormControl>
             <FormControl>
-              <InputLabel htmlFor="promo">Promo</InputLabel>
-              <Input id="promo" aria-describedby="my-helper-text" value={actualLesson.promo} style={{ width: "500px" }} name="promo" onChange={e => setActualLesson({ ...actualLesson, [e.target.name]: e.target.value })} />
+              <InputLabel htmlFor="promo-up">Promo</InputLabel>
+              <Input id="promo-up" aria-describedby="my-helper-text" value={actualLesson.promo} style={{ width: "500px" }} name="promo" onChange={e => setActualLesson({ ...actualLesson, [e.target.name]: e.target.value })} />
             </FormControl>
             <FormControl >
               <InputLabel id="pres-label">Présentation</InputLabel>
               <Select
                 labelId="pres-label"
                 id="presentation-up"
-                value={actualLesson.presentation}
+                value={actualLesson.presentation ? actualLesson.presentation : ""}
                 style={{ width: "500px" }}
-                onChange={(e:any) => setActualLesson({ ...actualLesson, presentation: e.target.value }) }
+                onChange={(e: any) => setActualLesson({ ...actualLesson, presentation: e.target.value })}
               >
                 <MenuItem value=""> </MenuItem>
                 {presentations.findAllPresentation.map((s: any) => <MenuItem value={s._id}>{s.title}</MenuItem>)}
               </Select>
-            </FormControl> 
+            </FormControl>
 
           </DialogContent>
           <DialogActions>
