@@ -10,7 +10,8 @@ import { UserResolver } from './resolvers/UserResolver';
 import { SlideResolver } from './resolvers/SlideResolver';
 import { PresentationResolver } from './resolvers/PresentationResolver';
 import { LessonResolver } from './resolvers/LessonResolver';
-import {Auth}  from './services/AuthService';
+import { SubjectResolver } from './resolvers/SubjectsResolver';
+import { Auth } from './services/AuthService';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -23,10 +24,10 @@ export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) 
             const model = getModelForClass(User);
             const user = await model.findById(data.userId);
             context.user = user;
-            if (roles.length > 0){
-                if(roles.find(e => e === user.role)){
+            if (roles.length > 0) {
+                if (roles.find(e => e === user.role)) {
                     return true;
-                }return false
+                } return false
             }
             return true
         } else {
@@ -37,26 +38,32 @@ export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) 
     }
 };
 (async () => {
-    await mongoose.connect('mongodb://mongodb:27017/', { useNewUrlParser: true, useUnifiedTopology: true, dbName: "home" });
-    const schema = await buildSchema({
-        resolvers: [UserResolver, SlideResolver, PresentationResolver, LessonResolver],
-        authChecker: passwordAuthChecker 
-
-    });
-
-    const server = new ApolloServer({
-        schema,
-        playground: true,
-        context: ({ req, res }) => ({ req, res })
-    });
-
-    const app = express();
-    app.use(cors());
-    app.use(cookieParser());
-
-    server.applyMiddleware({ app, cors: false });
-
-    app.listen({ port: 4300 }, () =>
-        console.log(`Server ready at http://localhost:4300${server.graphqlPath}`)
-    );
+    try {
+        await mongoose.connect('mongodb://localhost:27017/', { useNewUrlParser: true, useUnifiedTopology: true, dbName: "home" });
+        const schema = await buildSchema({
+            resolvers: [UserResolver, SlideResolver, PresentationResolver, LessonResolver, SubjectResolver],
+            authChecker: passwordAuthChecker
+    
+        });
+    
+        const server = new ApolloServer({
+            schema,
+            playground: true,
+            context: ({ req, res }) => ({ req, res })
+        });
+    
+        const app = express();
+        app.use(cors());
+        app.use(cookieParser());
+    
+        server.applyMiddleware({ app, cors: false });
+    
+        app.listen({ port: 4300 }, () =>
+            console.log(`Server ready at http://localhost:4300${server.graphqlPath}`)
+        );
+    }
+    catch (e) {
+        console.error(e)
+    }
+   
 })();

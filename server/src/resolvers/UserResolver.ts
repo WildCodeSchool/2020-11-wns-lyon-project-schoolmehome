@@ -4,9 +4,10 @@ import { lessonService } from "../services/LessonService";
 import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import { User, UserUpdate } from '../entities/User';
 import { AuthResult } from '../entities/AuthResult';
-import { Document } from "mongoose";
 import { Lesson } from "../entities/Lesson";
 import { getModelForClass } from "@typegoose/typegoose";
+import moment from "moment";
+
 
 @Resolver(() => User)
 export class UserResolver {
@@ -53,6 +54,31 @@ export class UserResolver {
 
 
 
+  @Mutation(() => Lesson)
+  public async addLesson(@Arg('data') data: Lesson, @Arg('_id') _id: string): Promise<Lesson> {
+    const model = getModelForClass(User)
+    const presentation = await model.findById(_id);
+    const newLesson = await lessonService.create(data)
+    const newUser = await model.findByIdAndUpdate(
+      { _id },
+      { lessons: [...presentation.lessons, newLesson] },
+      { new: true })
+    return newLesson;
+  }
+
+  @Query(() => Lesson, { nullable: true })
+  public async findNextlesson(@Arg('email') email: string): Promise<Lesson>{
+
+    const model = getModelForClass(User)
+    const lessonModel = getModelForClass(Lesson);
+    const teacher = await model.findOne({email}).populate('lessons', undefined, lessonModel).exec()
+    if(teacher.lessons.length === 0)
+      return null
+      
+    return teacher.lessons
+      .filter(l => moment(l.start) > moment(Date.now()))
+      .sort((a, b) => (a.start > b.start) ? 1 : ((b.start > a.start) ? -1 : 0))[0] 
+  }
     // @Authorized(['Admin'])
     @Query(() => [User])
     public async fetchAll() {
@@ -68,17 +94,5 @@ export class UserResolver {
     @Mutation(() => [User])
     public async delete(@Arg('id') id: string){
         return await UserService.delete(id)
-    }
-
-    @Mutation(() => User)
-    public async addLesson(@Arg('data') data: Lesson, @Arg('_id') _id: string): Promise<User> {
-        const model = getModelForClass(User)
-        const presentation = await model.findById(_id);
-        const newLesson = await lessonService.create(data)
-        const newUser = await model.findByIdAndUpdate(
-        { _id },
-        { lessons: [...presentation.lessons, newLesson] },
-        { new: true })
-        return newUser;
     }
 }

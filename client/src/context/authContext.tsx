@@ -1,4 +1,4 @@
-import React, { createContext, useState, FormEvent, useContext } from 'react';
+import React, { createContext, useState, FormEvent, useContext, useEffect } from 'react';
 import { gql, useMutation } from '@apollo/client';
 
 
@@ -40,6 +40,7 @@ export const useAuth = () => {
     signin(email: $email, password: $password){
       token
       user {
+        _id
         email
         firstName
         lastName

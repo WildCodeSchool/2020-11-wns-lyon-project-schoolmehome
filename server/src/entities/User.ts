@@ -55,8 +55,8 @@ export class User {
   @IsIn(['Admin', 'User', 'Teacher'])
   role!: string;
 
-  @Field(() => [Lesson], {nullable: true})
-  @prop()
+  @Field(() => [Lesson], { nullable: true} )
+  @prop({ref: () => Lesson})
   lessons: Lesson[];
 
   @Field(() => [Subject], {nullable: true})

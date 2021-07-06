@@ -9,7 +9,7 @@ export class Presentation {
   @Field({ nullable: true })
   _id!: string;
 
-  @Field()
+  @Field({ nullable: true })
   @prop()
   title: string;
 
@@ -17,7 +17,7 @@ export class Presentation {
   // @prop()
   // owner: User["_id"];
 
-  @Field(() => [Slide])
+  @Field(() => [Slide], { nullable: true })
   @prop()
   slides: Slide[];
 }

@@ -1,18 +1,30 @@
-import {User} from '../entities/User';
-import {Arg, Mutation, Query} from 'type-graphql';
-import {getModelForClass} from '@typegoose/typegoose';
-
-
+import { User } from '../entities/User';
+import { Arg, Mutation, Query, Resolver } from 'type-graphql';
+import { getModelForClass, mongoose } from '@typegoose/typegoose';
+import { Lesson } from '../entities/Lesson';
+import { Presentation } from '../entities/Presentation';
 
 export class UserServiceClass {
 
     @Query(() => User)
     public async findByEmail(email: string): Promise<User> {
         const model = getModelForClass(User);
-        return await model.findOne({ email });
+        const lessonModel = getModelForClass(Lesson);
+        const presentationModel = getModelForClass(Presentation);
+        const user = await model.findOne({ email })
+            .populate({
+                path: 'lessons',
+                model: lessonModel,
+                populate: {
+                    path: 'presentation',
+                    model: presentationModel
+                }
+            })
+            .exec()
+        return user;
     }
 
-    @Mutation(() => User, {nullable: true})
+    @Mutation(() => User, { nullable: true })
     public async updateOne(@Arg('data') data: User) {
         const model = getModelForClass(User);
         return await model.findByIdAndUpdate(

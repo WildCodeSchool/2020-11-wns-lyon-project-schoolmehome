@@ -43,13 +43,6 @@ const Visio = () => {
       });
   }
 
-
-  useEffect(() => {
-
-
-
-  }, [])
-
   return (
     <div>
       <button onClick={() => handleClick()}>
