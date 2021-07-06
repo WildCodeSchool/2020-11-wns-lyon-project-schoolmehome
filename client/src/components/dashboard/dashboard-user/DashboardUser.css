@@ -1,0 +1,37 @@
+.MuiCardMedia-img.wiki-img{
+    object-fit: unset;
+    height: 100px;
+    margin: .5em auto;
+}
+.MuiCardMedia-media.wiki-img{
+    width: unset;
+}
+.wiki-list{
+    display: flex;
+    overflow-x: scroll;
+    /* firefox scrollbar */
+    scrollbar-color: var(--accent) var(--alternative-primary-light);
+}
+.MuiCard-root.wikicard{
+    flex: 0 0 200px;
+    margin-right: 2em;
+}
+
+.wiki-list::-webkit-scrollbar{
+    height: 5px;
+}
+.wiki-list::-webkit-scrollbar-track{
+    background: var(--alternative-primary-light);
+}
+.wiki-list::-webkit-scrollbar-thumb{
+    background: var(--accent);
+}
+
+.activities{
+    margin-top: 32px;
+}
+
+.MuiPaper-root.darkblue{
+    background-color:var(--primary) ;
+    color: var(--color-text-on-accent);
+}

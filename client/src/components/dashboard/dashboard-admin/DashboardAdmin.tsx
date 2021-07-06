@@ -8,7 +8,7 @@ import ListAllUser from "./ListAllUser";
 export const UserFormContext = createContext<any>({})
 
 export enum UserType {
-    STUDENT= "STUDENT",
+    STUDENT = "STUDENT",
     TEACHER = "TEACHER",
     CAMPUS_MANAGER = "ADMIN",
 }
@@ -19,9 +19,11 @@ export const DashboardAdmin = (): ReactElement => {
     const formState = React.useState(new UserFormData("", "", "", "", ""));
 
     return (
-        <div>
-            <ListAllUser/>
-        </div>
+        <UserFormContext.Provider value={formState}>
+            <Container maxWidth="xl" className="item-height">
+                <ListAllUser/>
+            </Container>
+        </UserFormContext.Provider>
         // <UserFormContext.Provider value={formState}>
         //     <Container maxWidth="xl" className="item-height">
         //         <Grid container justify="center" alignItems="center"  className="item-height" spacing={8}>

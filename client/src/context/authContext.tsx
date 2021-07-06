@@ -44,7 +44,6 @@ export const useAuth = () => {
         email
         firstName
         lastName
-        email
         role
       }
     }
@@ -78,8 +77,8 @@ export const useAuth = () => {
   const disconnect = () => {
     setToken(null)
     setUser({})
-    localStorage.setItem('authToken', '')
-    localStorage.setItem('user', '')
+    localStorage.removeItem('authToken')
+    localStorage.removeItem('user')
   }
 
   const handleCloseMui = (event: any, reason: any) => {

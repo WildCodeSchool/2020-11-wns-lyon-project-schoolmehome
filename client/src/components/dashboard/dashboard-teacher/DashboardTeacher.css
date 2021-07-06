@@ -13,10 +13,20 @@
 
 .MuiCardMedia-media.cours{
     width: 50%;
+    margin : auto;
 }
 
 .MuiCardMedia-media.promo{
     width: 50%;
+    margin : auto;
+}
+.MuiCardMedia-media.nextcours{
+    width: 50%;
+    margin : auto;
+}
+.MuiCardMedia-media.admin{
+    width: 50%;
+    margin : auto;
 }
 
 .link{
