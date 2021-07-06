@@ -30,7 +30,6 @@ let UserResolver = class UserResolver {
     }
     ;
     async authenticatedUser(ctx) {
-        //console.log(ctx.user);
         return ctx.user;
     }
     async signin(email, password, ctx) {

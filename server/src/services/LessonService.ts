@@ -11,10 +11,11 @@ export class LessonServiceClass{
         return await model.find({})
     }
 
+    
     @Mutation(() => Lesson)
     public async create(newLesson: Lesson): Promise<Lesson> {
-      const model = getModelForClass(Lesson);
-      return await model.create(newLesson);
+        const model = getModelForClass(Lesson);
+        return await model.create(newLesson);
     }
 
     @Query(() => Lesson)
