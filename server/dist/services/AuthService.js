@@ -43,12 +43,12 @@ class AuthService {
         const token = jwt.sign(userToken, "secret");
         const user = await model.create(data);
         await MailService_1.Mail.mail(token, user.email);
-        return data;
+        return true;
     }
-    async createPassword(newUser) {
+    async createPassword(data) {
         const model = typegoose_1.getModelForClass(User_1.User);
-        let email = newUser.email;
-        let password = await argon.hash(newUser.password);
+        let email = data.email;
+        let password = await argon.hash(data.password);
         let user = await model.findOne({ email });
         if (user) {
             user.password = password;
@@ -78,7 +78,6 @@ class AuthService {
             const token = jwt.sign(provisoryToken, "secret", provisoryTokenTime);
             user.restoreToken = token;
             user.save();
-            console.log('USERSAVE');
             return MailService_1.Mail.mail(user.email, token);
         }
         else {
