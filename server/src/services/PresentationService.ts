@@ -14,8 +14,8 @@ export class PresentationServiceClass{
 
     @Mutation(() => Presentation)
     public async add(newPres: Presentation): Promise<Presentation> {
-      const model = getModelForClass(Presentation);
-      return model.create(newPres);
+        const model = getModelForClass(Presentation);
+        return model.create(newPres);
     }
     
     @Query(() => Presentation)
@@ -32,10 +32,10 @@ export class PresentationServiceClass{
 
     @Mutation(() => Presentation)
     public async delete(_id: string): Promise<Presentation> {
-      const model = getModelForClass(Presentation);
-      const deletedPresentation = this.findById(_id)
-      await model.deleteOne({ _id });
-      return deletedPresentation;
+        const model = getModelForClass(Presentation);
+        const deletedPresentation = this.findById(_id)
+        await model.deleteOne({ _id });
+        return deletedPresentation;
     }
 
     @Mutation(() => Presentation)

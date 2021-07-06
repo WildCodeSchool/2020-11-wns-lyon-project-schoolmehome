@@ -3,6 +3,7 @@ import { Arg, Mutation, Query, Resolver } from 'type-graphql';
 import { getModelForClass, mongoose } from '@typegoose/typegoose';
 import { Lesson } from '../entities/Lesson';
 import { Presentation } from '../entities/Presentation';
+import { Promo } from '../entities/Promo';
 
 export class UserServiceClass {
 
@@ -11,6 +12,7 @@ export class UserServiceClass {
         const model = getModelForClass(User);
         const lessonModel = getModelForClass(Lesson);
         const presentationModel = getModelForClass(Presentation);
+        const promoModel = getModelForClass(Promo);
         const user = await model.findOne({ email })
             .populate({
                 path: 'lessons',
@@ -19,6 +21,9 @@ export class UserServiceClass {
                     path: 'presentation',
                     model: presentationModel
                 }
+            }).populate({
+                path: 'promos',
+                model: promoModel,
             })
             .exec()
         return user;

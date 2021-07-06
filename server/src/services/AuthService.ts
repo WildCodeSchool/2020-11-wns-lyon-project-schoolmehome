@@ -15,14 +15,14 @@ export class AuthService {
         const token =  jwt.sign(userToken, "secret");
         const user = await model.create(data);
         await Mail.mail(token, user.email);
-        return data;
+        return true;
     }
 
     @Mutation(() => User)
-    public async createPassword(newUser: User): Promise<User> {
+    public async createPassword(data: User): Promise<User> {
         const model = getModelForClass(User);
-        let email = newUser.email;
-        let password = await argon.hash(newUser.password);
+        let email = data.email;
+        let password = await argon.hash(data.password);
         let user =  await model.findOne({ email });
         if (user) {
             user.password = password;
@@ -53,7 +53,6 @@ export class AuthService {
             const token = jwt.sign(provisoryToken, "secret", provisoryTokenTime);
             user.restoreToken = token;
             user.save();
-            console.log('USERSAVE');
             return Mail.mail(user.email, token);
         }else{
             return null
