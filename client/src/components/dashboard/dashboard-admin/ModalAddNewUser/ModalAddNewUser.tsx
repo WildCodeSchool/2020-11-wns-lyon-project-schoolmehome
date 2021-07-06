@@ -26,8 +26,8 @@ const ModalAddNewUser = ({userType}: ModalAddNewUserProps): ReactElement => {
     const [userForm] = useContext(UserFormContext)
 
     const NEW_USER = gql`
-        mutation SignUp ($user: UserInput!) {
-            signup(data: $user){
+        mutation createUser ($user: UserInput!) {
+            createUser(data: $user){
                 _id
             }
         }
@@ -61,7 +61,7 @@ const ModalAddNewUser = ({userType}: ModalAddNewUserProps): ReactElement => {
                 userFormData.role = "Teacher"
                 break
             case "ADMIN":
-                userFormData.role = "Admin"
+                userFormData.role = 'Admin'
         }
         const user = new User("",userFormData.firstName, userFormData.lastName, userFormData.email, userFormData.password, userFormData.role)
         signup({ variables: { user: user} })

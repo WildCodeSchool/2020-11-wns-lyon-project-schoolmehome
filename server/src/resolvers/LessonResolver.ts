@@ -1,5 +1,5 @@
 import { getModelForClass } from '@typegoose/typegoose';
-import { Arg, Mutation, Query, Resolver } from 'type-graphql';
+import { Arg, Authorized, Mutation, Query, Resolver } from 'type-graphql';
 import {Lesson} from "../entities/Lesson";
 import { Presentation } from '../entities/Presentation';
 import { lessonService } from '../services/LessonService';
@@ -7,10 +7,13 @@ import { presentationService } from '../services/PresentationService';
 
 @Resolver(() => Lesson)
 export class LessonResolver {
+
+    @Authorized(['Admin', 'Teacher'])
     public async create(@Arg('data') data: Lesson): Promise<Lesson>{
         const model =  getModelForClass(Lesson)
         return await model.create(data)
     }
+
 
     public async read (@Arg('data') data: Lesson): Promise<Lesson[]>{
         const model = getModelForClass(Lesson)
@@ -26,6 +29,7 @@ export class LessonResolver {
       return lessonService.findOne(_id)
     }
 
+    @Authorized(['Admin', 'Teacher'])
     @Mutation(() => Lesson)
     public async addPresentation(@Arg('data') data: Presentation, @Arg('_id') _id: string): Promise<Lesson> {
       const model = getModelForClass(Lesson)

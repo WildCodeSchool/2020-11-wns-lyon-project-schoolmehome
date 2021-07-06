@@ -13,9 +13,10 @@ export class UserResolver {
 
     @Authorized(['Admin'])
     @Mutation(() => User)
-    public async createUser(@Arg('data') data: User): Promise<User> {
+    public async createUser(@Arg('data') data: User): Promise<Boolean>{
         return await Auth.createUser(data);
     }
+
     @Mutation(() => User)
     public async firstConnexion(@Arg('data', () => User) data: User): Promise<User> {
         return await Auth.createPassword(data);
@@ -23,7 +24,6 @@ export class UserResolver {
 
     @Authorized()
     public async authenticatedUser(@Ctx() ctx): Promise<User> {
-        //console.log(ctx.user);
         return ctx.user;
     }
 
@@ -64,6 +64,7 @@ export class UserResolver {
         return await UserService.search(name)
     }
 
+    @Authorized(['Admin'])
     @Mutation(() => [User])
     public async delete(@Arg('id') id: string){
         return await UserService.delete(id)
