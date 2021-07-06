@@ -13,7 +13,7 @@ const useUser = () => {
     getOne(email: $email) {
       _id,
       email,
-      promos {
+      promo {
         _id
         name
       },

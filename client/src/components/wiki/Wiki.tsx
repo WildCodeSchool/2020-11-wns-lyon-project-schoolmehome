@@ -4,9 +4,12 @@ import moment from "moment";
 
 import React, { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
+import useUser from "../../hooks/useUser";
 import "./Wiki.css";
 
 export const Wiki =  () => {
+
+    const u = useUser();
 
     const GET_WIKI = gql`
         query getArticles {getAllWiki{
@@ -33,7 +36,11 @@ export const Wiki =  () => {
         <div>
             <div  style={{display : 'flex', justifyContent : 'space-between', alignItems : 'baseline'}}>
                 <h2>Wiki</h2>
-                <Link className='button' to={`/wiki/new`}>Nouveau wiki</Link>
+                { u.user?.getOne.promo[0]._id ? 
+                    <Link className='button' to={`/wiki/new`}>Nouveau wiki</Link>
+                    : ''
+                }
+                
             </div>
             
             <div className="wikiList">

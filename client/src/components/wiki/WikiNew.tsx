@@ -4,6 +4,7 @@ import moment from "moment";
 import React, { FormEvent, useState } from "react"
 import { useHistory } from "react-router-dom";
 import { useAuth } from "../../context/authContext";
+import useUser from "../../hooks/useUser";
 import Button from "../global/button/Button";
 import Input from "../global/input/Input";
 
@@ -12,6 +13,7 @@ export const WikiNew = () => {
     const [title, setTitle]  = useState('');
     const {user} = useAuth();
     const history = useHistory();
+    const u = useUser();
 
     const NEW_ART = gql`
         mutation createArticle ($art: ArticlesWikiInput!) {
@@ -26,7 +28,7 @@ export const WikiNew = () => {
         const newA = {
             isEditing : false,
             title : title,
-            promo : "5fb66c6114be1635346ac44d", // FIX ME attention promo en dur
+            promo : u.user.getOne.promo[0]._id, // FIX ME attention promo en dur
             createdAt : moment().toISOString(),
             author : user.id,
             content : [{
