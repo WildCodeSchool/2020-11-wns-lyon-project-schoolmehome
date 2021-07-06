@@ -33,8 +33,27 @@ export class LessonResolver {
       const newPresentation = await presentationService.add(data);
       const newLesson = await model.findByIdAndUpdate(
         { _id },
-        { presentation: [...lesson.presentation, newPresentation] },
+        { presentation:  newPresentation },
         { new: true })
+      return newLesson;
+    }
+
+    @Mutation(() => Lesson)
+    public async UpdateLesson(@Arg('data') data: Lesson, @Arg('_id') _id: string): Promise<Lesson> {
+      const model = getModelForClass(Lesson)
+      const modelPres = getModelForClass(Presentation)
+      const lesson = await model.findById(_id);
+      const presentation = data.presentation ? await modelPres.findById(data.presentation._id) : null
+      const newLesson = await model.findByIdAndUpdate(
+        { _id },
+        { start: data.start || lesson.start,
+          end: data.end || lesson.start, 
+          promo: data.promo || lesson.promo, 
+          subject: data.subject || lesson.subject,
+          presentation: presentation
+        },
+        { new: true })
+
       return newLesson;
     }
 

@@ -13,6 +13,7 @@ import { Profil } from './components/Profil/profil';
 import { SlidesHome } from './components/Slides/SlidesHome';
 import SlideEdit from './components/Slides/SlideEdit';
 import { ProfilEdit } from './components/Profil/profiledit';
+import Calendar from './components/calendar/Calendar';
 
 function App() {
 
@@ -58,6 +59,11 @@ function App() {
       path: "/slides/edit/:id",
       exact: true,
       main: () => <main><SlideEdit /></main>
+    },
+    {
+      path: "/calendar",
+      exact: true,
+      main: () => <main><Calendar /></main>
     }
   ];
   return (
