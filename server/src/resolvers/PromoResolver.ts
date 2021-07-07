@@ -2,7 +2,7 @@
 import { Promo } from '../entities/Promo';
 import { User } from '../entities/User';
 import { arrayNotEmpty } from "class-validator";
-import { Arg, Mutation } from 'type-graphql';
+import { Arg, Mutation, Resolver } from 'type-graphql';
 import { getModelForClass } from '@typegoose/typegoose';
 
 @Resolver(() => Promo)
