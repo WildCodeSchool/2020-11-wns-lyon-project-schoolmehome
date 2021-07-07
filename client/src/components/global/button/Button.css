@@ -4,4 +4,5 @@
   font-size: 1.25rem;
   color: var(--color-text-on-accent) !important;
   background-color: var(--accent) !important;
+  height: fit-content;
 }

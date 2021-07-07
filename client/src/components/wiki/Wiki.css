@@ -1,0 +1,74 @@
+.wikiList{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+a {
+    text-decoration: none;
+}
+
+.created{
+    font-size: x-small;
+    color: lightslategrey;
+}
+
+.wikiread{
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    margin-left: 1em;
+}
+
+.wikititle{
+    font-size: xxx-large;
+    border-bottom: 1px solid grey;
+    margin-bottom: 0;
+    margin-top: .5em;
+    font-weight: normal;
+}
+
+.center{
+    text-align: center;
+}
+.unstyled{
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+button.unstyled.created:hover{
+    color: black;
+    text-shadow: -2px -2px 9px rgba(150, 150, 150, 1);
+}
+.wikiVersion {
+    margin-left: 1em;
+    font-size: small;
+    font-style: italic;
+}
+.wiki-writer{
+    padding: 1em;
+}
+
+.wikiList .listWiki:nth-child(2n) .MuiPaper-root.wikicard{
+    background-color: var(--primary-light);
+}
+.wikiList .listWiki:nth-child(2n+1) .MuiPaper-root.wikicard{
+    background-color:var(--alternative-primary-light);
+}
+
+.MuiAccordion-root{
+    margin-bottom: 1em;
+}
+.MuiAccordion-root.Mui-expanded:last-child {
+    margin-bottom: 1em;
+}
+.MuiAccordionSummary-root.Mui-expanded {
+    border-bottom: 1px solid rgba(0, 0, 0, .125);
+}
+
+.MuiButtonBase-root.MuiButton-root.MuiButton-contained.validButton{
+    background-color: var(--alternative-primary-light);
+}
+.MuiButtonBase-root.MuiAccordionSummary-root.titreWiki{
+    background-color: var(--primary-light);
+}
+.center button.button{
+    line-height: normal;
+}

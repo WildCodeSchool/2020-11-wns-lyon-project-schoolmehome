@@ -72,7 +72,7 @@ export class User {
   restoreToken!: string;
 }
 @ObjectType('UserUpdate')
-@InputType('UserUpdate')
+@InputType('UserUpdateType')
 export class UserUpdate {
   @Field({ nullable: true })
   @Length(2, 20)
