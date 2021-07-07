@@ -12,11 +12,11 @@ export  class Promo {
     @prop()
     name!: string;
 
-    @Field(() => [User])
-    @prop()
-    students!: User[];
+    // @Field(() => [User])
+    // @prop()
+    // students!: User[];
 
-    @Field(() => [Subject])
-    @prop()
-    subject !: Subject[];
+    // @Field(() => [Subject])
+    // @prop()
+    // subject !: Subject[];
 }

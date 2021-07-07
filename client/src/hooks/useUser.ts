@@ -13,8 +13,8 @@ const useUser = () => {
     getOne(email: $email) {
       _id,
       email,
-      promos {
-        _id
+      promo {
+        _id,
         name
       },
       lessons
@@ -22,7 +22,10 @@ const useUser = () => {
           _id
           start, 
           end, 
-          promo
+          promo {
+            _id,
+            name
+          }
           subject {
             _id, 
             name

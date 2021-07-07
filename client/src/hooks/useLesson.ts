@@ -11,7 +11,7 @@ const useLesson = (_id: string) => {
       _id,
       start, 
       end, 
-      promo,
+      promo{_id, name},
       presentation {
         title,
         slides {

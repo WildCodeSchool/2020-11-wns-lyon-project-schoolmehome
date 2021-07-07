@@ -7,10 +7,16 @@ import { AuthResult } from '../entities/AuthResult';
 import { Lesson } from "../entities/Lesson";
 import { getModelForClass } from "@typegoose/typegoose";
 import moment from "moment";
+import { Promo } from "../entities/Promo";
 
 
 @Resolver(() => User)
 export class UserResolver {
+
+    @Mutation(() => User)
+    public async signup(@Arg('data', () => User) data: User): Promise<User> {
+        return await UserService.signUp(data);
+    };
 
     @Authorized(['Admin'])
     @Mutation(() => User)
@@ -71,10 +77,23 @@ export class UserResolver {
 
     const model = getModelForClass(User)
     const lessonModel = getModelForClass(Lesson);
-    const teacher = await model.findOne({email}).populate('lessons', undefined, lessonModel).exec()
+    const promoModel = getModelForClass(Promo)
+    const teacher = await model.findOne({email})
+    .populate({
+        path: 'lessons',
+        model: lessonModel,
+        populate: {
+            path: 'promo',
+            model: promoModel
+        }
+    }).populate({
+        path: 'promo',
+        model: promoModel,
+    }).exec();
+
     if(teacher.lessons.length === 0)
       return null
-      
+     
     return teacher.lessons
       .filter(l => moment(l.start) > moment(Date.now()))
       .sort((a, b) => (a.start > b.start) ? 1 : ((b.start > a.start) ? -1 : 0))[0] 
