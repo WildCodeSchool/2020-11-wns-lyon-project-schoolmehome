@@ -71,8 +71,8 @@ export class User {
   @prop()
   restoreToken!: string;
 }
-@ObjectType('UserUpdate')
-@InputType('UserUpdate')
+@ObjectType('UserUpdateObject')
+@InputType('UserUpdateInput')
 export class UserUpdate {
   @Field({ nullable: true })
   @Length(2, 20)
