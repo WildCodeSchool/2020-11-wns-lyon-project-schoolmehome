@@ -15,19 +15,24 @@
   border-bottom: none !important;
 }
 
-.MuiFormLabel-root {
+.input2 .MuiFormLabel-root {
   /* padding: 10px !important;
   font-size: 1.75rem !important; */
   color: var(--primary) !important;
 }
 
-.MuiInputBase-root {
-  /* font-size: 1.75rem !important; */
-  background-color: var(--primary-light) !important;
+.input2 .MuiInputBase-root {
+  font-size: 1.75rem !important;
 }
 
 .MuiInputBase-input {
-  /* padding: 15px !important; */
+  padding-left: 5px !important;
+  border-radius: 5px !important;
+  background-color: var(--primary-light) !important;
+}
+
+.input2 .MuiInputBase-input {
+  padding: 15px !important;
   border-radius: 5px !important;
   background-color: var(--primary-light) !important;
 }

@@ -7,6 +7,7 @@ import { useAuth } from "../../context/authContext";
 import useUser from "../../hooks/useUser";
 import Button from "../global/button/Button";
 import Input from "../global/input/Input";
+import Input2 from "../global/input2/Input";
 
 export const WikiNew = () => {
     const [content, setContent] = useState('');
@@ -53,7 +54,7 @@ export const WikiNew = () => {
     return(
         <div>
         <div>
-        <Input type="text" placeholder="Titre du Wiki" onChange={(e: FormEvent<HTMLInputElement>) => setTitle(e.currentTarget.value)} />
+        <Input2 type="text" placeholder="Titre du Wiki" onChange={(e: FormEvent<HTMLInputElement>) => setTitle(e.currentTarget.value)} />
         <Button onClick={save}>Enregistrer</Button>
       </div>
       <div className="slideCreation-container">
