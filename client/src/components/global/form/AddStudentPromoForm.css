@@ -1,0 +1,18 @@
+.MuiListItem-root.Mui-selected, .MuiListItem-root.Mui-selected:hover  {
+    background: linear-gradient(45deg, rgba(2,0,36,1) 0%, rgba(48,71,94,1) 29%, rgba(120,178,235,1) 100%) !important;
+    color: white;
+}
+
+.MuiMenuItem-root:hover {
+    background: linear-gradient(45deg, rgba(2,0,36,1) 0%, rgba(48,71,94,1) 29%, rgba(120,178,235,1) 100%) !important;
+    color: white;
+}
+.MuiChip-root {
+    background: linear-gradient(45deg, rgba(2,0,36,1) 0%, rgba(48,71,94,1) 29%, rgba(120,178,235,1) 100%) !important;
+    color: white;
+}
+
+.MuiChip-root:hover {
+    background: linear-gradient(45deg, rgb(2, 0, 106) 0%, rgb(101, 144, 194) 29%, rgba(120,178,235,1) 100%) !important;
+    color: white;
+}

@@ -7,7 +7,7 @@ export class Subject {
 
   @Field({ nullable: true })
   _id!: string;
-  
+
   @Field()
   @prop()
   name!: string;

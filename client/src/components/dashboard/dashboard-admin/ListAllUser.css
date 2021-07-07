@@ -28,3 +28,8 @@
     position: relative !important;
     margin-left: 40% !important;
 }
+
+.MuiDialogContent-root {
+     overflow-y: initial !important;
+
+}

@@ -3,6 +3,7 @@ import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import { getModelForClass } from "@typegoose/typegoose";
 
 
+@Resolver(() => Subject)
 export class SubjectResolver {
 
     @Mutation(() => Subject)

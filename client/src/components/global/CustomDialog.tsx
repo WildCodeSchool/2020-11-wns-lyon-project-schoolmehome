@@ -7,8 +7,14 @@ import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import Slide from "@material-ui/core/Slide";
 import {TransitionProps} from "@material-ui/core/transitions";
-import {TextField} from "@material-ui/core";
+import {makeStyles, TextField} from "@material-ui/core";
 import "./CustomDialog.css";
+
+const useStyles = makeStyles(theme => ({
+    dialogPaper: {
+        height : '400px'
+    },
+}));
 
 
 interface CustomDialogProps {
@@ -38,7 +44,8 @@ const CustomDialog = (customDialogProps: CustomDialogProps): ReactElement => {
     }
     return (
 
-        <Dialog open={customDialogProps.open} onClose={customDialogProps.handleClose}
+        <Dialog fullWidth={true}
+                maxWidth={'lg'} open={customDialogProps.open} onClose={customDialogProps.handleClose}
                 aria-labelledby="form-dialog-title"
                 TransitionComponent={Transition}>
             <DialogTitle id="form-dialog-title">{customDialogProps.dialogTitle}</DialogTitle>

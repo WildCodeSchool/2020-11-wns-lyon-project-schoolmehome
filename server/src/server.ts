@@ -43,23 +43,23 @@ export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) 
     try {
         await mongoose.connect('mongodb://localhost:27017/', { useNewUrlParser: true, useUnifiedTopology: true, dbName: "home" });
         const schema = await buildSchema({
-            resolvers: [UserResolver, SlideResolver, PresentationResolver, LessonResolver, SubjectResolver, PromoResolver, ArticlesWikiResolver],
+            resolvers: [__dirname + '/resolvers/*.{ts,js}'],
             authChecker: passwordAuthChecker
-    
+
         });
-    
+
         const server = new ApolloServer({
             schema,
             playground: true,
             context: ({ req, res }) => ({ req, res })
         });
-    
+
         const app = express();
         app.use(cors());
         app.use(cookieParser());
-    
+
         server.applyMiddleware({ app, cors: false });
-    
+
         app.listen({ port: 4300 }, () =>
             console.log(`Server ready at http://localhost:4300${server.graphqlPath}`)
         );
@@ -67,5 +67,5 @@ export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) 
     catch (e) {
         console.error(e)
     }
-   
+
 })();

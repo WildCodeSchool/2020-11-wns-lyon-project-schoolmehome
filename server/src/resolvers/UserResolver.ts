@@ -74,10 +74,10 @@ export class UserResolver {
     const teacher = await model.findOne({email}).populate('lessons', undefined, lessonModel).exec()
     if(teacher.lessons.length === 0)
       return null
-      
+
     return teacher.lessons
       .filter(l => moment(l.start) > moment(Date.now()))
-      .sort((a, b) => (a.start > b.start) ? 1 : ((b.start > a.start) ? -1 : 0))[0] 
+      .sort((a, b) => (a.start > b.start) ? 1 : ((b.start > a.start) ? -1 : 0))[0]
   }
     // @Authorized(['Admin'])
     @Query(() => [User])
@@ -94,5 +94,10 @@ export class UserResolver {
     @Mutation(() => [User])
     public async delete(@Arg('id') id: string){
         return await UserService.delete(id)
+    }
+
+    @Query(() => [User])
+    public async findUsersByRole(@Arg('role') role: string): Promise<User[]>{
+        return await UserService.findByRole(role);
     }
 }
