@@ -6,6 +6,7 @@ import Button from '../global/button/Button';
 import Input from '../global/input/Input';
 import MuiAlert from '@material-ui/lab/Alert';
 import Snackbar from '@material-ui/core/Snackbar';
+import Input2 from '../global/input2/Input';
 
 
 const Login = () => {
@@ -43,8 +44,8 @@ const Login = () => {
             </div>
             <div className="login-right-container">
               <form onSubmit={formSubmit} className="login-form-container">
-                <Input style={{ marginBottom: "50px" }} type="email" placeholder="Enter email" {...inputEmail} />
-                <Input style={{ marginBottom: "60px" }} type="password" placeholder="Enter password" {...inputPassword} />
+                <Input2 style={{ marginBottom: "50px" }} type="email" placeholder="Enter email" {...inputEmail} />
+                <Input2 style={{ marginBottom: "60px" }} type="password" placeholder="Enter password" {...inputPassword} />
                 <Button type="submit" style={{ fontSize: "1.25rem" }}>Sign in</Button>
               </form>
             </div>

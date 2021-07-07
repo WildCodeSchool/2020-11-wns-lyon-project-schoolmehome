@@ -7,6 +7,7 @@ import Button from '../global/button/Button'
 import Input from '../global/input/Input';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { useHistory, useParams } from 'react-router-dom';
+import Input2 from '../global/input2/Input';
 
 const SlideCreation = () => {
     const history = useHistory();
@@ -120,7 +121,7 @@ const SlideCreation = () => {
   return (
     <div>
       <div>
-        <Input type="text" value={titlePres} placeholder="Titre de la présentation" onChange={(e: FormEvent<HTMLInputElement>) => setTitlePres(e.currentTarget.value)} />
+        <Input2 type="text" value={titlePres} placeholder="Titre de la présentation" onChange={(e: FormEvent<HTMLInputElement>) => setTitlePres(e.currentTarget.value)} />
         <Button onClick={save}>Enregistrer les modifications</Button>
       </div>
       <div className="slideCreation-container">
