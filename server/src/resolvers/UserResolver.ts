@@ -99,4 +99,6 @@ export class UserResolver {
         const model = getModelForClass(Subject)
         return await model.find();
     }
+
+
 }

@@ -11,7 +11,9 @@ import { SlideResolver } from './resolvers/SlideResolver';
 import { PresentationResolver } from './resolvers/PresentationResolver';
 import { LessonResolver } from './resolvers/LessonResolver';
 import { TeacherResolver } from './resolvers/TeacherResolver';
+import { PromoResolver } from './resolvers/PromoResolver';
 import {Auth}  from './services/AuthService'
+import path from 'path';
 
 export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) => {
     try {
@@ -36,11 +38,11 @@ export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) 
 };
 (async () => {
     await mongoose.connect('mongodb://localhost:27017/', { useNewUrlParser: true, useUnifiedTopology: true, dbName: "home" });
-
+    console.log(__dirname + '/resolvers/')
     const schema = await buildSchema({
-        resolvers: [UserResolver, SlideResolver, PresentationResolver, LessonResolver, TeacherResolver],
-        authChecker: passwordAuthChecker 
-
+        resolvers: [__dirname + '/resolvers/*.{ts,js}'],
+        // resolvers: [UserResolver, SlideResolver, PresentationResolver, LessonResolver, TeacherResolver, PromoResolver],
+        authChecker: passwordAuthChecker
     });
 
     const server = new ApolloServer({

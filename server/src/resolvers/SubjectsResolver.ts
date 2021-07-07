@@ -3,7 +3,6 @@ import {Subject} from "../entities/Subject";
 import {getModelForClass} from "@typegoose/typegoose";
 import {Arg, Mutation, Query, Resolver} from "type-graphql";
 
-// @ts-ignore
 @Resolver(() => Subject)
 export class SubjectResolver {
 
@@ -18,9 +17,14 @@ export class SubjectResolver {
         return subjects
     }
 
-    //@ts-ignore
     @Query(() => [Subject])
     public async getAllSubjects(): Promise<Subject[]> {
+        const model = getModelForClass(Subject)
+        return await model.find();
+    }
+
+    @Query(() => [Subject])
+    public async testSubject(): Promise<Subject[]> {
         const model = getModelForClass(Subject)
         return await model.find();
     }
