@@ -49,6 +49,7 @@ export class UserResolver {
 
     @Mutation(() => User, {nullable : true})
     public async update(@Arg('data') data: User){
+        console.log(data);
         return await UserService.updateOne(data)
     }
 

@@ -20,6 +20,7 @@ import { IoLocationSharp } from 'react-icons/io5';
 
 import { Link } from 'react-router-dom';
 import Button from '../global/button/Button';
+import useUser from '../../hooks/useUser';
 
 
 export type ProfilInfo = {
@@ -37,6 +38,7 @@ export type ProfilInfo = {
 export const Profil = () => {
     const classes = useStyles();   
     const {user} = useAuth();
+    const u = useUser();
 
     const GET_USER = gql`
       query findUser($email: String!){
@@ -59,39 +61,48 @@ export const Profil = () => {
                     <Avatar alt="" src={avatar} className={classes.large} />
                     <div className="profil-info">
                         <div className="name">{info ? info.firstName : ''} {info ? info.lastName : ''}</div>
-                        <div className="group">M1 - Développement Web | Groupe 1</div>
+                        {
+                            user.role === 'User' ?
+                            <div className="group">{u.user?.getOne.promo[0].name ? u.user?.getOne.promo[0].name : 'Pas de promotion'}</div>
+                            : <div className="group">{user.role}</div>
+                        }
                     </div>
                 </div>
-                <div className="profil-info-1">
-                    <div className="profil-card">
-                        <h3>Mes Notes</h3>
-                        <div className='profil-card-content flex-around'>
-                        <div className="grid-1-2">
-                                <img className='profil-img' src={docker} alt='docker' title='docker'/><div className='desc'>15 / 20</div>
-                                <img className='profil-img' src={flutter} alt='flutter' title='flutter'/><div className='desc'>11 / 20</div>
-                                <img className='profil-img' src={gqli} alt='graphQl' title='graphQl'/><div className='desc'>05 / 20</div>
-                            </div>
-                            <div className='grid-1-2'>
-                                <img className='profil-img' src={rn} alt='react native' title='react native'/><div className='desc'>18 / 20</div>
-                                <img className='profil-img' src={ts} alt='typescript' title='typescript'/><div className='desc'>20 / 20</div>
-                                <img className='profil-img' src={fr} alt='français' title='français'/><div className='desc'>19 / 20</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="profil-card">
-                        <h3>Mes centres d'intérêts</h3>
-                        <div className='profil-card-content flex-around'>
+                {
+                    user.role === 'User' ?
+                    <div className="profil-info-1">
+                        <div className="profil-card">
+                            <h3>Mes Notes</h3>
+                            <div className='profil-card-content flex-around'>
                             <div className="grid-1-2">
-                                <img className='profil-img' src={books} alt='Lecture' title='Lecture'/><div className='desc'>Lecture</div>
-                                <img className='profil-img' src={puzzle} alt='Puzzle' title='Puzzle'/><div className='desc'>Puzzle</div>
+                                    <img className='profil-img' src={docker} alt='docker' title='docker'/><div className='desc'>15 / 20</div>
+                                    <img className='profil-img' src={flutter} alt='flutter' title='flutter'/><div className='desc'>11 / 20</div>
+                                    <img className='profil-img' src={gqli} alt='graphQl' title='graphQl'/><div className='desc'>05 / 20</div>
+                                </div>
+                                <div className='grid-1-2'>
+                                    <img className='profil-img' src={rn} alt='react native' title='react native'/><div className='desc'>18 / 20</div>
+                                    <img className='profil-img' src={ts} alt='typescript' title='typescript'/><div className='desc'>20 / 20</div>
+                                    <img className='profil-img' src={fr} alt='français' title='français'/><div className='desc'>19 / 20</div>
+                                </div>
                             </div>
-                            <div className='grid-1-2'>
-                                <img className='profil-img' src={flute} alt='Jouer de la musique' title='Jouer de la musique'/><div className='desc'>Jouer de la musique</div>
-                                <img className='profil-img' src={vgames} alt='Jeux vidéos' title='Jeux vidéos'/><div className='desc'>Jeux videos</div>
+                        </div>
+                        <div className="profil-card">
+                            <h3>Mes centres d'intérêts</h3>
+                            <div className='profil-card-content flex-around'>
+                                <div className="grid-1-2">
+                                    <img className='profil-img' src={books} alt='Lecture' title='Lecture'/><div className='desc'>Lecture</div>
+                                    <img className='profil-img' src={puzzle} alt='Puzzle' title='Puzzle'/><div className='desc'>Puzzle</div>
+                                </div>
+                                <div className='grid-1-2'>
+                                    <img className='profil-img' src={flute} alt='Jouer de la musique' title='Jouer de la musique'/><div className='desc'>Jouer de la musique</div>
+                                    <img className='profil-img' src={vgames} alt='Jeux vidéos' title='Jeux vidéos'/><div className='desc'>Jeux videos</div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                    : ''
+                }
+                
                 <div className="profil-info-1">
                     <div className='profil-card'>
                         <h3>Mes informations personnelles</h3>
