@@ -1,0 +1,49 @@
+.gestionTitre{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.gestionBouton{
+    width: 210px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+/*///////////////////////////////BOUTON _ 4///////////////////////////////////////*/
+.bouton_4{
+    width:40px;
+    height:40px;
+    padding:10px;
+    border-radius:40px;
+    background-color:#f05454;
+    overflow:hidden;
+    -webkit-transition:all 0.4s ease-in;
+    -moz-transition:all 0.4s ease-in;
+    -ms-transition:all 0.4s ease-in;
+    -o-transition:all 0.4s ease-in;
+    transition:all 0.4s ease-in;
+}
+.bouton_4:hover{
+    width:210px;
+    height:40px;
+    border-radius:40px;
+    background-color:#30475e;
+}
+.texteduboutton_4
+{
+    width:70%;
+    padding-right: 10px;
+    /* float:right; */
+    /* line-height:40px; */
+    margin-left: 15px;
+    margin-top: -2px;
+    color:#ffffff;
+    font-family:'Roboto';
+    font-weight:300;
+    font-size:18px;
+}
+.image{
+    width: 20px;
+    margin-top: -6px;
+}

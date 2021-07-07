@@ -1,0 +1,137 @@
+.navbar{
+    /* width: 5rem;
+    height: 100vh; */
+    position: fixed;
+    background: var(--primary);
+    transition: width 600ms ease;
+    z-index: 50;
+}
+.navbar-nav{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+}
+
+.avatar{
+    margin-top: 1rem;
+    margin-bottom: 2.1rem ;
+    width: 100%;
+}
+
+.avatar-div{
+    display: flex;
+    align-items: center;
+    height: 5rem;
+    color: white;
+    text-decoration: none;
+    transition: var(--transition-speed);
+    position: relative;
+}
+
+.avatarImg{
+    width: 4rem;
+    margin: 0 0.5rem;
+    flex-grow: 0;
+    border-radius: 50%;
+}
+.avatarName{
+    display: none;
+    margin-left: 1rem;
+    overflow: hidden;
+}
+
+.avatarStudy{
+    line-height: 0%;
+}
+
+.nav-item{
+    width: 100%;
+    cursor: pointer;
+}
+
+.nav-item:last-child{
+    margin-top: auto;
+}
+
+.nav-link{
+    display: flex;
+    align-items: center;
+    height: 5rem;
+    color: white;
+    text-decoration: none;
+    transition: var(--transition-speed);
+    position: relative;
+}
+
+.nav-link:not(.active):hover{
+    color: var(--accent);
+}
+
+.link-text{
+    display: none;
+    margin-left: 1rem;
+    z-index: 5;
+    overflow: hidden;
+}
+
+.nav-link svg{
+    min-width: 2rem;
+    margin: 0 1.5rem;
+    z-index: 5;
+}
+.svgWidth{
+    width: 3rem;
+}
+
+.nav-link.active::before{
+    content:"";
+    width: 5rem;
+    height: 4rem;
+    background-color: var(--accent);
+    border-radius: 16px;
+    position: absolute;
+    top: 0.5rem;
+    left: 1rem;
+    transition: all 600ms ease;
+}
+.navbar:hover .active::before{
+    width: 16rem;
+}
+
+
+ /* small screen */
+@media only screen and (max-width: 600px){
+    .navbar{
+        bottom: 0;
+        width: 100vw;
+        height: 5rem;
+    }
+    .navbar-nav{
+        flex-direction: row;
+    }
+    .nav-link{
+        justify-content: center;
+    }
+}
+
+ /* large screen */
+@media only screen and (min-width : 600px){
+    .navbar{
+        top: 0;
+        width: 5rem;
+        height: 100vh;
+    }
+    .navbar:hover{
+        width: 18rem;
+    }
+    .navbar:hover .link-text{
+        display: inline;
+    }
+    .navbar:hover .avatarName{
+        display: inline;
+    }
+}

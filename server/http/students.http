@@ -1,0 +1,12 @@
+###
+POST  http://localhost:3000/api/student HTTP/1.1
+content-type: application/json
+
+{
+    "user": {"firstName": "Kasas", "lastName": "Isabelle", "email": "m.b@gmail.com"},
+    "subject": [{"name" : "Maths"}, {"name" : "Latin"}],
+    "promo": [{"name": "L1"}]
+
+}
+###
+GET  http://localhost:8888/api/student HTTP/1.1

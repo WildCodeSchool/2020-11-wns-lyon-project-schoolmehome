@@ -1,0 +1,32 @@
+.MuiFormLabel-root.Mui-focused {
+  display: none !important;
+  color: var(--primary) !important;
+}
+
+.MuiInput-underline {
+  color: var(--primary) !important;
+}
+
+.MuiInput-underline:after {
+  border-bottom: none !important;
+}
+
+.MuiInput-underline:before {
+  border-bottom: none !important;
+}
+
+.MuiFormLabel-root {
+  /* padding: 10px !important;
+  font-size: 1.75rem !important; */
+  color: var(--primary) !important;
+}
+
+.MuiInputBase-root {
+  /* font-size: 1.75rem !important; */
+}
+
+.MuiInputBase-input {
+  /* padding: 15px !important; */
+  border-radius: 5px !important;
+  background-color: var(--primary-light) !important;
+}

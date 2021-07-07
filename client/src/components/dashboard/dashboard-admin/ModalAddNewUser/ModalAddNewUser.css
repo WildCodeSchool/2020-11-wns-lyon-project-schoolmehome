@@ -1,0 +1,17 @@
+.margin-default {
+    margin: 2%;
+}
+.padding-default {
+    padding: 2%;
+}
+.background-card {
+    background-image: url("../../../../../src/image/profil.png");
+}
+
+.width-max {
+    width: 100%;
+}
+
+.text-center {
+    text-align: center;
+}

@@ -1,0 +1,32 @@
+###
+GET  http://localhost:3000/api/promo HTTP/1.1
+
+###
+POST  http://localhost:3000/api/promo HTTP/1.1
+content-type: application/json
+
+{
+    "name" : "L3",
+    "students" :[],
+    "subject": []
+}
+
+###
+PUT  http://localhost:3000/api/promo/5fb3e786d2eb232c0f150e94 HTTP/1.1
+content-type: application/json
+
+{
+  "name": "L1",
+  "students": [],
+  "subjects" : []
+}
+
+###
+PATCH  http://localhost:8888/api/promo/5fb3e786d2eb232c0f150e94 HTTP/1.1
+content-type: application/json
+
+{
+  "students": [
+    "5fb3de1c18a5f82a76679f45"
+  ]
+}

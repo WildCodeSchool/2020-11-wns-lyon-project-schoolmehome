@@ -1,0 +1,35 @@
+.margin-list-item {
+    margin: 24px;
+}
+
+.search-bar {
+    font-size: 16pt !important;
+}
+
+.search-bar > *{
+    background-color: white !important;
+}
+
+.filterBtn {
+    justify-content: center !important;
+    vertical-align: middle !important;
+}
+
+.containerUser {
+    display: flex;
+    flex-wrap: wrap;
+    overflow: hidden;
+    margin-top: 1.5rem;
+}
+
+.buttonAddUser {
+    vertical-align: middle !important;
+    right: 0 !important;
+    position: relative !important;
+    margin-left: 40% !important;
+}
+
+.MuiDialogContent-root {
+     overflow-y: initial !important;
+
+}

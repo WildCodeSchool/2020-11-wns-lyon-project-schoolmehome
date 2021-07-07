@@ -1,0 +1,24 @@
+
+#http
+GET  http://localhost:3000/api/localhost:3000/api/teacher HTTP/1.1
+
+
+###
+POST  http://localhost:3000/api/teacher HTTP/1.1
+content-type: application/json
+
+{
+  "user": {
+    "firstName": "Homer",
+    "lastName": "Simpson",
+    "email": "homer@test.com"
+  },
+  "subject": [],
+  "lessons": ["5fb52cc28a21a6346cf21714"],
+  "promo": []
+}
+
+###
+GET  http://localhost:3000/api/teacher/has_lesson HTTP/1.1
+
+

@@ -1,16 +1,71 @@
+import 'reflect-metadata';
+import { AuthChecker, buildSchema } from "type-graphql";
+import { getModelForClass, mongoose } from '@typegoose/typegoose';
+import { User } from './entities/User';
+import { ApolloServer } from 'apollo-server-express';
 import express from 'express';
-import mongoose from 'mongoose';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
+import { UserResolver } from './resolvers/UserResolver';
+import { SlideResolver } from './resolvers/SlideResolver';
+import { PresentationResolver } from './resolvers/PresentationResolver';
+import { LessonResolver } from './resolvers/LessonResolver';
+import { ArticlesWikiResolver } from './resolvers/ArticlesWikiResolver';
+import {Auth}  from './services/AuthService'
+import { SubjectResolver } from './resolvers/SubjectsResolver';
+import { PromoResolver } from './resolvers/PromoResolver';
+import dotenv from 'dotenv';
+dotenv.config();
 
-const app = express();
+export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) => {
+    console.log(roles);
+    try {
+        const token = context.req.cookies.appSession;
+        if (token) {
+            const data = Auth.decodeToken(token);
+            const model = getModelForClass(User);
+            const user = await model.findById(data.userId);
+            context.user = user;
+            if (roles.length > 0) {
+                if (roles.find(e => e === user.role)) {
+                    return true;
+                } return false
+            }
+            return true
+        } else {
+            return false;
+        }
+    } catch {
+        return false;
+    }
+};
+(async () => {
+    try {
+        await mongoose.connect('mongodb://localhost:27017/', { useNewUrlParser: true, useUnifiedTopology: true, dbName: "home" });
+        const schema = await buildSchema({
+            resolvers: [__dirname + '/resolvers/*.{ts,js}'],
+            authChecker: passwordAuthChecker
 
-// mettre votre port mDB et le nom de votre BDD locale
-mongoose.connect('mongodb://localhost:27017/shoolMeHome', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-    autoIndex: true,
-})
+        });
 
+        const server = new ApolloServer({
+            schema,
+            playground: true,
+            context: ({ req, res }) => ({ req, res })
+        });
 
-// mettre votre port local
-app.listen(8888, () => console.log('app is running'));
+        const app = express();
+        app.use(cors());
+        app.use(cookieParser());
+
+        server.applyMiddleware({ app, cors: false });
+
+        app.listen({ port: 4300 }, () =>
+            console.log(`Server ready at http://localhost:4300${server.graphqlPath}`)
+        );
+    }
+    catch (e) {
+        console.error(e)
+    }
+
+})();

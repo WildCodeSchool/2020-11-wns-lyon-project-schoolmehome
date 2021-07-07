@@ -1,0 +1,22 @@
+###
+GET  http://localhost:3000/api/lesson HTTP/1.1
+
+###
+POST  http://localhost:3000/api/lesson HTTP/1.1
+content-type: application/json
+
+{
+  "name" : "Enseigment de l'anglais supérieur"
+}
+###
+PUT  http://localhost:3000/api/lesson/5fb51a1d70aeff2690f9aecb HTTP/1.1
+content-type: application/json
+
+
+###
+PATCH  http://localhost:3000/api/lesson/5fb51a1d70aeff2690f9aecb HTTP/1.1
+content-type: application/json
+
+{
+  "name": "Enseignement de l'histoire"
+}

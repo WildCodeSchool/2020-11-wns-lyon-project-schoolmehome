@@ -1,0 +1,105 @@
+.top{
+    background-color: var(--primary-dark);
+    border-radius: var(--radius-bg);
+    text-transform: uppercase;
+    color: white;
+    text-align: center;
+    padding: 3em;
+}
+
+.bg{
+    background-color: var(--primary);
+    background-image: url("../../image/global/profilBG.png");
+    background-repeat: no-repeat;
+    background-position: top;
+    background-position-x: right;
+    background-size: contain;
+    background-position-y: -90px;
+}
+.MuiAvatar-root.MuiAvatar-circle{
+    margin-left: 3em;
+    margin-top: -2em;
+}
+.header-profil{
+    display: flex;
+    color: white;
+}
+.name{
+    text-transform: capitalize;
+    font-size: 2em;
+}
+.group{
+    margin-top: 0.3em;
+    font-size: 1em;
+}
+.profil-info{
+    margin-left: 1em;
+    margin-top: 1em;
+}
+.profil-info-1{
+    display: flex;
+    justify-content: space-around;
+}
+.profil-card{
+    margin: 2em;
+    background-color: var(--primary-dark);
+    border-radius: var(--radius-bg);
+    color: white;
+    width: -webkit-fill-available;
+    width: -moz-available;
+}
+.profil-card h3{
+    text-align: center;
+}
+.profil-card-content{
+    padding: 1em;
+}
+
+.flex-around{
+    display: flex;
+    justify-content: space-around;
+}
+.flex-around > * {
+    flex: 1;
+}
+.grid-1-2{
+    
+    display: grid;
+  grid-template-columns: 1fr 5fr;
+  grid-template-rows: 3em 3em 3em;
+  align-items: center;
+}
+
+img.profil-img {
+    /* width : 30px; */
+    height : 30px;
+    justify-self: center;
+}
+
+.mg-6{
+    margin: 0 6em;
+}
+div.desc{
+    margin-left: 2em
+}
+
+div.profilformrow{
+    margin: 1em 6em;
+    color: white;
+}
+
+div.profiledit input.MuiInputBase-input {
+    background-color: #233445 !important;
+    color: white;
+    border-radius: 16px !important;
+}
+div.profiledit{
+    width: -webkit-fill-available;
+    width: -moz-available;
+}
+div.profileditlabel{
+    margin-left: 16px;
+    margin-bottom: 5px;
+    font-size: larger;
+    text-transform: uppercase;
+}
