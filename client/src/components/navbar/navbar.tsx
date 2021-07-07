@@ -60,14 +60,18 @@ export function Navbar() {
               <SiWikipedia size={30}/>
                 <span className="link-text">Wikis&nbsp;élèves</span>
             </NavLink>
-            </li>
-            : <li className="nav-item">
+            </li> : ''}
+            {
+              user.role === 'User' ?
+              <li className="nav-item">
               <NavLink to="/wiki" className="nav-link" activeClassName="active">
               <SiWikipedia size={30}/>
                 <span className="link-text">Mes&nbsp;wikis</span>
             </NavLink>
-            </li>
-          }
+            </li> : ''
+            }
+            
+          
             
             
             <li className="nav-item">
