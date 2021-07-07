@@ -4,25 +4,27 @@ import { lessonService } from "../services/LessonService";
 import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import { User, UserUpdate } from '../entities/User';
 import { AuthResult } from '../entities/AuthResult';
-import { Document } from "mongoose";
 import { Lesson } from "../entities/Lesson";
 import { getModelForClass } from "@typegoose/typegoose";
-import { Subject } from "../entities/Subject";
+import moment from "moment";
+
 
 @Resolver(() => User)
 export class UserResolver {
 
-    @Query(() => User)
-
     @Authorized(['Admin'])
-    @Mutation(() => AuthResult)
-    public async create(@Arg('data') data: User): Promise<AuthResult> {
-        return await Auth.create(data);
+    @Mutation(() => User)
+    public async createUser(@Arg('data') data: User): Promise<Boolean>{
+        return await Auth.createUser(data);
     }
+
+    @Mutation(() => User)
+    public async firstConnexion(@Arg('data', () => User) data: User): Promise<User> {
+        return await Auth.createPassword(data);
+    };
 
     @Authorized()
     public async authenticatedUser(@Ctx() ctx): Promise<User> {
-        //console.log(ctx.user);
         return ctx.user;
     }
 
@@ -39,7 +41,7 @@ export class UserResolver {
     public async resetPassword(@Arg('token') token: string, @Arg('password') password: string, @Arg('email') email: string){
         return Auth.restorePassword(token, password, email);
     }
-    //@Authorized(['Admin'])
+    // @Authorized(['Admin'])
     @Query(() => User)
     public async getOne(@Arg('email') email: string): Promise<User>{
         return await UserService.findByEmail(email);
@@ -50,11 +52,33 @@ export class UserResolver {
         return await UserService.updateOne(data)
     }
 
-    @Mutation(() => User)
-    public async signup(@Arg('data', () => User) data: User): Promise<User> {
-        return await UserService.signUp(data);
-    };
 
+
+  @Mutation(() => Lesson)
+  public async addLesson(@Arg('data') data: Lesson, @Arg('_id') _id: string): Promise<Lesson> {
+    const model = getModelForClass(User)
+    const presentation = await model.findById(_id);
+    const newLesson = await lessonService.create(data)
+    const newUser = await model.findByIdAndUpdate(
+      { _id },
+      { lessons: [...presentation.lessons, newLesson] },
+      { new: true })
+    return newLesson;
+  }
+
+  @Query(() => Lesson, { nullable: true })
+  public async findNextlesson(@Arg('email') email: string): Promise<Lesson>{
+
+    const model = getModelForClass(User)
+    const lessonModel = getModelForClass(Lesson);
+    const teacher = await model.findOne({email}).populate('lessons', undefined, lessonModel).exec()
+    if(teacher.lessons.length === 0)
+      return null
+
+    return teacher.lessons
+      .filter(l => moment(l.start) > moment(Date.now()))
+      .sort((a, b) => (a.start > b.start) ? 1 : ((b.start > a.start) ? -1 : 0))[0]
+  }
     // @Authorized(['Admin'])
     @Query(() => [User])
     public async fetchAll() {
@@ -66,39 +90,14 @@ export class UserResolver {
         return await UserService.search(name)
     }
 
+    @Authorized(['Admin'])
     @Mutation(() => [User])
     public async delete(@Arg('id') id: string){
         return await UserService.delete(id)
-    }
-
-    @Mutation(() => User)
-    public async addLesson(@Arg('data') data: Lesson, @Arg('_id') _id: string): Promise<User> {
-        const model = getModelForClass(User)
-        const presentation = await model.findById(_id);
-        const newLesson = await lessonService.create(data)
-        const newUser = await model.findByIdAndUpdate(
-        { _id },
-        { lessons: [...presentation.lessons, newLesson] },
-        { new: true })
-        return newUser;
     }
 
     @Query(() => [User])
     public async findUsersByRole(@Arg('role') role: string): Promise<User[]>{
         return await UserService.findByRole(role);
     }
-
-    @Mutation(() => Subject)
-    public async createSubject(@Arg('subject') subject: Subject): Promise<Subject> {
-        const model = getModelForClass(Subject)
-        return await model.create(subject)
-    }
-
-    @Query(() => [Subject])
-    public async getAllSubjects(): Promise<Subject[]> {
-        const model = getModelForClass(Subject)
-        return await model.find();
-    }
-
-
 }

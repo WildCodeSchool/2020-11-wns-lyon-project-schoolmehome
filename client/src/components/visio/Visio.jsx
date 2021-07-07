@@ -17,10 +17,6 @@ const Visio = () => {
   const jitsiContainerId = "jitsi-container-id";
   const [jitsi, setJitsi] = useState({});
 
-  useEffect(() => {
-    console.log(lesson)
-  }, [])
-
   const loadJitsiScript = () => {
     let resolveLoadJitsiScriptPromise = null;
 
@@ -68,8 +64,8 @@ const Visio = () => {
         <div id={jitsiContainerId} style={{ height: 750, width: "100%", flex: "1" }} />
         {lessonToggle &&
           <div style={{ flex: "1", paddingLeft: "15px" }}>
-            {(lesson && lesson.findOneLesson.presentation.length > 0) ? <Carousel>
-              {lesson.findOneLesson.presentation[0].slides.map(s => {
+            {(lesson && lesson.findOneLesson.presentation) ? <Carousel>
+              {lesson.findOneLesson.presentation.slides.map(s => {
                 return (
                   <div key={s._id} dangerouslySetInnerHTML={{ __html: `${s.htmlContent}` }} style={{ height: '100%' }}></div>
                 )
@@ -77,9 +73,16 @@ const Visio = () => {
             </Carousel> : <p>Pas de présentation pour ce cours</p>}
           </div>}
       </div>
-      <div style={{ display: "flex", alignItems:"center", justifyContent: "center", marginTop: "20px" }}>
-      <Button onClick={() => setLessonToggle(!lessonToggle)} >{lessonToggle ? "Masquer le cours" :"Afficher le cours"}</Button>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginTop: "20px" }}>
+        <Button onClick={() => setLessonToggle(!lessonToggle)} >{lessonToggle ? "Masquer le cours" : "Afficher le cours"}</Button>
       </div>
+      {/* <Carousel>
+        {lesson.presentation.slides.map(s => {
+          return (
+            <div key={s._id} dangerouslySetInnerHTML={{ __html: `${s.htmlContent}` }} />
+          )
+        })}
+      </Carousel> */}
     </div>
   )
 

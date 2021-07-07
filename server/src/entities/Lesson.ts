@@ -18,17 +18,15 @@ export class Lesson {
   @prop()
   end!: Date;
 
-  @Field()
+  @Field({ nullable: true })
   @prop()
-  promo!: String;
+  promo: String;
 
-  @Field(() => Subject)
+  @Field(() => Subject,{ nullable: true })
   @prop()
   subject: Subject;
 
-  @Field(() => [Presentation])
-  @prop()
-  presentation: Presentation[];
-
-
+  @Field({ nullable: true} )
+  @prop({ref: () => Presentation})
+  presentation?: Presentation;
 }

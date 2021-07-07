@@ -13,6 +13,12 @@ import { Profil } from './components/Profil/profil';
 import { SlidesHome } from './components/Slides/SlidesHome';
 import SlideEdit from './components/Slides/SlideEdit';
 import { ProfilEdit } from './components/Profil/profiledit';
+import { Wiki } from './components/wiki/Wiki';
+import { WikiRead } from './components/wiki/WikiRead';
+import { WikiNew } from './components/wiki/WikiNew';
+import { WikiEdit } from './components/wiki/WikiEdit';
+import { WikiValidate } from './components/wiki/WikiValidate';
+import Calendar from './components/calendar/Calendar';
 
 function App() {
 
@@ -21,8 +27,6 @@ function App() {
       path: "/dashboard",
       exact: true,
       main: () => <main><DashboardRouting/></main>
-      // main: () => <h2>Home Dashboard</h2>
-      // main: () => <DashboardAdmin />
     },
     {
       path: "/profil",
@@ -58,6 +62,36 @@ function App() {
       path: "/slides/edit/:id",
       exact: true,
       main: () => <main><SlideEdit /></main>
+    }, 
+    {
+      path: "/wiki/validate",
+      exact: true,
+      main: () => <main><WikiValidate /></main>
+    },
+    {
+      path: "/wiki",
+      exact : true,
+      main: () => <main><Wiki /></main>
+    },
+    {
+      path: "/wiki/new",
+      exact : true,
+      main: () => <main><WikiNew /></main>
+    },
+    {
+      path: "/wiki/:id",
+      exact: true,
+      main: () => <main><WikiRead /></main>
+    },
+    {
+      path: "/wiki/edit/:id",
+      exact: true,
+      main: () => <main><WikiEdit /></main>
+    },
+    {
+      path: "/calendar",
+      exact: true,
+      main: () => <main><Calendar /></main>
     }
   ];
   return (

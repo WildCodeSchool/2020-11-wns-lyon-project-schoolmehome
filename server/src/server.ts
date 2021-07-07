@@ -10,12 +10,15 @@ import { UserResolver } from './resolvers/UserResolver';
 import { SlideResolver } from './resolvers/SlideResolver';
 import { PresentationResolver } from './resolvers/PresentationResolver';
 import { LessonResolver } from './resolvers/LessonResolver';
-import { TeacherResolver } from './resolvers/TeacherResolver';
-import { PromoResolver } from './resolvers/PromoResolver';
+import { ArticlesWikiResolver } from './resolvers/ArticlesWikiResolver';
 import {Auth}  from './services/AuthService'
-import path from 'path';
+import { SubjectResolver } from './resolvers/SubjectsResolver';
+import { PromoResolver } from './resolvers/PromoResolver';
+import dotenv from 'dotenv';
+dotenv.config();
 
 export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) => {
+    console.log(roles);
     try {
         const token = context.req.cookies.appSession;
         if (token) {
@@ -23,10 +26,10 @@ export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) 
             const model = getModelForClass(User);
             const user = await model.findById(data.userId);
             context.user = user;
-            if (roles.length > 0){
-                if(roles.find(e => e === user.role)){
+            if (roles.length > 0) {
+                if (roles.find(e => e === user.role)) {
                     return true;
-                }return false
+                } return false
             }
             return true
         } else {
@@ -37,27 +40,32 @@ export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) 
     }
 };
 (async () => {
-    await mongoose.connect('mongodb://localhost:27017/', { useNewUrlParser: true, useUnifiedTopology: true, dbName: "home" });
-    console.log(__dirname + '/resolvers/')
-    const schema = await buildSchema({
-        resolvers: [__dirname + '/resolvers/*.{ts,js}'],
-        // resolvers: [UserResolver, SlideResolver, PresentationResolver, LessonResolver, TeacherResolver, PromoResolver],
-        authChecker: passwordAuthChecker
-    });
+    try {
+        await mongoose.connect('mongodb://localhost:27017/', { useNewUrlParser: true, useUnifiedTopology: true, dbName: "home" });
+        const schema = await buildSchema({
+            resolvers: [__dirname + '/resolvers/*.{ts,js}'],
+            authChecker: passwordAuthChecker
 
-    const server = new ApolloServer({
-        schema,
-        playground: true,
-        context: ({ req, res }) => ({ req, res })
-    });
+        });
 
-    const app = express();
-    app.use(cors());
-    app.use(cookieParser());
+        const server = new ApolloServer({
+            schema,
+            playground: true,
+            context: ({ req, res }) => ({ req, res })
+        });
 
-    server.applyMiddleware({ app, cors: false });
+        const app = express();
+        app.use(cors());
+        app.use(cookieParser());
 
-    app.listen({ port: 4301 }, () =>
-        console.log(`Server ready at http://localhost:4301${server.graphqlPath}`)
-    );
+        server.applyMiddleware({ app, cors: false });
+
+        app.listen({ port: 4300 }, () =>
+            console.log(`Server ready at http://localhost:4300${server.graphqlPath}`)
+        );
+    }
+    catch (e) {
+        console.error(e)
+    }
+
 })();
