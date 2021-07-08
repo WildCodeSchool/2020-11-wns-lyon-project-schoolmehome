@@ -2,7 +2,7 @@
 import { Promo } from '../entities/Promo';
 import { User } from '../entities/User';
 import { arrayNotEmpty } from "class-validator";
-import { Arg, Mutation, Resolver } from 'type-graphql';
+import { Arg, Mutation, Query, Resolver } from 'type-graphql';
 import { getModelForClass } from '@typegoose/typegoose';
 
 @Resolver(() => Promo)
@@ -14,7 +14,13 @@ export class PromoResolver {
         return await model.create(promo)
     }
 
-    // // Function à modifier car pas d'id dans promo...
+    @Query(() => [Promo])
+    public async getAllPromos(): Promise<Promo[]> {
+        const model = getModelForClass(Promo)
+        return await model.find();
+    }
+
+    // // Function à modifier car pas d'id dans promo... 
     // public async promoLesson(@Arg('data') data: Promo): Promise<Promo> {
     //     const model = getModelForClass(Promo);
     //     const promoId = data.name

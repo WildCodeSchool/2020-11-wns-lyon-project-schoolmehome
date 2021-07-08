@@ -6,6 +6,7 @@ import './SlideCreation.css'
 import Button from '../global/button/Button'
 import Input from '../global/input/Input';
 import { gql, useMutation } from '@apollo/client';
+import Input2 from '../global/input2/Input';
 
 const SlideCreation = () => {
 
@@ -78,9 +79,9 @@ const SlideCreation = () => {
 
   return (
     <div>
-      <div>
-        <Input type="text" placeholder="Titre de la présentation" onChange={(e: FormEvent<HTMLInputElement>) => setTitlePres(e.currentTarget.value)} />
-        <Button onClick={save}>Enregistrer</Button>
+      <div className="top-container">
+        <Input2 type="text" placeholder="Titre de la présentation" onChange={(e: FormEvent<HTMLInputElement>) => setTitlePres(e.currentTarget.value)} />
+        <Button onClick={save} style={{ fontSize: "1.25rem", marginLeft: "10px" }}>Enregistrer</Button>
       </div>
       <div className="slideCreation-container">
       

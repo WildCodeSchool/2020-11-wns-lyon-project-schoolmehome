@@ -13,6 +13,7 @@ import { Input, FormControl, InputLabel, Select, MenuItem } from "@material-ui/c
 import LessonType from '../../types/lessonType';
 import { gql, useMutation } from '@apollo/client';
 import useSubjects from '../../hooks/useSubjects';
+import usePromos from '../../hooks/usePromos';
 
 
 
@@ -45,35 +46,30 @@ mutation updateLesson (
     start: '',
     end: '',
     subject: { name: '', _id: '' },
-    promo: ''
+    promo: { name: '', _id: '' },
   })
   const [actualLesson, setActualLesson] = useState<LessonType>({
     _id: '',
     start: '',
     end: '',
     subject: { name: '', _id: '' },
-    promo: ''
+    promo: { name: '', _id: '' },
   })
   const [show, setShow] = useState<boolean>(false);
   const [showUpdate, setShowUpdate] = useState<boolean>(false);
   const { subjects } = useSubjects();
   const { presentations } = usePresentations();
-  const [promos, setPromos] = useState<{ _id: string, name: string }[]>([]);
+  const { promos } = usePromos();
   const { user } = useUser();
   const [createLesson] = useMutation<any>(NEW_LESSON);
   const [updateLesson] = useMutation<any>(UPDATE_LESSON);
-
-  // const [form, setForm] = useState({ subject: "", promo: "" })
-  // let { id }: { id: string } = useParams();
-  // let prof: any = intervenant.find((i: any) => id === i._id);
-
 
   useEffect(() => {
     if (user) {
       setLessons(user.getOne.lessons.map((d: any): EventInput => {
         return ({
           id: d._id,
-          title: `${d.promo} / ${d.subject.name}`,
+          title: `${d.promo.name} / ${d.subject.name}`,
           start: d.start,
           end: d.end,
           promo: d.promo,
@@ -86,24 +82,22 @@ mutation updateLesson (
 
   const handleClose = (): void => setShow(false);
   const handleShow = (): void => setShow(true);
-  const handleChange = (e: any) => {
-    setNewLesson({ ...newLesson, [e.target.name]: e.target.value })
-  }
   const handleChangeSubject = (e: any) => {
     setNewLesson({ ...newLesson, subject: { _id: e.target.value, name: subjects.getAllSubjects.find((s: any) => s._id == e.target.value)?.name } })
   }
   const handleSubmit = () => {
-    createLesson({ variables: { _id: user.getOne._id, data: newLesson } })
+    createLesson({ variables: { _id: user.getOne._id, data: {...newLesson, presentation: { _id: newLesson.presentation }} } })
       .then((d: any) => {
         setLessons([
           ...lessons,
           {
             id: `${d.data.addLesson._id}`,
-            title: `${newLesson.subject.name} / ${newLesson.promo}`,
+            title: `${newLesson.subject.name} / ${newLesson.promo.name}`,
             start: newLesson.start,
             end: newLesson.end,
             promo: newLesson.promo,
-            subject: { name: newLesson.subject.name, _id: newLesson.subject._id }
+            subject: { name: newLesson.subject.name, _id: newLesson.subject._id },
+            presentation: newLesson.presentation
           }])
       })
       .catch(e => console.log(JSON.stringify(e)))
@@ -114,7 +108,7 @@ mutation updateLesson (
     updateLesson({ variables: { _id: actualLesson._id, data: { ...actualLesson, presentation: { _id: actualLesson.presentation } } } })
       .then((d: any) => {
         const lessonsCopy = lessons.slice();
-        lessonsCopy.filter(l => l.id === actualLesson._id)[0].title = `${actualLesson.subject.name} / ${actualLesson.promo}`
+        lessonsCopy.filter(l => l.id === actualLesson._id)[0].title = `${actualLesson.subject.name} / ${actualLesson.promo.name}`
         lessonsCopy.filter(l => l.id === actualLesson._id)[0].presentation = actualLesson.presentation;
         lessonsCopy.filter(l => l.id === actualLesson._id)[0].promo = actualLesson.promo;
         lessonsCopy.filter(l => l.id === actualLesson._id)[0].subject = actualLesson.subject;
@@ -138,7 +132,7 @@ mutation updateLesson (
       .catch(e => console.log(JSON.stringify(e)))
   }
 
-  if (subjects && presentations) {
+  if (subjects && presentations && promos && user) {
     return (
       <>
         <FullCalendar
@@ -151,8 +145,8 @@ mutation updateLesson (
           slotDuration='00:30'
           slotMinTime='08:00'
           slotMaxTime='19:00'
-          editable={true}
-          selectable={true}
+          editable={user.getOne.role === "Admin" || user.getOne.role === "Teacher"}
+          selectable={user.getOne.role === "Admin" || user.getOne.role === "Teacher"}
           select={function (info) {
             setNewLesson({ ...newLesson, start: info.startStr, end: info.endStr })
             handleShow()
@@ -164,13 +158,15 @@ mutation updateLesson (
             saveChange(info)
           }}
           eventClick={function (info) {
+            if (user.getOne.role === "User") 
+              return;
             setShowUpdate(true)
             const less = lessons.find((l: any) => l.id == info.event.id);
             setActualLesson({
               _id: info.event.id,
               start: info.event.startStr,
               end: info.event.endStr,
-              promo: less.promo,
+              promo:  { name: less.promo.name, _id: less.promo._id },
               subject: { name: less.subject.name, _id: less.subject._id },
               presentation: less.presentation
             })
@@ -192,9 +188,32 @@ mutation updateLesson (
                 {subjects.getAllSubjects.map((s: any) => <MenuItem value={s._id}>{s.name}</MenuItem>)}
               </Select>
             </FormControl>
-            <FormControl>
-              <InputLabel htmlFor="promo">Promo</InputLabel>
-              <Input id="promo" aria-describedby="my-helper-text" style={{ width: "500px" }} name="promo" onChange={e => handleChange(e)} />
+
+            <FormControl >
+              <InputLabel id="promo-label-new">Promo</InputLabel>
+              <Select
+                labelId="promo-label-new"
+                id="promo-new"
+                value={newLesson.promo._id}
+                style={{ width: "500px" }}
+                onChange={(e: any) => setNewLesson({ ...newLesson, promo: { _id: e.target.value, name: promos.getAllPromos.find((s: any) => s._id == e.target.value)?.name } })}
+              >
+                {promos.getAllPromos.map((s: any) => <MenuItem value={s._id}>{s.name}</MenuItem>)}
+              </Select>
+            </FormControl>
+
+            <FormControl >
+              <InputLabel id="pres-label-new">Présentation</InputLabel>
+              <Select
+                labelId="pres-label-new"
+                id="presentation-new"
+                value={newLesson.presentation}
+                style={{ width: "500px" }}
+                onChange={(e: any) => setNewLesson({ ...newLesson, presentation: e.target.value })}
+              >
+                <MenuItem value=""> </MenuItem>
+                {presentations.findAllPresentation.map((s: any) => <MenuItem value={s._id}>{s.title}</MenuItem>)}
+              </Select>
             </FormControl>
 
           </DialogContent>
@@ -223,10 +242,20 @@ mutation updateLesson (
                 {subjects.getAllSubjects.map((s: any) => <MenuItem value={s._id}>{s.name}</MenuItem>)}
               </Select>
             </FormControl>
-            <FormControl>
-              <InputLabel htmlFor="promo-up">Promo</InputLabel>
-              <Input id="promo-up" aria-describedby="my-helper-text" value={actualLesson.promo} style={{ width: "500px" }} name="promo" onChange={e => setActualLesson({ ...actualLesson, [e.target.name]: e.target.value })} />
+
+            <FormControl >
+              <InputLabel id="promo-label-up">Promo</InputLabel>
+              <Select
+                labelId="promo-label-up"
+                id="promo-up"
+                value={actualLesson.promo._id}
+                style={{ width: "500px" }}
+                onChange={(e: any) => setActualLesson({ ...actualLesson, promo: { _id: e.target.value, name: promos.getAllPromos.find((s: any) => s._id == e.target.value)?.name } })}
+              >
+                {promos.getAllPromos.map((s: any) => <MenuItem value={s._id}>{s.name}</MenuItem>)}
+              </Select>
             </FormControl>
+
             <FormControl >
               <InputLabel id="pres-label">Présentation</InputLabel>
               <Select
@@ -240,7 +269,6 @@ mutation updateLesson (
                 {presentations.findAllPresentation.map((s: any) => <MenuItem value={s._id}>{s.title}</MenuItem>)}
               </Select>
             </FormControl>
-
           </DialogContent>
           <DialogActions>
             <Button onClick={() => setShowUpdate(false)} color="primary">

@@ -1,6 +1,7 @@
 import { prop } from "@typegoose/typegoose";
 import { Field, InputType, ObjectType } from "type-graphql";
 import { Presentation } from "./Presentation";
+import { Promo } from "./Promo";
 import { Subject } from "./Subject";
 
 @ObjectType('LessonType')
@@ -18,9 +19,9 @@ export class Lesson {
   @prop()
   end!: Date;
 
-  @Field({ nullable: true })
-  @prop()
-  promo: String;
+  @Field(() => Promo, { nullable: true} )
+  @prop({ref: () => Promo})
+  promo: Promo;
 
   @Field(() => Subject,{ nullable: true })
   @prop()
