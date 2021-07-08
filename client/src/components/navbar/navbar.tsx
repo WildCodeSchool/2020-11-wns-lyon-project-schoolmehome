@@ -3,24 +3,44 @@ import "./navbar.css";
 import { FaUser, FaSignOutAlt, FaBook, FaCalendarAlt } from "react-icons/fa";
 import { MdDashboard } from "react-icons/md";
 import { SiWikipedia } from "react-icons/si";
-import avatar from '../../image/unnamed.gif';
+import avAdmin from '../../image/admin2.jpg';
+import avUser from '../../image/user2.jpg';
+import avTeacher from '../../image/teacher.jpg';
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../context/authContext";
+import useUser from "../../hooks/useUser";
+import { Avatar, createStyles, makeStyles, Theme } from "@material-ui/core";
 
 
 export function Navbar() {
   const { user, disconnect } = useAuth()
+  const u = useUser();
+  const classes = useStyles();
   return (
     <nav className="navbar">
       <ul className="navbar-nav">
         <li className="avatar">
           <div className='avatar-div'>
-            <img src={avatar} alt="avatar" className="avatarImg" />
+                    {
+                        user.role === 'Teacher' ?
+                        <Avatar alt="" src={avTeacher} className={classes.large} /> : ''
+                    }
+                    {
+                        user.role === 'Admin' ?
+                        <Avatar alt="" src={avAdmin} className={classes.large} /> : ''
+                    }
+                    {
+                        user.role === 'User' ?
+                        <Avatar alt="" src={avUser} className={classes.large} /> : ''
+                    }
             <div className="avatarName">
               <h1>{user.firstName}&nbsp;{user.lastName}</h1>
               <div className="avatarStudy">
-                <p>Master&nbsp;1</p>
-                <p>Développement&nbsp;web</p>
+                        {
+                            user.role === 'User' ?
+                            <p>{u.user?.getOne.promo[0].name ? u.user?.getOne.promo[0].name : 'Pas de promotion'}</p>
+                            : <p>{user.role}</p>
+                        }
               </div>
             </div>
           </div>
@@ -40,7 +60,7 @@ export function Navbar() {
           <li className="nav-item">
             <NavLink to="/calendar" className="nav-link" activeClassName="active">
               <FaCalendarAlt size={30} />
-              <span className="link-text">Mon calendrier</span>
+              <span className="link-text">Mon&nbsp;calendrier</span>
             </NavLink>
           </li>
           {
@@ -88,3 +108,12 @@ export function Navbar() {
     );
   }
   
+
+  const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    large: {
+      width: theme.spacing(8),
+      height: theme.spacing(8),
+    },
+  }),
+);
