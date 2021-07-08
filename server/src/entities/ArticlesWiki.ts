@@ -48,7 +48,7 @@ export class ArticlesWikiType extends ArticlesWiki {
 
 
 @InputType('ArticlesWikiInputType')
-export class ArticlesWikiInput extends ArticlesWiki {
+export class ArticlesWikiInputType extends ArticlesWiki {
     @Field()
     @prop({ref : () => Promo})
     promo : string
