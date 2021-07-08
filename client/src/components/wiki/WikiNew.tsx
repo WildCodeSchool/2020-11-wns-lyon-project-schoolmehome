@@ -17,7 +17,7 @@ export const WikiNew = () => {
     const u = useUser();
 
     const NEW_ART = gql`
-        mutation createArticle ($art: ArticlesWikiInput!) {
+        mutation createArticle ($art: ArticlesWikiInputType!) {
             createArticles(data: $art){
                 _id
             }
