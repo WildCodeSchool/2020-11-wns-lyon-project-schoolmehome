@@ -4,8 +4,8 @@ import { VersionsWiki, VersionsWikiInput, VersionsWikiType, VersionsWikiTypeAll 
 import { User } from "./User";
 import { Promo } from "./Promo";
 
-@ObjectType()
-@InputType()
+@ObjectType('ArticlesWikiObject')
+@InputType('ArticlesWikiInput')
 @modelOptions({schemaOptions : {collection : 'ArticlesWiki'}})
 export class ArticlesWiki{
 
@@ -47,7 +47,7 @@ export class ArticlesWikiType extends ArticlesWiki {
 }
 
 
-@InputType('ArticlesWikiInput')
+@InputType('ArticlesWikiInputType')
 export class ArticlesWikiInput extends ArticlesWiki {
     @Field()
     @prop({ref : () => Promo})

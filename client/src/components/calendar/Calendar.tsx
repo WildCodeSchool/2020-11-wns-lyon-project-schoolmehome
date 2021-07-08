@@ -64,11 +64,6 @@ mutation updateLesson (
   const [createLesson] = useMutation<any>(NEW_LESSON);
   const [updateLesson] = useMutation<any>(UPDATE_LESSON);
 
-  // const [form, setForm] = useState({ subject: "", promo: "" })
-  // let { id }: { id: string } = useParams();
-  // let prof: any = intervenant.find((i: any) => id === i._id);
-
-
   useEffect(() => {
     if (user) {
       setLessons(user.getOne.lessons.map((d: any): EventInput => {
@@ -87,9 +82,6 @@ mutation updateLesson (
 
   const handleClose = (): void => setShow(false);
   const handleShow = (): void => setShow(true);
-  const handleChange = (e: any) => {
-    setNewLesson({ ...newLesson, [e.target.name]: e.target.value })
-  }
   const handleChangeSubject = (e: any) => {
     setNewLesson({ ...newLesson, subject: { _id: e.target.value, name: subjects.getAllSubjects.find((s: any) => s._id == e.target.value)?.name } })
   }
@@ -140,7 +132,7 @@ mutation updateLesson (
       .catch(e => console.log(JSON.stringify(e)))
   }
 
-  if (subjects && presentations && promos) {
+  if (subjects && presentations && promos && user) {
     return (
       <>
         <FullCalendar
@@ -153,8 +145,8 @@ mutation updateLesson (
           slotDuration='00:30'
           slotMinTime='08:00'
           slotMaxTime='19:00'
-          editable={true}
-          selectable={true}
+          editable={user.getOne.role === "Admin" || user.getOne.role === "Teacher"}
+          selectable={user.getOne.role === "Admin" || user.getOne.role === "Teacher"}
           select={function (info) {
             setNewLesson({ ...newLesson, start: info.startStr, end: info.endStr })
             handleShow()
@@ -166,6 +158,8 @@ mutation updateLesson (
             saveChange(info)
           }}
           eventClick={function (info) {
+            if (user.getOne.role === "User") 
+              return;
             setShowUpdate(true)
             const less = lessons.find((l: any) => l.id == info.event.id);
             setActualLesson({
@@ -194,10 +188,6 @@ mutation updateLesson (
                 {subjects.getAllSubjects.map((s: any) => <MenuItem value={s._id}>{s.name}</MenuItem>)}
               </Select>
             </FormControl>
-            {/* <FormControl> */}
-              {/* <InputLabel htmlFor="promo">Promo</InputLabel>
-              <Input id="promo" aria-describedby="my-helper-text" style={{ width: "500px" }} name="promo" onChange={e => handleChange(e)} />
-            </FormControl> */}
 
             <FormControl >
               <InputLabel id="promo-label-new">Promo</InputLabel>
@@ -266,10 +256,6 @@ mutation updateLesson (
               </Select>
             </FormControl>
 
-            {/* <FormControl>
-              <InputLabel htmlFor="promo-up">Promo</InputLabel>
-              <Input id="promo-up" aria-describedby="my-helper-text" value={actualLesson.promo.name} style={{ width: "500px" }} name="promo" onChange={e => setActualLesson({ ...actualLesson, [e.target.name]: e.target.value })} />
-            </FormControl> */}
             <FormControl >
               <InputLabel id="pres-label">Présentation</InputLabel>
               <Select

@@ -3,8 +3,8 @@ import { IsIn } from "class-validator";
 import { Field, InputType, ObjectType } from "type-graphql";
 import { User } from "./User";
 
-@ObjectType()
-@InputType()
+@ObjectType('VersionsWikiType')
+@InputType('VersionsWikiInput')
 @modelOptions({schemaOptions : {collection : 'VersionsWiki'}})
 export class VersionsWiki{
 
@@ -30,7 +30,7 @@ export class VersionsWiki{
 
 }
 
-@ObjectType('VersionsWikiType')
+@ObjectType('VersionsWikiTypeObject')
 export class VersionsWikiType extends VersionsWiki {
 
     @Field(() => User, {nullable : true})
@@ -42,7 +42,7 @@ export class VersionsWikiType extends VersionsWiki {
     author : User
 }
 
-@ObjectType('VersionsWikiTypeAll')
+@ObjectType('VersionsWikiTypeAllObject')
 export class VersionsWikiTypeAll extends VersionsWiki {
 
     @Field({nullable : true})
@@ -54,7 +54,7 @@ export class VersionsWikiTypeAll extends VersionsWiki {
     author : string
 }
 
-@InputType('VersionsWikiInput')
+@InputType('VersionsWikiInputType')
 export class VersionsWikiInput extends VersionsWiki {
     @Field({nullable : true})
     @prop({ref : () => User})
