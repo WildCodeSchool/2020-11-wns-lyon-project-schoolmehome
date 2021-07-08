@@ -71,7 +71,7 @@ export const ProfilEdit = () => {
 
     const save = () => {
         console.log('save')
-        updateUser({variables :  {data : {...state, __typename : undefined}}})
+        updateUser({variables :  {data : {...state,role : user.role, __typename : undefined}}})
             .then(() => history.push('/profil'))
             .catch(e => console.log(JSON.stringify(e, null, 4)))    
     }

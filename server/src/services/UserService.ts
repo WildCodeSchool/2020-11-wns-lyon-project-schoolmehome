@@ -43,6 +43,7 @@ export class UserServiceClass {
 
     @Mutation(() => User, { nullable: true })
     public async updateOne(@Arg('data') data: User) {
+        console.log('ok')
         const model = getModelForClass(User);
         return await model.findByIdAndUpdate(
             {_id: data._id},
