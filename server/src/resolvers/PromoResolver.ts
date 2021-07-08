@@ -9,9 +9,9 @@ import { getModelForClass } from '@typegoose/typegoose';
 export class PromoResolver {
 
     @Mutation(() => Promo)
-    public async createPromo(@Arg('data') data: Promo): Promise<Promo> {
+    public async createPromo(@Arg('promo') promo: Promo): Promise<Promo> {
         const model = getModelForClass(Promo)
-        return await model.create(data)
+        return await model.create(promo)
     }
 
     // // Function à modifier car pas d'id dans promo...

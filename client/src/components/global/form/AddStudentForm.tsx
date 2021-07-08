@@ -4,7 +4,7 @@ import {UserFormContext} from "../../dashboard/dashboard-admin/DashboardAdmin";
 import {UserFormData} from "../../dashboard/dashboard-admin/ModalAddNewUser/ModalAddNewUser";
 
 
-const AddStudentForm = (): ReactElement => {
+const UserForm = (): ReactElement => {
 
     const [studentData, setStudentData] = useContext(UserFormContext)
     // console.log(studentData instanceof UserFormData)
@@ -63,4 +63,4 @@ const AddStudentForm = (): ReactElement => {
     )
 }
 
-export default AddStudentForm
+export default UserForm

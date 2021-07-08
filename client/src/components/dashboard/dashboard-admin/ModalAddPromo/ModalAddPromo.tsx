@@ -6,18 +6,28 @@ import {ReactElement} from "react";
 import CustomDialog from "../../../global/CustomDialog";
 import DefaultBackground from "../../../../../src/image/background-user.jpg"
 import AddStudentPromoForm from "../../../global/form/AddStudentPromoForm";
-import {Subject} from "../ModalAddSubject/ModalAddSubject";
+import {SubjectInput} from "../ModalAddSubject/ModalAddSubject";
 import {User} from "../ModalAddNewUser/ModalAddNewUser";
+import {gql, useMutation } from "@apollo/client";
 
 
 const ModalAddPromo = (): ReactElement => {
+
+    const CREATE_PROMO = gql`
+        mutation ($promo: PromoInput!) {
+            createPromo(promo: $promo) {
+                _id
+            }
+        }
+    `;
+
 
     const DIALOG_TITLE = "Ajoutez des étudiants à une promotion"
     const DIALOG_CONTENT = "Remplissez le formulaire ci-dessous afin d'ajouter des étudiants à une promotion'"
     const DIALOG_POSITIVE = "Valider"
     const DIALOG_NEGATIVE = "Annuler"
 
-    const promo = new Promo([], [], "")
+    const promo = new PromoInput([], [], "")
 
 
     const [open, setOpen] = React.useState(false);
@@ -36,6 +46,10 @@ const ModalAddPromo = (): ReactElement => {
 
     const handlePositiveAction = (): void => {
         console.log(promo)
+        addPromo({variables: {promo: promo}})
+            .then((data: any) => {
+                console.log(data)
+            })
         handleClose();
     }
 
@@ -45,13 +59,16 @@ const ModalAddPromo = (): ReactElement => {
 
     const getUsers = (user: User[]) => {
         console.log("User: ", user)
-        promo.users = user
+        promo.students = user
     }
 
-    const getSubjects = (subjects: Subject[]) => {
+    const getSubjects = (subjects: SubjectInput[]) => {
         console.log("Subject: ", subjects)
-        promo.subjects = subjects
+        promo.subject = subjects
     }
+
+    const [addPromo] = useMutation<any>(CREATE_PROMO)
+
 
     return (
         <Paper className="margin-default padding-default text-center">
@@ -77,14 +94,15 @@ const ModalAddPromo = (): ReactElement => {
 export default ModalAddPromo
 
 
-export class Promo {
-    subjects: Subject[]
-    users: User[]
+export class PromoInput {
+    _id: string
     name: string
+    students: User[]
+    subject: SubjectInput[]
 
-    constructor(subjects: Subject[], users: User[], name: string) {
-        this.subjects = subjects
-        this.users = users
+    constructor(subjects: SubjectInput[], users: User[], name: string) {
+        this.subject = subjects
+        this.students = users
         this.name = name
     }
 }
