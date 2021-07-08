@@ -7,14 +7,20 @@ import { AuthResult } from '../entities/AuthResult';
 import { Lesson } from "../entities/Lesson";
 import { getModelForClass } from "@typegoose/typegoose";
 import moment from "moment";
+import { Promo } from "../entities/Promo";
 
 
 @Resolver(() => User)
 export class UserResolver {
 
-    @Authorized(['Admin'])
     @Mutation(() => User)
-    public async createUser(@Arg('data') data: User): Promise<Boolean>{
+    public async signup(@Arg('data', () => User) data: User): Promise<User> {
+        return await UserService.signUp(data);
+    };
+
+    // @Authorized(['Admin'])
+    @Mutation(() => User)
+    public async createUser(@Arg('data') data: User): Promise<Boolean> {
         return await Auth.createUser(data);
     }
 
@@ -33,53 +39,62 @@ export class UserResolver {
         return await Auth.signin(email, password, ctx);
     }
     @Mutation(() => AuthResult, { nullable: true })
-    public async lost(@Arg('email') email: string){
+    public async lost(@Arg('email') email: string) {
         return await Auth.passwordLost(email);
     }
 
     @Mutation(() => AuthResult, { nullable: true })
-    public async resetPassword(@Arg('token') token: string, @Arg('password') password: string, @Arg('email') email: string){
+    public async resetPassword(@Arg('token') token: string, @Arg('password') password: string, @Arg('email') email: string) {
         return Auth.restorePassword(token, password, email);
     }
     // @Authorized(['Admin'])
     @Query(() => User)
-    public async getOne(@Arg('email') email: string): Promise<User>{
+    public async getOne(@Arg('email') email: string): Promise<User> {
         return await UserService.findByEmail(email);
     }
 
-    @Mutation(() => User, {nullable : true})
-    public async update(@Arg('data') data: User){
-        console.log(data);
+    @Mutation(() => User, { nullable: true })
+    public async update(@Arg('data') data: User) {
         return await UserService.updateOne(data)
     }
 
 
 
-  @Mutation(() => Lesson)
-  public async addLesson(@Arg('data') data: Lesson, @Arg('_id') _id: string): Promise<Lesson> {
-    const model = getModelForClass(User)
-    const presentation = await model.findById(_id);
-    const newLesson = await lessonService.create(data)
-    const newUser = await model.findByIdAndUpdate(
-      { _id },
-      { lessons: [...presentation.lessons, newLesson] },
-      { new: true })
-    return newLesson;
-  }
+    @Mutation(() => Lesson)
+    public async addLesson(@Arg('data') data: Lesson, @Arg('_id') _id: string): Promise<Lesson> {
+        const model = getModelForClass(User);
+        const newLesson = await lessonService.create(data)
+        const promoUsers = await model
+            .updateMany({ promo: data.promo }, { $push: { lessons: newLesson  } })
+        return newLesson;
+    }
 
-  @Query(() => Lesson, { nullable: true })
-  public async findNextlesson(@Arg('email') email: string): Promise<Lesson>{
+    @Query(() => Lesson, { nullable: true })
+    public async findNextlesson(@Arg('email') email: string): Promise<Lesson> {
 
-    const model = getModelForClass(User)
-    const lessonModel = getModelForClass(Lesson);
-    const teacher = await model.findOne({email}).populate('lessons', undefined, lessonModel).exec()
-    if(teacher.lessons.length === 0)
-      return null
+        const model = getModelForClass(User)
+        const lessonModel = getModelForClass(Lesson);
+        const promoModel = getModelForClass(Promo)
+        const teacher = await model.findOne({ email })
+            .populate({
+                path: 'lessons',
+                model: lessonModel,
+                populate: {
+                    path: 'promo',
+                    model: promoModel
+                }
+            }).populate({
+                path: 'promo',
+                model: promoModel,
+            }).exec();
 
-    return teacher.lessons
-      .filter(l => moment(l.start) > moment(Date.now()))
-      .sort((a, b) => (a.start > b.start) ? 1 : ((b.start > a.start) ? -1 : 0))[0]
-  }
+        if (teacher.lessons.length === 0)
+            return null
+
+        return teacher.lessons
+            .filter(l => moment(l.start) > moment(Date.now()))
+            .sort((a, b) => (a.start > b.start) ? 1 : ((b.start > a.start) ? -1 : 0))[0]
+    }
     // @Authorized(['Admin'])
     @Query(() => [User])
     public async fetchAll() {
@@ -93,12 +108,12 @@ export class UserResolver {
 
     @Authorized(['Admin'])
     @Mutation(() => [User])
-    public async delete(@Arg('id') id: string){
+    public async delete(@Arg('id') id: string) {
         return await UserService.delete(id)
     }
 
     @Query(() => [User])
-    public async findUsersByRole(@Arg('role') role: string): Promise<User[]>{
+    public async findUsersByRole(@Arg('role') role: string): Promise<User[]> {
         return await UserService.findByRole(role);
     }
 }

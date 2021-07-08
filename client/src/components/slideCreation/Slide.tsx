@@ -11,4 +11,4 @@ const Slide = ({ handleDelete, slide, index, changeSlide }: any) => {
   )
 }
 
-export default Slide
+export default Slide;

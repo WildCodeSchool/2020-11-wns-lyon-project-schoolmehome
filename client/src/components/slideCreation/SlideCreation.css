@@ -53,3 +53,14 @@
 .editor-container {
   flex: 3;
 }
+
+.delete-slide-button {
+  border: none;
+  background-color: transparent;
+  font-size: 10px;
+}
+
+.top-container {
+    display: flex;
+    align-items: center;
+}

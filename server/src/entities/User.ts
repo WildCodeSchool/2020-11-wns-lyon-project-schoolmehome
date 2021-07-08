@@ -59,13 +59,13 @@ export class User {
   @prop({ref: () => Lesson})
   lessons: Lesson[];
 
+  @Field(() => [Promo], { nullable: true} )
+  @prop({ref: () => Promo})
+  promo: Promo[];
+
   @Field(() => [Subject], {nullable: true})
   @prop()
   subject: Subject[];
-  
-  @Field(() => [Promo], {nullable: true})
-  @prop()
-  promo: Promo[];
   
   @Field({nullable: true})
   @prop()

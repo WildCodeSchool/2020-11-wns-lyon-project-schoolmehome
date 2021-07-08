@@ -55,7 +55,7 @@ export const WikiNew = () => {
         <div>
         <div>
         <Input2 type="text" placeholder="Titre du Wiki" onChange={(e: FormEvent<HTMLInputElement>) => setTitle(e.currentTarget.value)} />
-        <Button onClick={save}>Enregistrer</Button>
+        <Button onClick={save} style={{ fontSize: "1.25rem", marginLeft: "10px" }}>Enregistrer</Button>
       </div>
       <div className="slideCreation-container">
       

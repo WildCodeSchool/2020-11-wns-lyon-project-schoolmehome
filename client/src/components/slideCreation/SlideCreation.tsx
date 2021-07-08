@@ -79,9 +79,9 @@ const SlideCreation = () => {
 
   return (
     <div>
-      <div>
+      <div className="top-container">
         <Input2 type="text" placeholder="Titre de la présentation" onChange={(e: FormEvent<HTMLInputElement>) => setTitlePres(e.currentTarget.value)} />
-        <Button onClick={save}>Enregistrer</Button>
+        <Button onClick={save} style={{ fontSize: "1.25rem", marginLeft: "10px" }}>Enregistrer</Button>
       </div>
       <div className="slideCreation-container">
       

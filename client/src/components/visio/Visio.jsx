@@ -59,7 +59,7 @@ const Visio = () => {
 
   return (
     <div>
-      {lesson && <h2>{lesson.findOneLesson.subject.name} {lesson.findOneLesson.promo} de {moment(lesson.findOneLesson.start).format('HH:mm')} à {moment(lesson.findOneLesson.end).format('HH:mm')}</h2>}
+      {lesson && <h2>{lesson.findOneLesson.subject.name} {lesson.findOneLesson.promo.name} de {moment(lesson.findOneLesson.start).format('HH:mm')} à {moment(lesson.findOneLesson.end).format('HH:mm')}</h2>}
       <div style={{ display: "flex" }}>
         <div id={jitsiContainerId} style={{ height: 750, width: "100%", flex: "1" }} />
         {lessonToggle &&
