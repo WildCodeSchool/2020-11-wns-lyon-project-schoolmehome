@@ -32,6 +32,11 @@
     position: relative;
 }
 
+.avatar-div .MuiAvatar-root.MuiAvatar-circle {
+    margin-left: 0.5rem;
+    margin-top: 0;
+}
+
 .avatarImg{
     width: 4rem;
     margin: 0 0.5rem;
