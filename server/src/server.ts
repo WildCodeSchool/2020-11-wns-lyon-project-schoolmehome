@@ -41,7 +41,7 @@ export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) 
 };
 (async () => {
     try {
-        await mongoose.connect('mongodb://localhost:27017/', { useNewUrlParser: true, useUnifiedTopology: true, dbName: "home" });
+        await mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true, dbName: process.env.DB_NAME });
         const schema = await buildSchema({
             resolvers: [__dirname + '/resolvers/*.{ts,js}'],
             authChecker: passwordAuthChecker

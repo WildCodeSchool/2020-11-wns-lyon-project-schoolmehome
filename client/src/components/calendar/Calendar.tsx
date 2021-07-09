@@ -14,6 +14,7 @@ import LessonType from '../../types/lessonType';
 import { gql, useMutation } from '@apollo/client';
 import useSubjects from '../../hooks/useSubjects';
 import usePromos from '../../hooks/usePromos';
+import { Redirect } from 'react-router-dom';
 
 
 
@@ -63,6 +64,7 @@ mutation updateLesson (
   const { user } = useUser();
   const [createLesson] = useMutation<any>(NEW_LESSON);
   const [updateLesson] = useMutation<any>(UPDATE_LESSON);
+  const [redirect, setRedirect] = useState<boolean>(false)
 
   useEffect(() => {
     if (user) {
@@ -86,7 +88,7 @@ mutation updateLesson (
     setNewLesson({ ...newLesson, subject: { _id: e.target.value, name: subjects.getAllSubjects.find((s: any) => s._id == e.target.value)?.name } })
   }
   const handleSubmit = () => {
-    createLesson({ variables: { _id: user.getOne._id, data: {...newLesson, presentation: { _id: newLesson.presentation }} } })
+    createLesson({ variables: { _id: user.getOne._id, data: { ...newLesson, presentation: { _id: newLesson.presentation } } } })
       .then((d: any) => {
         setLessons([
           ...lessons,
@@ -132,6 +134,8 @@ mutation updateLesson (
       .catch(e => console.log(JSON.stringify(e)))
   }
 
+  if (redirect) return <Redirect to={`/visio/${actualLesson._id}`} />
+
   if (subjects && presentations && promos && user) {
     return (
       <>
@@ -158,18 +162,22 @@ mutation updateLesson (
             saveChange(info)
           }}
           eventClick={function (info) {
-            if (user.getOne.role === "User") 
-              return;
-            setShowUpdate(true)
+
             const less = lessons.find((l: any) => l.id == info.event.id);
             setActualLesson({
               _id: info.event.id,
               start: info.event.startStr,
               end: info.event.endStr,
-              promo:  { name: less.promo.name, _id: less.promo._id },
+              promo: { name: less.promo.name, _id: less.promo._id },
               subject: { name: less.subject.name, _id: less.subject._id },
               presentation: less.presentation
             })
+
+            if (user.getOne.role === "User") {
+              setRedirect(true)
+              return;
+            }
+            setShowUpdate(true)
           }}
         />
         <Dialog open={show} onClose={handleClose} aria-labelledby="form-dialog-title">
@@ -271,6 +279,9 @@ mutation updateLesson (
             </FormControl>
           </DialogContent>
           <DialogActions>
+            <Button onClick={() => setShowUpdate(false)}>
+              Supprimer
+            </Button>
             <Button onClick={() => setShowUpdate(false)} color="primary">
               Fermer
             </Button>
