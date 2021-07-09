@@ -88,6 +88,7 @@ const SlideCreation = () => {
       
         <div className="editor-container">
           <Editor
+            apiKey="1il6z3n879jk040vi2aph47g1j7qz22asqsetn0jw91m7wxb"
             initialValue=""
             value={ActiveContent}
             init={{
