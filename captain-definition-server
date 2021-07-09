@@ -8,7 +8,6 @@
                         "COPY ./server/tsconfig.json tsconfig.json",
                         "RUN npm i",
                         "COPY ./server/src ./src",
-                        "COPY ./server/public ./public",
                         "CMD [\"npm\",\"start\"]"
                     ]
  }
