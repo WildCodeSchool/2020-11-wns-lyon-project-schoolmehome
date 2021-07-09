@@ -125,19 +125,13 @@ const ListAllUser = (): ReactElement => {
         return (
             <Grid container justify="center" alignItems="center" className="item-height" spacing={4}>
                 <Grid item xs={12} sm={4}>
-                    <ModalAddNewUser userType={UserType.STUDENT}/>
-                </Grid>
-                <Grid item xs={12} sm={4}>
-                    <ModalAddNewUser userType={UserType.TEACHER}/>
+                    <ModalAddNewUser />
                 </Grid>
                 <Grid item xs={12} sm={4}>
                     <ModalAddPromo />
                 </Grid>
                 <Grid item xs={12} sm={4}>
                     <ModalAddSubject />
-                </Grid>
-                <Grid item xs={12} sm={4}>
-                    <ModalAddNewUser userType={UserType.CAMPUS_MANAGER}/>
                 </Grid>
             </Grid>
         )

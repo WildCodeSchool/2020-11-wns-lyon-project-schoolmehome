@@ -7,7 +7,7 @@ import { getModelForClass } from "@typegoose/typegoose";
 export class SubjectResolver {
 
     @Mutation(() => Subject)
-    public async createSubject(@Arg('data') data: Subject): Promise<Subject> {
+    public async createSubject(@Arg('subject') data: Subject): Promise<Subject> {
         const model = getModelForClass(Subject)
         return await model.create(data)
     }

@@ -46,7 +46,7 @@ const ModalAddSubject = (): ReactElement => {
 
     const handlePositiveAction = (): void => {
         console.log(subjectName)
-        const subject = new Subject(subjectName)
+        const subject = new SubjectInput(subjectName)
         createSubject({variables: {subject: subject}})
             .then((data: any) => {
                 console.log(data)
@@ -78,18 +78,8 @@ const ModalAddSubject = (): ReactElement => {
 export default ModalAddSubject
 
 
-class SubjectInput {
-    public _id: string
-    public name: string
 
-    constructor(_id: string, name: string) {
-        this._id = _id
-        this.name = name
-    }
-
-}
-
-export class Subject {
+export class SubjectInput {
     public _id: string
     public name: string
 

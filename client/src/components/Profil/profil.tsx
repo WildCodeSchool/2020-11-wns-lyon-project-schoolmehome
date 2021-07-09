@@ -80,7 +80,7 @@ export const Profil = () => {
                         <div className="name">{info ? info.firstName : ''} {info ? info.lastName : ''}</div>
                         {
                             user.role === 'User' ?
-                            <div className="group">{u.user?.getOne.promo[0].name ? u.user?.getOne.promo[0].name : 'Pas de promotion'}</div>
+                            <div className="group">{u.user?.getOne.promo[0]?.name ? u.user?.getOne.promo[0].name : 'Pas de promotion'}</div>
                             : <div className="group">{user.role}</div>
                         }
                     </div>

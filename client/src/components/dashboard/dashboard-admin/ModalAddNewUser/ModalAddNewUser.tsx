@@ -15,9 +15,9 @@ interface ModalAddNewUserProps {
 }
 
 
-const ModalAddNewUser = ({userType}: ModalAddNewUserProps): ReactElement => {
+const ModalAddNewUser = (): ReactElement => {
 
-    const DIALOG_TITLE = "Ajoutez un.e nouvel.le utilisateur (" + userType +")"
+    const DIALOG_TITLE = "Ajoutez un.e nouvel.le utilisateur"
     const DIALOG_CONTENT = "Remplissez le formulaire ci-dessous afin de créer un.e nouvel.le utilisateur"
     const DIALOG_POSITIVE = "Ajouter"
     const DIALOG_NEGATIVE = "Annuler"
@@ -48,7 +48,7 @@ const ModalAddNewUser = ({userType}: ModalAddNewUserProps): ReactElement => {
 
     const handlePositiveAction = (): void => {
         console.log("OK")
-        addNewUser(userForm, userType);
+        // addNewUser(userForm, userType);
         handleClose();
     }
 
@@ -78,7 +78,7 @@ const ModalAddNewUser = ({userType}: ModalAddNewUserProps): ReactElement => {
                 <img className="width-max" src={DefaultBackground} alt="Default Picture"/>
             </Grid>
             <Grid item xs={12}>
-                <Button onClick={handleClickOpen}>{userType}</Button>
+                <Button onClick={handleClickOpen}>Utilisateur</Button>
             </Grid>
             <CustomDialog open={open}
                           handleClose={handleClose}
@@ -87,7 +87,7 @@ const ModalAddNewUser = ({userType}: ModalAddNewUserProps): ReactElement => {
                           dialogContent={DIALOG_CONTENT}
                           positiveButton={DIALOG_POSITIVE}
                           negativeButton={DIALOG_NEGATIVE}>
-                <AddUserForm userType={userType}/>
+                <AddUserForm />
             </CustomDialog>
         </Paper>
     )
@@ -100,7 +100,9 @@ export class User {
     email: String
     password: String
     role: String
-    lessons: []
+    lessons: [] = []
+    subject: [] = []
+    promo: [] = []
 
     constructor(firstName: String, lastName: String, email: String, password: String, role: String, lessons: []) {
         this.firstName = firstName;
@@ -119,6 +121,8 @@ export class UserFormData {
     _password: String
     _role: String
     _lesson: []
+    _subject: []
+    _promo: []
 
 
     get firstName(): String {
@@ -162,14 +166,15 @@ export class UserFormData {
         this._role = value;
     }
 
-    constructor(firstName: String, lastName: String, email: String, password: String, userRole: String, lesson: []) {
-        console.log('constructing')
+    constructor(firstName: String, lastName: String, email: String, password: String, userRole: String, lesson: [], promo: [], subject: []) {
         this._firstName = firstName;
         this._lastName = lastName;
         this._email = email;
         this._password = password;
         this._role = userRole;
         this._lesson = lesson;
+        this._promo = promo;
+        this._subject = promo;
     }
 }
 
