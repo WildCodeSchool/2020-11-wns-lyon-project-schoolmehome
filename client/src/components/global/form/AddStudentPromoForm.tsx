@@ -3,8 +3,8 @@ import {Chip, FormControl, Input, InputLabel, makeStyles, MenuItem, Select, Them
 import {TextField} from "@material-ui/core";
 import React, {ReactElement, useContext, useEffect, useState} from "react";
 import {User} from "../../dashboard/dashboard-admin/ModalAddNewUser/ModalAddNewUser";
-import {Promo} from "../../dashboard/dashboard-admin/ModalAddPromo/ModalAddPromo";
-import {Subject} from "../../dashboard/dashboard-admin/ModalAddSubject/ModalAddSubject";
+import {PromoInput} from "../../dashboard/dashboard-admin/ModalAddPromo/ModalAddPromo";
+import {SubjectInput} from "../../dashboard/dashboard-admin/ModalAddSubject/ModalAddSubject";
 import './AddStudentPromoForm.css'
 
 
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 
 interface AddStudentPromoFormProps {
     getUsers: (user: User[]) => void
-    getSubject: (subject: Subject[]) => void
+    getSubject: (subject: SubjectInput[]) => void
     getPromoName: (name: string) => void
 }
 
@@ -73,7 +73,7 @@ const AddStudentPromoForm = ({getUsers, getPromoName, getSubject}: AddStudentPro
 
 
     const [search, setSearch] = useState<User[]>([])
-    const [searchSubjects, setSubjects] = useState<Subject[]>([])
+    const [searchSubjects, setSubjects] = useState<SubjectInput[]>([])
 
     useEffect(() => {
         if (users.data !== undefined) {
@@ -99,7 +99,7 @@ const AddStudentPromoForm = ({getUsers, getPromoName, getSubject}: AddStudentPro
     }
 
     const findSubjectWith = (id: string): string => {
-        const subject = searchSubjects.find((subject: Subject) => subject._id == id)
+        const subject = searchSubjects.find((subject: SubjectInput) => subject._id == id)
         return subject.name
     }
 
@@ -114,9 +114,9 @@ const AddStudentPromoForm = ({getUsers, getPromoName, getSubject}: AddStudentPro
         getUsers(selectedUser)
     };
     const handleChangeSubject = (event: any) => {
-        const selectedSubject: Subject[] = []
+        const selectedSubject: SubjectInput[] = []
         event.target.value.forEach((id: string) => {
-            const subject = searchSubjects.find((subject: Subject) => subject._id == id)
+            const subject = searchSubjects.find((subject: SubjectInput) => subject._id == id)
             selectedSubject.push(subject);
         })
         setSubjectName(event.target.value);
@@ -138,7 +138,7 @@ const AddStudentPromoForm = ({getUsers, getPromoName, getSubject}: AddStudentPro
 
     const handleChangeMultipleSubject = (event: any) => {
         const {options} = event.target;
-        const value: Subject[] = [];
+        const value: SubjectInput[] = [];
         for (let i = 0, l = options.length; i < l; i += 1) {
             if (options[i].selected) {
                 value.push(options[i].value);
@@ -220,7 +220,7 @@ const AddStudentPromoForm = ({getUsers, getPromoName, getSubject}: AddStudentPro
                     MenuProps={MenuProps}
                 >{
 
-                    searchSubjects !== undefined ? searchSubjects.map((data: Subject, index: number) => (
+                    searchSubjects !== undefined ? searchSubjects.map((data: SubjectInput, index: number) => (
                         <MenuItem key={index.toString()}
                                   value={data._id}
                                   style={getStyles(data.name, personName, theme)}>
