@@ -8,20 +8,9 @@ export interface AddUserFormProps {
     userType: UserType
 }
 
-const showUserForm = (): ReactElement => {
-    return <UserForm />
-}
-
-const showAddTeacherForm = (): void => {
-
-}
-
-const showAddAdminForm = (): void => {
-
-}
 
 const AddUserForm = (): ReactElement => {
-    return showUserForm()
+    return <UserForm />
 }
 
 export default AddUserForm

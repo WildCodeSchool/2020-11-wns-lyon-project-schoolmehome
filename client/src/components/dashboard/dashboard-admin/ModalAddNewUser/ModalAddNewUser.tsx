@@ -101,9 +101,8 @@ export class User {
     password: String
     role: String
     lessons: [] = []
-    _lesson: [] = []
-    _subject: [] = []
-    _promo: [] = []
+    subject: [] = []
+    promo: [] = []
 
     constructor(firstName: String, lastName: String, email: String, password: String, role: String, lessons: []) {
         this.firstName = firstName;
@@ -167,13 +166,15 @@ export class UserFormData {
         this._role = value;
     }
 
-    constructor(firstName: String, lastName: String, email: String, password: String, userRole: String, lesson: []) {
+    constructor(firstName: String, lastName: String, email: String, password: String, userRole: String, lesson: [], promo: [], subject: []) {
         this._firstName = firstName;
         this._lastName = lastName;
         this._email = email;
         this._password = password;
         this._role = userRole;
         this._lesson = lesson;
+        this._promo = promo;
+        this._subject = promo;
     }
 }
 

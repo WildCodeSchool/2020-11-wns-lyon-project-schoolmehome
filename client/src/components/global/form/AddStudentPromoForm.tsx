@@ -150,9 +150,14 @@ const AddStudentPromoForm = ({getUsers, getPromoName, getSubject}: AddStudentPro
     const classes = useStyles();
     const theme = useTheme();
 
-    const handleRemove = (tab: string[], id: string) => {
-        tab.splice(tab.indexOf(id))
-        setPersonName(tab)
+    const handleRemovePerson = (tab: string[], id: string) => {
+        const filteredTab = tab.filter((idRef: string) => idRef !== id)
+        setPersonName(filteredTab)
+    }
+
+    const handleRemoveSubject = (tab: string[], id: string) => {
+        const filteredTab = tab.filter((idRef: string) => idRef !== id)
+        setSubjectName(filteredTab)
     }
 
 
@@ -180,7 +185,8 @@ const AddStudentPromoForm = ({getUsers, getPromoName, getSubject}: AddStudentPro
                         <div className={classes.chips}>
                             {
                                 selected.map((id: string) => {
-                                    return <Chip key={id} label={findUserNameWith(id)} className={classes.chip} onDelete={(e) => handleRemove(selected, id)} onMouseDown={(event) => {
+                                    return <Chip key={id} label={findUserNameWith(id)} className={classes.chip}
+                                                 onDelete={(e) => handleRemovePerson(selected, id)} onMouseDown={(event) => {
                                         event.stopPropagation();
                                     }}/>
                                 })
@@ -213,7 +219,11 @@ const AddStudentPromoForm = ({getUsers, getPromoName, getSubject}: AddStudentPro
                     renderValue={(selected: any) => (
                         <div className={classes.chips}>
                             {selected.map((id: any) => (
-                                <Chip key={id} label={findSubjectWith(id)} className={classes.chip}/>
+                                <Chip key={id} label={findSubjectWith(id)} className={classes.chip}
+                                      onDelete={(e) => handleRemoveSubject(selected, id)}
+                                      onMouseDown={(event) => {
+                                          event.stopPropagation();
+                                      }}/>
                             ))}
                         </div>
                     )}
