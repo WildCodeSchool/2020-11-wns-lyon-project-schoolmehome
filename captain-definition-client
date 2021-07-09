@@ -1,4 +1,14 @@
 {
   "schemaVersion": 2,
-  "dockerfilePath": "./client/Dockerfile"
+  "dockerfileLines": [
+                        "FROM node:14-alpine"
+                        "RUN mkdir /app"
+                        "WORKDIR /app"
+                        "COPY ./client/package.json package.json"
+                        "COPY ./client/tsconfig.json tsconfig.json"
+                        "RUN npm i"
+                        "COPY ./client/src ./src"
+                        "COPY ./client/public ./public"
+                        "CMD [\"npm\",\"start\"]"
+                    ]
  }
