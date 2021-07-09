@@ -65,7 +65,7 @@ export const WikiEdit = () => {
     }, [data])
 
     const UPD_ART = gql`
-        mutation editArticles ($art: ArticlesWikiInput!) {
+        mutation editArticles ($art: ArticlesWikiInputType!) {
           editArticles(data: $art){
                 _id
             }

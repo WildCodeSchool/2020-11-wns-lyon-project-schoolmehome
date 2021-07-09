@@ -6,12 +6,16 @@ import './SlideCreation.css'
 import Button from '../global/button/Button'
 import Input from '../global/input/Input';
 import { gql, useMutation } from '@apollo/client';
+import Input2 from '../global/input2/Input';
+import { Redirect } from "react-router-dom";
+
 
 const SlideCreation = () => {
 
-  const [ActiveContent, setActiveContent] = useState<string>('')
-  const [slideList, setSlideList] = useState<SlideInterface[]>([{ content: '', isActive: true }])
-  const [titlePres, setTitlePres] = useState<string>('')
+  const [ActiveContent, setActiveContent] = useState<string>('');
+  const [slideList, setSlideList] = useState<SlideInterface[]>([{ content: '', isActive: true }]);
+  const [titlePres, setTitlePres] = useState<string>('');
+  const [redirect, setRedirect] = useState<boolean>(false);
 
   useEffect(() => {
     const c = slideList.find(slide => slide.isActive)
@@ -21,7 +25,6 @@ const SlideCreation = () => {
   const addSlide = () => {
     const slideListCopy = slideList.slice()
     slideListCopy.filter(slide => slide.isActive)[0].isActive = false;
-    // setActiveContent('')
     setSlideList([...slideList, { content: '', isActive: true }])
   }
 
@@ -30,7 +33,6 @@ const SlideCreation = () => {
     slideListCopy.forEach(slide => slide.isActive = false)
     slideListCopy.filter((slide, i) => i === index)[0].isActive = true;
     setSlideList(slideListCopy)
-    // setActiveContent(slideListCopy.find((slide, i) => i === index)!.content)
   }
 
   const handleDelete = (e: any, index: number) => {
@@ -41,9 +43,7 @@ const SlideCreation = () => {
       if (!slideListCopy.find(slide => slide.isActive)) {
         slideListCopy[slideListCopy.length - 1].isActive = true
       }
-      setSlideList(slideListCopy)
-      // setActiveContent(slideListCopy[slideListCopy.length - 1]!.content)
-    }
+      setSlideList(slideListCopy)    }
   }
 
   const NEW_PRES = gql`
@@ -66,9 +66,9 @@ const SlideCreation = () => {
           htmlContent : slideList[+k].content
         })
     })
-    console.log(pres);
     createPresentation({ variables: { pres: pres} })
             .then((data) => {
+              setRedirect(true)
                 console.log(data)
             }).catch((e) => {
                 console.log(e)
@@ -76,11 +76,13 @@ const SlideCreation = () => {
     
   }
 
+  if(redirect) return <Redirect to='/slides'/>;
+
   return (
     <div>
-      <div>
-        <Input type="text" placeholder="Titre de la présentation" onChange={(e: FormEvent<HTMLInputElement>) => setTitlePres(e.currentTarget.value)} />
-        <Button onClick={save}>Enregistrer</Button>
+      <div className="top-container">
+        <Input2 type="text" placeholder="Titre de la présentation" onChange={(e: FormEvent<HTMLInputElement>) => setTitlePres(e.currentTarget.value)} />
+        <Button onClick={save} style={{ fontSize: "1.25rem", marginLeft: "10px" }}>Enregistrer</Button>
       </div>
       <div className="slideCreation-container">
       

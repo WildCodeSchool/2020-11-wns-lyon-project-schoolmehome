@@ -1,7 +1,7 @@
 
 import { getModelForClass, mongoose } from "@typegoose/typegoose";
 import { Arg, Mutation, Query, Resolver } from "type-graphql";
-import { ArticlesWiki, ArticlesWikiInput, ArticlesWikiType, ArticlesWikiTypeAll } from "../entities/ArticlesWiki";
+import { ArticlesWiki, ArticlesWikiInputType, ArticlesWikiType, ArticlesWikiTypeAll } from "../entities/ArticlesWiki";
 import { Promo } from "../entities/Promo";
 import {ObjectId} from "mongodb"
 import { User } from "../entities/User";
@@ -67,8 +67,8 @@ export class ArticlesWikiResolver {
     }
 
     @Mutation(() => ArticlesWikiType)
-    public async createArticles(@Arg('data', () => ArticlesWikiInput) data : ArticlesWikiInput ) : Promise<ArticlesWikiInput> {
-        const model = getModelForClass(ArticlesWikiInput);
+    public async createArticles(@Arg('data', () => ArticlesWikiInputType) data : ArticlesWikiInputType ) : Promise<ArticlesWikiInputType> {
+        const model = getModelForClass(ArticlesWikiInputType);
         return model.create(data);
     }
 
@@ -110,14 +110,14 @@ export class ArticlesWikiResolver {
     }
 
     @Mutation(() => ArticlesWikiType)
-    public async editArticles (@Arg('data') data : ArticlesWikiInput){
-        const model = getModelForClass(ArticlesWikiInput);
+    public async editArticles (@Arg('data') data : ArticlesWikiInputType){
+        const model = getModelForClass(ArticlesWikiInputType);
         return model.findByIdAndUpdate(data._id, {$set : data}, {new : true})
     }
 
     @Mutation(() => ArticlesWikiType)
     public async validArticle (@Arg('id') id : string, @Arg('valid') valid : boolean, @Arg('validator') validator : string){
-        const model = getModelForClass(ArticlesWikiInput);
+        const model = getModelForClass(ArticlesWikiInputType);
         const find = await model.findById(id);
         find.content[find.content.length - 1].isValid = 1;
         find.content[find.content.length - 1].validatorTeacher = validator;

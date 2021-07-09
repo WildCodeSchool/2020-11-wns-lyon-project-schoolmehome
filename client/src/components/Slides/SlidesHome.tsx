@@ -7,11 +7,11 @@ import './SlidesHome.css';
 import Button from '../global/button/Button';
 
 export const SlidesHome = () => {
-    const GET_PRESENTATIONS = gql`
+    const GET_PRESENTATIONS = gql` 
   query findAllPres {findAllPresentation {_id, title, slides{title, htmlContent}}}
 `;
 
-  const { loading, error, data } = useQuery(GET_PRESENTATIONS);
+  const { loading, error, data } = useQuery(GET_PRESENTATIONS, { fetchPolicy: 'network-only' });
   const [presentation, setPresentation] = useState<(Presentation & {_id : string})[]>([])
   const history = useHistory();
 

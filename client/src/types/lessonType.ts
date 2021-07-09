@@ -3,7 +3,7 @@
     start: string;
     end: string;
     subject: { name: string, _id: string };
-    promo: string;
+    promo: { name: string, _id: string };
     presentation?: string;
     // presentation?: {
     //   _id: string,

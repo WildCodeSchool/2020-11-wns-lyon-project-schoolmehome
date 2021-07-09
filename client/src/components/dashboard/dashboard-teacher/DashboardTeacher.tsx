@@ -49,7 +49,7 @@ const DashboardTeacher = () => {
                         Sujet: {nextLesson.findNextlesson.subject.name}
                       </Typography>
                       <Typography >
-                        Promo: {nextLesson.findNextlesson.promo}
+                        Promo: {nextLesson.findNextlesson.promo.name}
                       </Typography>
                     </CardContent>
                   </Card>

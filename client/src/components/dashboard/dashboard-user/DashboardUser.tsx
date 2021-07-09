@@ -1,15 +1,16 @@
 import { Card, CardContent, CardMedia, Grid, Typography } from '@material-ui/core';
 import moment from 'moment';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import useNextLesson from '../../../hooks/useNextLesson';
 import './DashboardUser.css';
 import dashboardNextCours from '../../../image/dashboard-nextCours.png';
-import {WIKI_DATA} from '../../../utils/wiki';
 import {ACTIVITIES_DATA} from '../../../utils/activities';
+import useWikis from '../../../hooks/useWikis';
 
 export const DashboardUser = () => {
   const { nextLesson } = useNextLesson();
+  const {wikis} = useWikis();
 
   if(nextLesson) {
     return (
@@ -44,7 +45,7 @@ export const DashboardUser = () => {
                         Sujet: {nextLesson.findNextlesson.subject.name}
                       </Typography>
                       <Typography >
-                        Promo: {nextLesson.findNextlesson.promo}
+                        Promo: {nextLesson.findNextlesson.promo.name}
                       </Typography>
                     </CardContent>
                   </Card>
@@ -65,26 +66,30 @@ export const DashboardUser = () => {
             <Card elevation={3} className="green">
 
               <CardContent>
-                <Typography>Mon wiki</Typography>
+                <Typography>Mes wiki</Typography>
                 </CardContent>
                 <CardContent  className="wiki-list">
-                {WIKI_DATA.map((wiki, index) => (
-                  <Card elevation={3} className='red wikicard' key={index}>
-                    <CardMedia
-                      component="img"
-                      alt="Contemplative Reptile"
-                      height="100"
-                      image={wiki.imageUrl}
-                      title={wiki.title}
-                      className="wiki-img"
-                    />
-                    <CardContent>
-                      <Typography >
-                        {wiki.title}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                ))}  
+                { wikis ?
+                wikis.slice(0, 5).map((wiki : any, index : any) => (
+                  
+                    <Card elevation={3} className='blue wikicard' key={index}>
+                      <Link to={`/wiki/${wiki._id}`} style={{color: 'black'}}>
+                      <CardContent>
+                        <Typography variant="h6" gutterBottom>
+                          {wiki.title}
+                        </Typography>
+                        <Typography variant="body2">
+                          Créé par {wiki.author.firstName} {wiki.author.lastName}
+                        </Typography>
+                        <Typography variant="body2">
+                          Créé le {moment(wiki.createdAt).format("DD/MM/YYYY")}
+                        </Typography>
+                      </CardContent>
+                      </Link>
+                    </Card>
+                  
+                )) : <Typography>Pas de wiki</Typography>
+                }  
               </CardContent>
             </Card>
 

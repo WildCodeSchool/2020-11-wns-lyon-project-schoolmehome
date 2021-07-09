@@ -14,7 +14,9 @@ const useNextLesson = () => {
       _id,
       start, 
       end, 
-      promo
+      promo {
+        name
+      },
       subject 
       {name}
     }
