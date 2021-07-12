@@ -19,7 +19,7 @@ export function Navbar() {
   return (
     <nav className="navbar">
       <ul className="navbar-nav">
-        <li className="avatar">
+        <li className="avatar-img">
           <div className='avatar-div'>
                     {
                         u.user?.getOne.imageUrl ?
