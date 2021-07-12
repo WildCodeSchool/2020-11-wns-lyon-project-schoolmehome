@@ -1,5 +1,6 @@
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { Input } from "@material-ui/core";
+import { Image } from "@material-ui/icons";
 import React, { useEffect, useReducer, useState } from "react"
 import { useHistory } from "react-router-dom";
 import { useAuth } from "../../context/authContext";
@@ -37,35 +38,10 @@ const reducer = (state : ProfilInfo, action : any) => {
             return {...state, zipcode : action.value}
         case 'city':
             return {...state, city : action.value}
-        case 'imageUrl':
-            console.log(action.value.target.files[0])
-            const data = new FormData()
-            data.append("file", action.value.target.files[0])
-            data.append("upload_preset", `${process.env.CLOUD_PRESET}`)
-            data.append("cloud_name",`${process.env.CLOUD_NAME}`)
-            fetch(`https://api.cloudinary.com/v1_1/${process.env.CLOUD_NAME}/image/upload`,{
-            method:"post",
-            body: data
-            })
-            .then(resp => resp.json())
-            .then(data => {
-                console.log(data.url)
-                console.log(state)
-                return {...state, imageUrl : data.url}
-            })
-            .catch(err => {
-                console.log(err)
-                return state
-            });
-            break;
         default:
             return state;
     }
 }
-
-const uploadImage = (image : any) => {
-    
-    }
 
 export const ProfilEdit = () => {
     const [state, dispatch] = useReducer(reducer, initialUser);
@@ -94,9 +70,34 @@ export const ProfilEdit = () => {
     `;
     const [updateUser] = useMutation(UPADTE_USER);
 
+    const [imageUrl, setImageUrl] = useState<string>('')
+    const [loadingImg, setLoadingImg] = useState(false)
+
+    const upload = (image : any) => {
+        setLoadingImg(true);
+        const data = new FormData()
+            data.append("file", image.target.files[0])
+            data.append("upload_preset", `${process.env.REACT_APP_CLOUD_PRESET}`)
+            data.append("cloud_name",`${process.env.REACT_APP_CLOUD_NAME}`)
+            fetch(`https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUD_NAME}/image/upload`,{
+            method:"post",
+            body: data
+            })
+            .then(resp => resp.json())
+            .then(data => {
+                console.log(data.url)
+                setImageUrl(data.url)
+                setLoadingImg(false)
+            })
+            .catch(err => {
+                console.log(err)
+                setLoadingImg(false)
+            });
+    }
+
     const save = () => {
-        console.log('save')
-        updateUser({variables :  {data : {...state,role : user.role, __typename : undefined}}})
+        console.log(imageUrl)
+        updateUser({variables :  {data : {...state,role : user.role, imageUrl : imageUrl, __typename : undefined}}})
             .then(() => history.push('/profil'))
             .catch(e => console.log(JSON.stringify(e, null, 4)))    
     }
@@ -129,8 +130,22 @@ export const ProfilEdit = () => {
                     <div className='profilformrow'><div className='profileditlabel'>Ville</div>
                     <Input type='text'className='profiledit' value={state?.city}  onChange={(e) => dispatch({type: 'city', value : e.target.value})} />
                     </div>
-                    <div>
-                        <Input type='file' onChange={(e) => dispatch({type: 'imageUrl', value : e})}/>
+                    <div className="input-file-container">
+                        <label htmlFor="file" className="label-file">Choisir une image de profil</label>
+                        <input
+                            id="file"
+                            className="input-file"
+                            type="file"
+                            onChange= {(e)=> {
+                                upload(e)
+                            }}
+                        />
+                        {
+                            loadingImg ?
+                                'Loading'
+                            :
+                                imageUrl ? <img className="upload-poster" src={imageUrl} alt="Photo de la recette"/> : ''
+                        }
                     </div>
                     <div style={{textAlign : 'center'}}><Button onClick={save}>Enregister mes modifications</Button></div>
             </div>

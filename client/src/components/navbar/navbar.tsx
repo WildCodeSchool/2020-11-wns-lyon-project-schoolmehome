@@ -22,16 +22,8 @@ export function Navbar() {
         <li className="avatar">
           <div className='avatar-div'>
                     {
-                        user.role === 'Teacher' ?
-                        <Avatar alt="" src={avTeacher} className={classes.large} /> : ''
-                    }
-                    {
-                        user.role === 'Admin' ?
-                        <Avatar alt="" src={avAdmin} className={classes.large} /> : ''
-                    }
-                    {
-                        user.role === 'User' ?
-                        <Avatar alt="" src={avUser} className={classes.large} /> : ''
+                        u.user?.getOne.imageUrl ?
+                        <Avatar alt="" src={u.user?.getOne.imageUrl} className={classes.large} /> : <Avatar alt="" src={avUser} className={classes.large} />
                     }
             <div className="avatarName">
               <h1>{user.firstName}&nbsp;{user.lastName}</h1>

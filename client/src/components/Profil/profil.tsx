@@ -65,16 +65,8 @@ export const Profil = () => {
                 </div>
                 <div className="header-profil">
                     {
-                        user.role === 'Teacher' ?
-                        <Avatar alt="" src={avTeacher} className={classes.large} /> : ''
-                    }
-                    {
-                        user.role === 'Admin' ?
-                        <Avatar alt="" src={avAdmin} className={classes.large} /> : ''
-                    }
-                    {
-                        user.role === 'User' ?
-                        <Avatar alt="" src={avUser} className={classes.large} /> : ''
+                        u.user?.getOne.imageUrl ?
+                        <Avatar alt="" src={u.user?.getOne.imageUrl} className={classes.large} /> : <Avatar alt="" src={avUser} className={classes.large} />
                     }
                     <div className="profil-info">
                         <div className="name">{info ? info.firstName : ''} {info ? info.lastName : ''}</div>
