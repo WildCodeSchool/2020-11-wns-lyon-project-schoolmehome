@@ -33,10 +33,6 @@ const Login = () => {
               <NavLink to="#" className="navlink-login">Help</NavLink>
               <NavLink to="#" className="navlink-login">Contact us</NavLink>
             </div>
-            <div>
-              <NavLink to="#" className="navlink-login">Sign in</NavLink>
-              <Button>Sign Up</Button>
-            </div>
           </nav>
           <div className="login-main-container">
             <div className="login-left-container">
