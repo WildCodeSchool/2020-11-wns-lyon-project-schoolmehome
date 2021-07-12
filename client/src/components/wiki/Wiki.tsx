@@ -36,7 +36,7 @@ export const Wiki =  () => {
         <div>
             <div  style={{display : 'flex', justifyContent : 'space-between', alignItems : 'baseline'}}>
                 <h2>Wiki</h2>
-                { u.user?.getOne.promo[0]._id ? 
+                { u.user?.getOne.promo[0]?._id ? 
                     <Link className='button' to={`/wiki/new`}>Nouveau wiki</Link>
                     : ''
                 }

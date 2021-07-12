@@ -38,7 +38,7 @@ export function Navbar() {
               <div className="avatarStudy">
                         {
                             user.role === 'User' ?
-                            <p>{u.user?.getOne.promo[0].name ? u.user?.getOne.promo[0].name : 'Pas de promotion'}</p>
+                            <p>{u.user?.getOne.promo[0]?.name ? u.user?.getOne.promo[0].name : 'Pas de promotion'}</p>
                             : <p>{user.role}</p>
                         }
               </div>
