@@ -37,10 +37,35 @@ const reducer = (state : ProfilInfo, action : any) => {
             return {...state, zipcode : action.value}
         case 'city':
             return {...state, city : action.value}
+        case 'imageUrl':
+            console.log(action.value.target.files[0])
+            const data = new FormData()
+            data.append("file", action.value.target.files[0])
+            data.append("upload_preset", `${process.env.CLOUD_PRESET}`)
+            data.append("cloud_name",`${process.env.CLOUD_NAME}`)
+            fetch(`https://api.cloudinary.com/v1_1/${process.env.CLOUD_NAME}/image/upload`,{
+            method:"post",
+            body: data
+            })
+            .then(resp => resp.json())
+            .then(data => {
+                console.log(data.url)
+                console.log(state)
+                return {...state, imageUrl : data.url}
+            })
+            .catch(err => {
+                console.log(err)
+                return state
+            });
+            break;
         default:
             return state;
     }
 }
+
+const uploadImage = (image : any) => {
+    
+    }
 
 export const ProfilEdit = () => {
     const [state, dispatch] = useReducer(reducer, initialUser);
@@ -84,25 +109,28 @@ export const ProfilEdit = () => {
             <div>
                     <div className='profilformrow'>
                         <div className='profileditlabel'>Nom</div>
-                    <Input type='text'className='profiledit' value={state.lastName} onChange={(e) => dispatch({type: 'name', value : e.target.value})} />
+                    <Input type='text'className='profiledit' value={state?.lastName} onChange={(e) => dispatch({type: 'name', value : e.target.value})} />
                     </div>
                     <div className='profilformrow'><div className='profileditlabel'>Prénom</div>
-                    <Input type='text'className='profiledit' value={state.firstName}  onChange={(e) => dispatch({type: 'firstname', value : e.target.value})} />
+                    <Input type='text'className='profiledit' value={state?.firstName}  onChange={(e) => dispatch({type: 'firstname', value : e.target.value})} />
                     </div>
                     <div className='profilformrow'><div className='profileditlabel'>Téléphone</div>
-                    <Input type='text'className='profiledit' value={state.phone}  onChange={(e) => dispatch({type: 'phone', value : e.target.value})} />
+                    <Input type='text'className='profiledit' value={state?.phone}  onChange={(e) => dispatch({type: 'phone', value : e.target.value})} />
                     </div>
                     <div className='profilformrow'><div className='profileditlabel'>Date d'anniversaire</div>
-                    <Input type='text'className='profiledit' value={state.birthdate}  onChange={(e) => dispatch({type: 'birth', value : e.target.value})} />
+                    <Input type='text'className='profiledit' value={state?.birthdate}  onChange={(e) => dispatch({type: 'birth', value : e.target.value})} />
                     </div>
                     <div className='profilformrow'><div className='profileditlabel'>Rue</div>
-                    <Input type='text'className='profiledit' value={state.street}  onChange={(e) => dispatch({type: 'street', value : e.target.value})} />
+                    <Input type='text'className='profiledit' value={state?.street}  onChange={(e) => dispatch({type: 'street', value : e.target.value})} />
                     </div>
                     <div className='profilformrow'><div className='profileditlabel'>Code postal</div>
-                    <Input type='text'className='profiledit' value={state.zipcode}  onChange={(e) => dispatch({type: 'zip', value : e.target.value})} />
+                    <Input type='text'className='profiledit' value={state?.zipcode}  onChange={(e) => dispatch({type: 'zip', value : e.target.value})} />
                     </div>
                     <div className='profilformrow'><div className='profileditlabel'>Ville</div>
-                    <Input type='text'className='profiledit' value={state.city}  onChange={(e) => dispatch({type: 'city', value : e.target.value})} />
+                    <Input type='text'className='profiledit' value={state?.city}  onChange={(e) => dispatch({type: 'city', value : e.target.value})} />
+                    </div>
+                    <div>
+                        <Input type='file' onChange={(e) => dispatch({type: 'imageUrl', value : e})}/>
                     </div>
                     <div style={{textAlign : 'center'}}><Button onClick={save}>Enregister mes modifications</Button></div>
             </div>
