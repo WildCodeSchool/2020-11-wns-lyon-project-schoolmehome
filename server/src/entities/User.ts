@@ -50,6 +50,10 @@ export class User {
   @prop()
   city!: string
 
+  @Field({nullable : true})
+  @prop()
+  imageUrl! : string
+
   @Field()
   @prop()
   @IsIn(['Admin', 'User', 'Teacher'])

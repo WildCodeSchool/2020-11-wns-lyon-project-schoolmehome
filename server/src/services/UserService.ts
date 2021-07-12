@@ -11,27 +11,31 @@ export class UserServiceClass {
     @Query(() => User)
     public async findByEmail(email: string): Promise<User> {
         const model = getModelForClass(User);
-        const lessonModel = getModelForClass(Lesson);
-        const presentationModel = getModelForClass(Presentation);
-        const promoModel = getModelForClass(Promo);
-        const user = await model.findOne({ email })
-            .populate({
-                path: 'lessons',
-                model: lessonModel,
-                populate: [{
-                    path: 'presentation',
-                    model: presentationModel
-                },
-                {
-                    path: 'promo',
-                    model: promoModel
-                }]
-            }).populate({
-                path: 'promo',
-                model: promoModel,
-            })
-            .exec()
-        return user;
+        const user = await model.findOne({email: {$eq: email}})
+        console.log(user)
+        return user
+        // const lessonModel = getModelForClass(Lesson);
+        // const presentationModel = getModelForClass(Presentation);
+        // const promoModel = getModelForClass(Promo);
+        // const user = await model.findOne({ email })
+        //     .populate({
+        //         path: 'lessons',
+        //         model: lessonModel,
+        //         populate: [{
+        //             path: 'presentation',
+        //             model: presentationModel
+        //         },
+        //         {
+        //             path: 'promo',
+        //             model: promoModel
+        //         }]
+        //     }).populate({
+        //         path: 'promo',
+        //         model: promoModel,
+        //     })
+        //     .exec()
+        // console.log(user)
+        // return user;
     }
 
     @Mutation(() => User)
