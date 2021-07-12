@@ -7,6 +7,8 @@ import {Button, Grid, Paper} from "@material-ui/core";
 import DefaultPicture from "../../../../../src/image/profil.png"
 import DefaultBackground from "../../../../../src/image/background-user.jpg"
 import {gql, useMutation} from "@apollo/client";
+import { PromoInput } from "../ModalAddPromo/ModalAddPromo";
+import { SubjectInput } from "../ModalAddSubject/ModalAddSubject";
 
 
 
@@ -48,22 +50,14 @@ const ModalAddNewUser = (): ReactElement => {
 
     const handlePositiveAction = (): void => {
         console.log("OK")
-        // addNewUser(userForm, userType);
+        addNewUser(userForm);
         handleClose();
     }
 
-    const addNewUser = (userFormData: UserFormData, userType: UserType): void => {
-        switch (userType) {
-            case "STUDENT":
-                userFormData.role = "User"
-                break
-            case "TEACHER":
-                userFormData.role = "Teacher"
-                break
-            case "ADMIN":
-                userFormData.role = 'Admin'
-        }
-        const user = new User(userFormData.firstName, userFormData.lastName, userFormData.email, userFormData.password, userFormData.role, userFormData._lesson)
+    const addNewUser = (userFormData: UserFormData): void => {
+        console.log(userFormData)
+        const user = new User(userFormData.firstName, userFormData.lastName, userFormData.email, userFormData.password, userFormData.role, userFormData._lesson, userFormData._promo, userFormData._subject)
+        console.log(user)
         signup({ variables: { user: user} })
             .then((data) => {
                 console.log(data.data._id)
@@ -101,16 +95,18 @@ export class User {
     password: String
     role: String
     lessons: [] = []
-    subject: [] = []
-    promo: [] = []
+    subject: SubjectInput[] = []
+    promo: PromoInput[] = []
 
-    constructor(firstName: String, lastName: String, email: String, password: String, role: String, lessons: []) {
+    constructor(firstName: String, lastName: String, email: String, password: String, role: String, lessons: [], promo: PromoInput[], subject: SubjectInput[]) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.role = role;
         this.lessons = lessons;
+        this.promo = promo;
+        this.subject = subject;
     }
 }
 
@@ -121,8 +117,8 @@ export class UserFormData {
     _password: String
     _role: String
     _lesson: []
-    _subject: []
-    _promo: []
+    _subject: SubjectInput[]
+    _promo: PromoInput[]
 
 
     get firstName(): String {
@@ -165,6 +161,15 @@ export class UserFormData {
     set role(value: String) {
         this._role = value;
     }
+
+    set promo(value: PromoInput[]){
+        this._promo = value
+    }
+
+    set subject(value: SubjectInput[]){
+        this._subject = value
+    }
+
 
     constructor(firstName: String, lastName: String, email: String, password: String, userRole: String, lesson: [], promo: [], subject: []) {
         this._firstName = firstName;
