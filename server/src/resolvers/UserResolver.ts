@@ -12,13 +12,12 @@ import { Promo } from "../entities/Promo";
 
 @Resolver(() => User)
 export class UserResolver {
+    
+    @Mutation(() => AuthResult, { nullable: true })
+    public async signin(@Arg('email') email: string, @Arg('password') password: string, @Ctx() ctx): Promise<AuthResult> {
+        return await Auth.signin(email, password, ctx);
+    }
 
-    @Mutation(() => User)
-    public async signup(@Arg('data', () => User) data: User): Promise<User> {        
-        return await UserService.signUp(data);
-    };
-
-    // @Authorized(['Admin'])
     @Mutation(() => User)
     public async createUser(@Arg('data') data: User): Promise<User> {
         return await Auth.createUser(data);
@@ -34,10 +33,6 @@ export class UserResolver {
         return ctx.user;
     }
 
-    @Mutation(() => AuthResult, { nullable: true })
-    public async signin(@Arg('email') email: string, @Arg('password') password: string, @Ctx() ctx): Promise<AuthResult> {
-        return await Auth.signin(email, password, ctx);
-    }
     @Mutation(() => AuthResult, { nullable: true })
     public async lost(@Arg('email') email: string) {
         return await Auth.passwordLost(email);
@@ -106,7 +101,7 @@ export class UserResolver {
         return await UserService.search(name)
     }
 
-    @Authorized(['Admin'])
+    // @Authorized(['Admin'])
     @Mutation(() => [User])
     public async delete(@Arg('id') id: string) {
         return await UserService.delete(id)
