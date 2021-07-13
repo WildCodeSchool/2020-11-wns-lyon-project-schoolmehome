@@ -7,6 +7,7 @@ import Input from '../global/input/Input';
 import MuiAlert from '@material-ui/lab/Alert';
 import Snackbar from '@material-ui/core/Snackbar';
 import Input2 from '../global/input2/Input';
+import image1 from '../../image/global/home.png';
 
 
 const Login = () => {
@@ -37,13 +38,14 @@ const Login = () => {
           <div className="login-main-container">
             <div className="login-left-container">
               <h1>SCHOOL ME <br /> HOME</h1>
+              <img src={image1} />
             </div>
             <div className="login-right-container">
               <form onSubmit={formSubmit} className="login-form-container">
-                <Input2 style={{ marginBottom: "50px" }} type="email" placeholder="Enter email" {...inputEmail} />
-                <Input2 style={{ marginBottom: "60px" }} type="password" placeholder="Enter password" {...inputPassword} />
-                <Button type="submit" style={{ fontSize: "1.25rem" }}>Se connecter</Button>
-                <NavLink to="/lostPassword" className="navlink-lost">Mot de passe oublié ?</NavLink>
+                <Input2 style={{ marginBottom: "50px", 'box-shadow': '0px 8px 15px rgb(0 0 0 / 30%)', 'border-radius': '5px'}} type="email" placeholder="Enter email" {...inputEmail} />
+                <Input2 style={{ marginBottom: "60px", 'box-shadow': '0px 8px 15px rgb(0 0 0 / 30%)', 'border-radius': '5px'}} type="password" placeholder="Enter password" {...inputPassword} />
+                <Button type="submit" style={{ fontSize: "1.25rem", 'box-shadow': '0px 8px 15px rgb(0 0 0 / 30%)' }}>Se connecter</Button>
+                <NavLink to="/lostPassword" className="navlink-lost" >Mot de passe oublié ?</NavLink>
               </form>
             </div>
           </div>
