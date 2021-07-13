@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Login from './components/login/Login';
 import SlideCreation from './components/slideCreation/SlideCreation';
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
@@ -21,6 +21,10 @@ import { WikiValidate } from './components/wiki/WikiValidate';
 import Calendar from './components/calendar/Calendar';
 
 function App() {
+
+  useEffect(() => {
+    document.title = "SchoolMeHome"
+  }, [])
 
   const routes = [
     {
