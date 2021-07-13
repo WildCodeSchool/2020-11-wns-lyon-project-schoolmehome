@@ -18,7 +18,6 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) => {
-    console.log(roles);
     try {
         const token = context.req.cookies.appSession;
         if (token) {
