@@ -42,7 +42,8 @@ const Login = () => {
               <form onSubmit={formSubmit} className="login-form-container">
                 <Input2 style={{ marginBottom: "50px" }} type="email" placeholder="Enter email" {...inputEmail} />
                 <Input2 style={{ marginBottom: "60px" }} type="password" placeholder="Enter password" {...inputPassword} />
-                <Button type="submit" style={{ fontSize: "1.25rem" }}>Sign in</Button>
+                <Button type="submit" style={{ fontSize: "1.25rem" }}>Se connecter</Button>
+                <NavLink to="/lostPassword" className="navlink-lost">Mot de passe oublié ?</NavLink>
               </form>
             </div>
           </div>

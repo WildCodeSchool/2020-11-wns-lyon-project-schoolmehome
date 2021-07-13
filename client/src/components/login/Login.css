@@ -20,6 +20,12 @@
   font-size: 2rem;
   margin-right: 3rem ;
 }
+.navlink-lost{
+  color: black;
+  font-size: 1.2em;
+  text-align: right;
+  margin-top: 20px;
+}
 
 .login-nav-container {
   display: flex;
