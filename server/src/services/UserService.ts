@@ -34,13 +34,6 @@ export class UserServiceClass {
         return user;
     }
 
-    @Mutation(() => User)
-    public async signUp(newUser: User): Promise<User> {
-        const model = getModelForClass(User);
-        newUser.password = await argon.hash(newUser.password);
-        return await model.create(newUser);
-    }
-
     @Mutation(() => User, { nullable: true })
     public async updateOne(@Arg('data') data: User) {
         const model = getModelForClass(User);

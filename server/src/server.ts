@@ -6,14 +6,7 @@ import { ApolloServer } from 'apollo-server-express';
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import { UserResolver } from './resolvers/UserResolver';
-import { SlideResolver } from './resolvers/SlideResolver';
-import { PresentationResolver } from './resolvers/PresentationResolver';
-import { LessonResolver } from './resolvers/LessonResolver';
-import { ArticlesWikiResolver } from './resolvers/ArticlesWikiResolver';
 import {Auth}  from './services/AuthService'
-import { SubjectResolver } from './resolvers/SubjectsResolver';
-import { PromoResolver } from './resolvers/PromoResolver';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -40,7 +33,7 @@ export const passwordAuthChecker: AuthChecker = async ({ context }: any, roles) 
 };
 (async () => {
     try {
-        await mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true, dbName: process.env.DB_NAME });
+    await mongoose.connect('mongodb://mongodb:27017/', { useNewUrlParser: true, useUnifiedTopology: true, dbName: "home" });
         const schema = await buildSchema({
             resolvers: [__dirname + '/resolvers/*.{ts,js}'],
             authChecker: passwordAuthChecker
