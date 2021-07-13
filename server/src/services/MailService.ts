@@ -4,9 +4,8 @@ import { UserService } from './UserService';
 export class MailService{
     env = process.env;
     
-    public async mail(email: string, token: string) {
+    public async mail(token: string, email: string) {
         let account = await UserService.findByEmail(email);
-        console.log(account)
         console.log('Credentials obtained, sending message...');
         let transporter = nodemailer.createTransport({
             type: 'smtp',
