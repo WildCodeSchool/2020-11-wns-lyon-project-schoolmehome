@@ -103,3 +103,29 @@ div.profileditlabel{
     font-size: larger;
     text-transform: uppercase;
 }
+
+.input-file-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid grey;
+    padding: 10px 0;
+    width: 250px;
+    margin: auto;
+    border-radius: 22px;
+    margin-bottom: 1em;
+}
+.label-file {
+    cursor: pointer;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.input-file {
+    display: none;
+}
+.upload-poster {
+    height: 30vmin;
+    width: 30vmin;
+    border-radius: 5px;
+}

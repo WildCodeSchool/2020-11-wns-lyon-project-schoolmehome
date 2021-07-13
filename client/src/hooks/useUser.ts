@@ -14,6 +14,7 @@ const useUser = () => {
       _id,
       email,
       role,
+      imageUrl
       promo {
         _id,
         name
