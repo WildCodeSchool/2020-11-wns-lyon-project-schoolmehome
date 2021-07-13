@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import './fonts/Gotham-Font/GothamMedium.ttf'
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';

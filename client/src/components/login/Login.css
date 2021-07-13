@@ -20,6 +20,12 @@
   font-size: 2rem;
   margin-right: 3rem ;
 }
+.navlink-lost{
+  color: black;
+  font-size: 1.2em;
+  text-align: right;
+  margin-top: 20px;
+}
 
 .login-nav-container {
   display: flex;
@@ -41,6 +47,11 @@
   width: 60%;
 }
 
+img{
+  position: absolute;
+  bottom: 2rem;
+  left: 26rem;
+}
 .login-left-container h1 {
   letter-spacing:6px;
   margin-top: 150px;
@@ -48,7 +59,13 @@
   color: var(--primary);
   font-size: 4rem;
 }
-
+.test{
+  background-image: url("../../image/global/home.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 500px;
+  height: auto;
+}
 .login-right-container {
   width: 38%;
   display: flex;
