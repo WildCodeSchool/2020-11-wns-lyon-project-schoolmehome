@@ -42,8 +42,8 @@ const Login = () => {
             </div>
             <div className="login-right-container">
               <form onSubmit={formSubmit} className="login-form-container">
-                <Input2 style={{ marginBottom: "50px", 'box-shadow': '0px 8px 15px rgb(0 0 0 / 30%)', 'border-radius': '5px'}} type="email" placeholder="Enter email" {...inputEmail} />
-                <Input2 style={{ marginBottom: "60px", 'box-shadow': '0px 8px 15px rgb(0 0 0 / 30%)', 'border-radius': '5px'}} type="password" placeholder="Enter password" {...inputPassword} />
+                <Input2 style={{ marginBottom: "50px", 'box-shadow': '0px 8px 15px rgb(0 0 0 / 5%)', 'border-radius': '5px'}} type="email" placeholder="Enter email" {...inputEmail} />
+                <Input2 style={{ marginBottom: "60px", 'box-shadow': '0px 8px 15px rgb(0 0 0 / 5%)', 'border-radius': '5px'}} type="password" placeholder="Enter password" {...inputPassword} />
                 <Button type="submit" style={{ fontSize: "1.25rem", 'box-shadow': '0px 8px 15px rgb(0 0 0 / 30%)' }}>Se connecter</Button>
                 <NavLink to="/lostPassword" className="navlink-lost" >Mot de passe oublié ?</NavLink>
               </form>
