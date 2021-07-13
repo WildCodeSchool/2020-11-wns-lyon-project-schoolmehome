@@ -8,14 +8,14 @@ import { Mail } from '../services/MailService';
 export class AuthService {
 
     @Mutation(() => User) 
-    public async createUser(data: User){
+    public async createUser(data){
         const model = getModelForClass(User);
         const userToken = {data : data.email};
         data.password = null;
         const token =  jwt.sign(userToken, "secret");
         const user = await model.create(data);
-        await Mail.mail(token, user.email);
-        return true;
+        await Mail.mail(token, data.email);
+        return user;
     }
 
     @Mutation(() => User)
