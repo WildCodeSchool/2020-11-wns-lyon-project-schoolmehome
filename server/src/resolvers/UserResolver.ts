@@ -14,13 +14,13 @@ import { Promo } from "../entities/Promo";
 export class UserResolver {
 
     @Mutation(() => User)
-    public async signup(@Arg('data', () => User) data: User): Promise<User> {
+    public async signup(@Arg('data', () => User) data: User): Promise<User> {        
         return await UserService.signUp(data);
     };
 
     // @Authorized(['Admin'])
     @Mutation(() => User)
-    public async createUser(@Arg('data') data: User): Promise<Boolean> {
+    public async createUser(@Arg('data') data: User): Promise<User> {
         return await Auth.createUser(data);
     }
 
