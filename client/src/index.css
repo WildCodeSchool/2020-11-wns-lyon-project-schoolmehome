@@ -15,10 +15,18 @@
 
 }
 
+@font-face {
+  font-family: "Gotham";
+  src: local("Gotham"),
+  url("./fonts/Gotham-Font/Gotham-Light.otf") format("truetype");
+}
 body{
   margin: 0;
   padding: 0;
   background: var(--primary);
+}
+*{
+  font-family: "Gotham";
 }
 
 body::-webkit-scrollbar{
