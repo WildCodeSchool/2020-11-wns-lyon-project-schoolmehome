@@ -38,7 +38,7 @@ const Login = () => {
           <div className="login-main-container">
             <div className="login-left-container">
               <h1>SCHOOL ME <br /> HOME</h1>
-              <img src={image1} />
+              <img src={image1}  className="home-img" />
             </div>
             <div className="login-right-container">
               <form onSubmit={formSubmit} className="login-form-container">
