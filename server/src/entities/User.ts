@@ -50,10 +50,6 @@ export class User {
   @prop()
   city!: string
 
-  @Field({nullable : true})
-  @prop()
-  imageUrl! : string
-
   @Field()
   @prop()
   @IsIn(['Admin', 'User', 'Teacher'])
@@ -63,9 +59,9 @@ export class User {
   @prop({ref: () => Lesson})
   lessons: Lesson[];
 
-  @Field({nullable: true} )
-  @prop()
-  promo: string;
+  @Field(() => [Promo], { nullable: true} )
+  @prop({ref: () => Promo})
+  promo: Promo[];
 
   @Field(() => [Subject], {nullable: true})
   @prop()
